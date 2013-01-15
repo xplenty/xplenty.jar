@@ -7,18 +7,18 @@ package com.xplenty.exceptions;
  * @author Yuriy Kovalek
  *
  */
-public class XPlentyInternalAPIException extends XPlentyAPIException {
+public class XplentyInternalAPIException extends XplentyAPIException {
 	private static final long serialVersionUID = -3711963956067858478L;
 
-	public XPlentyInternalAPIException(String msg) {
+	public XplentyInternalAPIException(String msg) {
 		super(msg);
 	}
 	
-	public XPlentyInternalAPIException(Throwable t) {
+	public XplentyInternalAPIException(Throwable t) {
 		super(t);
 	}
 	
-	public XPlentyInternalAPIException(String msg, Throwable t) {
+	public XplentyInternalAPIException(String msg, Throwable t) {
 		super(msg, t);
 	}
 }

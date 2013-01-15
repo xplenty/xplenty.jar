@@ -23,8 +23,8 @@ import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.xplenty.exceptions.AuthFailedException;
 import com.xplenty.exceptions.PaymentRequiredException;
-import com.xplenty.exceptions.XPlentyInternalAPIException;
-import com.xplenty.exceptions.XPlentyInternalServerException;
+import com.xplenty.exceptions.XplentyInternalAPIException;
+import com.xplenty.exceptions.XplentyInternalServerException;
 import com.xplenty.model.Cluster;
 import com.xplenty.model.ClusterPlan;
 import com.xplenty.model.Job;
@@ -33,7 +33,7 @@ import com.xplenty.model.Job;
  * @author Yuriy Kovalek
  *
  */
-public class XPlentyAPI {
+public class XplentyAPI {
 	private static final String BASE_URL = "https://api-staging.xplenty.com";	
 	private static final String API_PATH = "api";
 	
@@ -46,7 +46,7 @@ public class XPlentyAPI {
 	private Client client;
 	private ObjectMapper mapper = new ObjectMapper();
 	
-	public XPlentyAPI(String accountName, String apiKey) {
+	public XplentyAPI(String accountName, String apiKey) {
 		ACCOUNT_NAME = accountName;
 		API_KEY = apiKey;
 		
@@ -69,7 +69,7 @@ public class XPlentyAPI {
 			List<ClusterPlan> plans = mapper.readValue(json, new TypeReference<List<ClusterPlan>>() {});
 			return plans;
 		} catch (UnsupportedEncodingException e) {
-			throw new XPlentyInternalAPIException("Something went wrong with JDK Strings", e);
+			throw new XplentyInternalAPIException("Something went wrong with JDK Strings", e);
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,7 +95,7 @@ public class XPlentyAPI {
 			List<Cluster> clusters = mapper.readValue(json, new TypeReference<List<Cluster>>(){});
 			return clusters;
 		} catch (UnsupportedEncodingException e) {
-			throw new XPlentyInternalAPIException("Something went wrong with JDK Strings", e);
+			throw new XplentyInternalAPIException("Something went wrong with JDK Strings", e);
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -129,7 +129,7 @@ public class XPlentyAPI {
 			Cluster cluster = response.getEntity(Cluster.class);		
 			return cluster;
 		} catch (UnsupportedEncodingException e) {
-			throw new XPlentyInternalAPIException("Something went wrong with JDK Strings", e);
+			throw new XplentyInternalAPIException("Something went wrong with JDK Strings", e);
 		}
 	}
 	
@@ -145,7 +145,7 @@ public class XPlentyAPI {
 			List<Job> jobs = mapper.readValue(json, new TypeReference<List<Job>>() {});		
 			return jobs;
 		} catch (UnsupportedEncodingException e) {
-			throw new XPlentyInternalAPIException("Something went wrong with JDK Strings", e);
+			throw new XplentyInternalAPIException("Something went wrong with JDK Strings", e);
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -170,7 +170,7 @@ public class XPlentyAPI {
 			Job job = response.getEntity(Job.class);
 			return job;
 		} catch (UnsupportedEncodingException e) {
-			throw new XPlentyInternalAPIException("Something went wrong with JDK Strings", e);
+			throw new XplentyInternalAPIException("Something went wrong with JDK Strings", e);
 		}
 	}
 	
@@ -184,7 +184,7 @@ public class XPlentyAPI {
 		if (response.getClientResponseStatus() == Status.NOT_ACCEPTABLE
 			|| response.getClientResponseStatus() == Status.UNSUPPORTED_MEDIA_TYPE
 			|| response.getClientResponseStatus() == Status.INTERNAL_SERVER_ERROR) {
-			throw new XPlentyInternalServerException(response.getClientResponseStatus().getReasonPhrase(), response.getStatus(), response.getEntity(String.class));
+			throw new XplentyInternalServerException(response.getClientResponseStatus().getReasonPhrase(), response.getStatus(), response.getEntity(String.class));
 		}
 		if (response.getClientResponseStatus() != Status.OK
 			&& response.getClientResponseStatus() != Status.CREATED) {
@@ -201,7 +201,7 @@ public class XPlentyAPI {
 	}
 	
 	public static void main (String[] args) throws UniformInterfaceException, UnsupportedEncodingException {
-		XPlentyAPI api = new XPlentyAPI("javasdk", "V4eyfgNqYcSasXGhzNxS");
+		XplentyAPI api = new XplentyAPI("javasdk", "V4eyfgNqYcSasXGhzNxS");
 //		List<ClusterPlan> plans = api.listClusterPlans();
 //		System.out.println(plans);
 //		List<Cluster> clusters = api.listClusters();

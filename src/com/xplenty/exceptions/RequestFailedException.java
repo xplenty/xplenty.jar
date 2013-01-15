@@ -7,7 +7,7 @@ package com.xplenty.exceptions;
  * @author Yuriy Kovalek
  *
  */
-public class RequestFailedException extends XPlentyAPIException {
+public class RequestFailedException extends XplentyAPIException {
 	private static final long serialVersionUID = -456749863406425145L;
 	
 	private int status;
