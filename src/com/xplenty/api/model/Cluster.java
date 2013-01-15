@@ -7,6 +7,8 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author Yuriy Kovalek
  *
@@ -17,71 +19,86 @@ public class Cluster {
 	private String name;
 	private String description;
 	private String status;
-	private long owner_id;
-	private long plan_id;
-	private Date created_at;
-	private Date updated_at;
-	private long running_jobs_count;
+	@JsonProperty("owner_id")
+	private long ownerId;
+	@JsonProperty("plan_id")
+	private long planId;
+	@JsonProperty("created_at")
+	private Date createdAt;
+	@JsonProperty("updated_at")
+	private Date updatedAt;
+	@JsonProperty("running_jobs_count")
+	private long runningJobsCount;
 	private String url;
 	
 	public long getId() {
 		return id;
 	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public String getName() {
 		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
 	public String getStatus() {
 		return status;
 	}
-	public void setStatus(String status) {
-		this.status = status;
+	public long getOwnerId() {
+		return ownerId;
 	}
-	public long getOwner_id() {
-		return owner_id;
+	public long getPlanId() {
+		return planId;
 	}
-	public void setOwner_id(long owner_id) {
-		this.owner_id = owner_id;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
-	public long getPlan_id() {
-		return plan_id;
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
-	public void setPlan_id(long plan_id) {
-		this.plan_id = plan_id;
-	}
-	public Date getCreated_at() {
-		return created_at;
-	}
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
-	}
-	public Date getUpdated_at() {
-		return updated_at;
-	}
-	public void setUpdated_at(Date updated_at) {
-		this.updated_at = updated_at;
-	}
-	public long getRunning_jobs_count() {
-		return running_jobs_count;
-	}
-	public void setRunning_jobs_count(long running_jobs_count) {
-		this.running_jobs_count = running_jobs_count;
+	public long getRunningJobsCount() {
+		return runningJobsCount;
 	}
 	public String getUrl() {
 		return url;
 	}
-	public void setUrl(String url) {
+	@SuppressWarnings("unused")
+	private void setId(long id) {
+		this.id = id;
+	}
+	@SuppressWarnings("unused")
+	private void setName(String name) {
+		this.name = name;
+	}
+	@SuppressWarnings("unused")
+	private void setDescription(String description) {
+		this.description = description;
+	}
+	@SuppressWarnings("unused")
+	private void setStatus(String status) {
+		this.status = status;
+	}
+	@SuppressWarnings("unused")
+	private void setOwnerId(long ownerId) {
+		this.ownerId = ownerId;
+	}
+	@SuppressWarnings("unused")
+	private void setPlanId(long planId) {
+		this.planId = planId;
+	}
+	@SuppressWarnings("unused")
+	private void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+	@SuppressWarnings("unused")
+	private void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+	@SuppressWarnings("unused")
+	private void setRunningJobsCount(long runningJobsCount) {
+		this.runningJobsCount = runningJobsCount;
+	}
+	@SuppressWarnings("unused")
+	private void setUrl(String url) {
 		this.url = url;
 	}
 }

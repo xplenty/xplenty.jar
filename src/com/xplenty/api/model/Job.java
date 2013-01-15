@@ -7,6 +7,8 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * @author Yuriy Kovalek
  *
@@ -18,100 +20,123 @@ public class Job {
 	private long id;
 	private String status;
 	private Variables variables;
-	private long owner_id;
+	@JsonProperty("owner_id")
+	private long ownerId;
 	private double progress;
-	private int outputs_count;
-	private Date started_at;
-	private Date created_at;
-	private Date updated_at;
-	private long cluster_id;
-	private long package_id;
+	@JsonProperty("outputs_count")
+	private int outputsCount;
+	@JsonProperty("started_at")
+	private Date startedAt;
+	@JsonProperty("created_at")
+	private Date createdAt;
+	@JsonProperty("updated_at")
+	private Date updatedAt;
+	@JsonProperty("cluster_id")
+	private long clusterId;
+	@JsonProperty("package_id")
+	private long packageId;
 	private String errors;
 	private String url;
-	private long runtime_in_seconds;
+	@JsonProperty("runtime_in_seconds")
+	private long runtimeInSeconds;
 	
 	public long getId() {
 		return id;
 	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public String getStatus() {
 		return status;
-	}
-	public void setStatus(String status) {
-		this.status = status;
 	}
 	public Variables getVariables() {
 		return variables;
 	}
-	public void setVariables(Variables variables) {
-		this.variables = variables;
-	}
-	public long getOwner_id() {
-		return owner_id;
-	}
-	public void setOwner_id(long owner_id) {
-		this.owner_id = owner_id;
+	public long getOwnerId() {
+		return ownerId;
 	}
 	public double getProgress() {
 		return progress;
 	}
-	public void setProgress(double progress) {
-		this.progress = progress;
+	public int getOutputsCount() {
+		return outputsCount;
 	}
-	public int getOutputs_count() {
-		return outputs_count;
+	public Date getStartedAt() {
+		return startedAt;
 	}
-	public void setOutputs_count(int output_count) {
-		this.outputs_count = output_count;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
-	public Date getStarted_at() {
-		return started_at;
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
-	public void setStarted_at(Date started_at) {
-		this.started_at = started_at;
+	public long getClusterId() {
+		return clusterId;
 	}
-	public Date getCreated_at() {
-		return created_at;
-	}
-	public void setCreated_at(Date created_at) {
-		this.created_at = created_at;
-	}
-	public Date getUpdated_at() {
-		return updated_at;
-	}
-	public void setUpdated_at(Date updated_at) {
-		this.updated_at = updated_at;
-	}
-	public long getCluster_id() {
-		return cluster_id;
-	}
-	public void setCluster_id(long cluster_id) {
-		this.cluster_id = cluster_id;
-	}
-	public long getPackage_id() {
-		return package_id;
-	}
-	public void setPackage_id(long package_id) {
-		this.package_id = package_id;
+	public long getPackageId() {
+		return packageId;
 	}
 	public String getErrors() {
 		return errors;
 	}
-	public void setErrors(String errors) {
-		this.errors = errors;
-	}
 	public String getUrl() {
 		return url;
 	}
-	public void setUrl(String url) {
+	public long getRuntimeInSeconds() {
+		return runtimeInSeconds;
+	}
+	@SuppressWarnings("unused")
+	private void setId(long id) {
+		this.id = id;
+	}
+	@SuppressWarnings("unused")
+	private void setOwnerId(long ownerId) {
+		this.ownerId = ownerId;
+	}
+	@SuppressWarnings("unused")
+	private void setStatus(String status) {
+		this.status = status;
+	}
+	@SuppressWarnings("unused")
+	private void setVariables(Variables variables) {
+		this.variables = variables;
+	}
+	@SuppressWarnings("unused")
+	private void setProgress(double progress) {
+		this.progress = progress;
+	}
+	@SuppressWarnings("unused")
+	private void setOutputsCount(int outputsCount) {
+		this.outputsCount = outputsCount;
+	}
+	@SuppressWarnings("unused")
+	private void setStartedAt(Date startedAt) {
+		this.startedAt = startedAt;
+	}
+	@SuppressWarnings("unused")
+	private void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+	@SuppressWarnings("unused")
+	private void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
+	}
+	@SuppressWarnings("unused")
+	private void setClusterId(long clusterId) {
+		this.clusterId = clusterId;
+	}
+	@SuppressWarnings("unused")
+	private void setPackageId(long packageId) {
+		this.packageId = packageId;
+	}
+	@SuppressWarnings("unused")
+	private void setErrors(String errors) {
+		this.errors = errors;
+	}
+	@SuppressWarnings("unused")
+	private void setUrl(String url) {
 		this.url = url;
 	}
-	public long getRuntime_in_seconds() {
-		return runtime_in_seconds;
+	@SuppressWarnings("unused")
+	private void setRuntimeInSeconds(long runtimeInSeconds) {
+		this.runtimeInSeconds = runtimeInSeconds;
 	}
-	public void setRuntime_in_seconds(long runtime_in_seconds) {
-		this.runtime_in_seconds = runtime_in_seconds;
-	}
+	
 }
