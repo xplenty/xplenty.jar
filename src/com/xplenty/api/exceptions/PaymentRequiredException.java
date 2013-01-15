@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.xplenty.exceptions;
+package com.xplenty.api.exceptions;
 
 
 /**

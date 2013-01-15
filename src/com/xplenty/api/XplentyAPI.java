@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.xplenty;
+package com.xplenty.api;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -21,13 +21,13 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.xplenty.exceptions.AuthFailedException;
-import com.xplenty.exceptions.PaymentRequiredException;
-import com.xplenty.exceptions.XplentyInternalAPIException;
-import com.xplenty.exceptions.XplentyInternalServerException;
-import com.xplenty.model.Cluster;
-import com.xplenty.model.ClusterPlan;
-import com.xplenty.model.Job;
+import com.xplenty.api.exceptions.AuthFailedException;
+import com.xplenty.api.exceptions.PaymentRequiredException;
+import com.xplenty.api.exceptions.XplentyInternalAPIException;
+import com.xplenty.api.exceptions.XplentyInternalServerException;
+import com.xplenty.api.model.Cluster;
+import com.xplenty.api.model.ClusterPlan;
+import com.xplenty.api.model.Job;
 
 /**
  * @author Yuriy Kovalek

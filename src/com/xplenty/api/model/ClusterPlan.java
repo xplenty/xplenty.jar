@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.xplenty.model;
+package com.xplenty.api.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
