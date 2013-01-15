@@ -159,9 +159,9 @@ public class XPlentyAPI {
 		return new ArrayList<Job>();
 	}
 	
-	public Job jobInformation() {
+	public Job jobInformation(long jobId) {
 		try {
-			WebResource resource = client.resource(getMethodURL(JOBS));
+			WebResource resource = client.resource(getMethodURL(JOBS + "/" + jobId));
 			ClientResponse response = resource
 										.accept("application/vnd.xplenty+json")
 										.header("Authorization", "Basic " + base64(API_KEY))
