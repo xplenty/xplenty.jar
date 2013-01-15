@@ -22,6 +22,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.xplenty.exceptions.AuthFailedException;
+import com.xplenty.exceptions.PaymentRequiredException;
 import com.xplenty.exceptions.XPlentyInternalAPIException;
 import com.xplenty.exceptions.XPlentyInternalServerException;
 import com.xplenty.model.Cluster;
