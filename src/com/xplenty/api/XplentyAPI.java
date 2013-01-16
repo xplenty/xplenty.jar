@@ -53,10 +53,4 @@ public class XplentyAPI {
 	public String getApiKey() {
 		return connector.getApiKey();
 	}
-	
-	public static void main (String[] args) {
-		XplentyAPI api = new XplentyAPI("javasdk", "V4eyfgNqYcSasXGhzNxS");
-		List<Job> jobs = api.listJobs();
-		System.out.println(jobs);
-	}
 }
