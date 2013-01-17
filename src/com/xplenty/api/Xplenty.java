@@ -9,6 +9,9 @@ package com.xplenty.api;
  *
  */
 public class Xplenty {
+	/**
+	 * Endpoints and short descriptions for REST resources
+	 */
 	public static enum Resource {
 		ClusterPlans("cluster_plans", "List cluster plans"),
 		Clusters("clusters", "List clusters"), 

@@ -51,7 +51,7 @@ public class XplentyWebConnector {
 	}
 
 	/**
-	 * Synchronously execute give request
+	 * Synchronously execute given request
 	 * @param request request to execute
 	 * @return
 	 */

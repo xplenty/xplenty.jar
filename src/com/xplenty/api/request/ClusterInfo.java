@@ -14,6 +14,7 @@ import com.xplenty.api.util.Http.MediaType;
 import com.xplenty.api.util.Http.Method;
 
 /**
+ * 
  * @author Yuriy Kovalek
  *
  */

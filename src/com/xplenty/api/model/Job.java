@@ -40,6 +40,8 @@ public class Job {
 	private Date updatedAt;
 	@JsonProperty("cluster_id")
 	private Long clusterId;
+	@JsonProperty("job_id")
+	private Long jobId;
 	@JsonProperty("package_id")
 	private Long packageId;
 	private String errors;
@@ -53,7 +55,7 @@ public class Job {
 	}
 	
 	public Job withPackage(long packageId) {
-		this.packageId = packageId;
+		this.jobId = packageId;
 		return this;
 	}
 	
@@ -99,7 +101,7 @@ public class Job {
 		return clusterId;
 	}
 	public Long getPackageId() {
-		return packageId;
+		return packageId == null ? jobId : packageId;
 	}
 	public String getErrors() {
 		return errors;

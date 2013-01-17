@@ -72,12 +72,19 @@ public class XplentyAPI {
 		return connector.execute(new ClusterInfo(clusterId));
 	}
 	
+	/**
+	 * Create cluster with specified properties
+	 * @param planId cluster plan id
+	 * @param name cluster name
+	 * @param description cluster description
+	 * @return
+	 */
 	public Cluster createCluster(long planId, String name, String description) {
 		return connector.execute(new CreateCluster(new Cluster().onPlan(planId).named(name).withDescription(description)));
 	}
 	
 	/**
-	 * 
+	 * Terminate cluster with given id
 	 * @param clusterId
 	 * @return
 	 */
@@ -102,10 +109,22 @@ public class XplentyAPI {
 		return connector.execute(new JobInfo(jobId));
 	}
 	
+	/**
+	 * Execute a job on a cluster
+	 * @param clusterId cluster to execute on, see {@link #listClusters()} to get a list of available clusters
+	 * @param packageId package id, obtained from account web page
+	 * @param variables map of variables to be passed to the job
+	 * @return
+	 */
 	public Job runJob(long clusterId, long packageId, Map<String, String> variables) {
 		return connector.execute(new RunJob(new Job().onCluster(clusterId).withPackage(packageId).withVariables(variables)));
 	}
 
+	/**
+	 * Stop a particular job
+	 * @param jobId id of job to stop, see {@link #listJobs()} to get a list of jobs
+	 * @return
+	 */
 	public Job stopJob(long jobId) {
 		return connector.execute(new StopJob(jobId));
 	}
