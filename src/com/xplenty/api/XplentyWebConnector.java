@@ -3,6 +3,12 @@
  */
 package com.xplenty.api;
 
+import java.io.IOException;
+import java.io.StringWriter;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
@@ -13,8 +19,11 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.xplenty.api.exceptions.AuthFailedException;
 import com.xplenty.api.exceptions.RequestFailedException;
 import com.xplenty.api.request.Request;
+import com.xplenty.api.util.Http;
 
 /**
+ * Proxy for connecting to the XplentyAPI over HTTP
+ * 
  * @author Yuriy Kovalek
  *
  */
@@ -27,7 +36,12 @@ public class XplentyWebConnector {
 	
 	private final Client client;
 
-	public XplentyWebConnector(String accountName, String apiKey) {
+	/**
+	 * Construct a new instance for given account and API key
+	 * @param accountName name of the associated account, used in URL's
+	 * @param apiKey used for authentication
+	 */
+	XplentyWebConnector(String accountName, String apiKey) {
 		ACCOUNT_NAME = accountName;
 		API_KEY = apiKey;
 		
@@ -36,6 +50,11 @@ public class XplentyWebConnector {
 		client.addFilter(new HTTPBasicAuthFilter(apiKey, ""));
 	}
 
+	/**
+	 * Synchronously execute give request
+	 * @param request request to execute
+	 * @return
+	 */
 	public <T> T execute(Request<T> request) {
 		WebResource.Builder builder = getConfiguredResource(request);
 		ClientResponse response = null;
@@ -49,17 +68,53 @@ public class XplentyWebConnector {
 		return request.getResponse(response);		
 	};
 	
+	/**
+	 * Convenience method for getting a configured {@link WebResource.Builder} for given request
+	 * @param request
+	 * @return
+	 */
 	private <T> WebResource.Builder getConfiguredResource(Request<T> request) {
-		return client.resource(getMethodURL(request.getEndpoint()))
-					.accept(request.getResponseType().value);
+		WebResource.Builder b = client.resource(getMethodURL(request.getEndpoint()))
+										.accept(request.getResponseType().value);
+		if (request.hasBody()) {
+			StringWriter sw = new StringWriter();
+			try {
+				new ObjectMapper().writeValue(sw, request.getBody());
+			} catch (JsonGenerationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			b.entity(sw.toString()).type(Http.MediaType.JSON.value);
+		}
+		
+		return b;
 	}
 	
+	/**
+	 * Constructs the actual URL
+	 * @param methodEndpoint
+	 * @return
+	 */
 	private String getMethodURL(String methodEndpoint) {
 		return BASE_URL + "/" + ACCOUNT_NAME + "/" + API_PATH + "/" + methodEndpoint;
 	}
 	
+	/**
+	 * Check the response status and throws exception on errors
+	 * @param request used request
+	 * @param response received response
+	 * @throws AuthFailedException
+	 * @throws RequestFailedException
+	 */
 	private <T> void validate(Request<T> request, ClientResponse response) {
-		if (Status.OK == response.getClientResponseStatus())
+		if (Status.OK == response.getClientResponseStatus()
+				|| Status.CREATED == response.getClientResponseStatus())
 			return;
 		if (Status.UNAUTHORIZED == response.getClientResponseStatus())
 			throw new AuthFailedException(response.getStatus(), response.getEntity(String.class));

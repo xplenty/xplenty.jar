@@ -7,15 +7,17 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 
 /**
+ * Data model for Xplenty cluster plan
+ * 
  * @author Yuriy Kovalek
  *
  */
 @XmlRootElement
 public class ClusterPlan {
-	private long id;
+	private Long id;
 	private String name;
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	public String getName() {

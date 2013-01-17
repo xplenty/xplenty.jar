@@ -4,6 +4,7 @@
 package com.xplenty.api;
 
 /**
+ * A bunch of convenience structures
  * @author Yuriy Kovalek
  *
  */
@@ -12,8 +13,12 @@ public class Xplenty {
 		ClusterPlans("cluster_plans", "List cluster plans"),
 		Clusters("clusters", "List clusters"), 
 		Cluster("clusters/%s", "Get cluster information"),
+		CreateCluster("clusters", "Create cluster"),
+		TerminateCluster("clusters/%s", "Terminate cluster"),
 		Jobs("jobs", "List jobs"),
-		Job("jobs/%s", "Get job info");
+		Job("jobs/%s", "Get job info"),
+		RunJob("jobs", "Run job"),
+		StopJob("jobs/%s", "Stop job");
 		
 		public final String value;
 		public final String name;

@@ -4,27 +4,34 @@
 package com.xplenty.api.model;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
+ * Data model for Xplenty job
+ * 
  * @author Yuriy Kovalek
  *
  */
 @XmlRootElement
+@JsonInclude(Include.NON_NULL)
 public class Job {
-	public static class Variables {}
+//	public static class Variables {}
 	
-	private long id;
+	private Long id;
 	private String status;
-	private Variables variables;
+//	private Variables variables;
+	private Map<String, String> variables;
 	@JsonProperty("owner_id")
-	private long ownerId;
-	private double progress;
+	private Long ownerId;
+	private Double progress;
 	@JsonProperty("outputs_count")
-	private int outputsCount;
+	private Integer outputsCount;
 	@JsonProperty("started_at")
 	private Date startedAt;
 	@JsonProperty("created_at")
@@ -32,30 +39,51 @@ public class Job {
 	@JsonProperty("updated_at")
 	private Date updatedAt;
 	@JsonProperty("cluster_id")
-	private long clusterId;
+	private Long clusterId;
 	@JsonProperty("package_id")
-	private long packageId;
+	private Long packageId;
 	private String errors;
 	private String url;
 	@JsonProperty("runtime_in_seconds")
-	private long runtimeInSeconds;
+	private Long runtimeInSeconds;
 	
-	public long getId() {
+	public Job withId(long id) {
+		this.id = id;
+		return this;
+	}
+	
+	public Job withPackage(long packageId) {
+		this.packageId = packageId;
+		return this;
+	}
+	
+	public Job onCluster(long clusterId) {
+		this.clusterId = clusterId;
+		return this;
+	}
+	
+	public Job withVariables(Map<String, String> vars) {
+		this.variables = vars;
+		return this;
+	}
+	
+	public Long getId() {
 		return id;
 	}
 	public String getStatus() {
 		return status;
 	}
-	public Variables getVariables() {
+	public Map<String, String> getVariables() {
 		return variables;
 	}
-	public long getOwnerId() {
+	
+	public Long getOwnerId() {
 		return ownerId;
 	}
-	public double getProgress() {
+	public Double getProgress() {
 		return progress;
 	}
-	public int getOutputsCount() {
+	public Integer getOutputsCount() {
 		return outputsCount;
 	}
 	public Date getStartedAt() {
@@ -67,10 +95,10 @@ public class Job {
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
-	public long getClusterId() {
+	public Long getClusterId() {
 		return clusterId;
 	}
-	public long getPackageId() {
+	public Long getPackageId() {
 		return packageId;
 	}
 	public String getErrors() {
@@ -79,7 +107,7 @@ public class Job {
 	public String getUrl() {
 		return url;
 	}
-	public long getRuntimeInSeconds() {
+	public Long getRuntimeInSeconds() {
 		return runtimeInSeconds;
 	}
 	@SuppressWarnings("unused")
@@ -95,7 +123,7 @@ public class Job {
 		this.status = status;
 	}
 	@SuppressWarnings("unused")
-	private void setVariables(Variables variables) {
+	private void setVariables(Map<String, String> variables) {
 		this.variables = variables;
 	}
 	@SuppressWarnings("unused")

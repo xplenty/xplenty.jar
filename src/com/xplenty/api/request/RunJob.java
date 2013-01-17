@@ -3,7 +3,8 @@
  */
 package com.xplenty.api.request;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,16 +20,21 @@ import com.xplenty.api.util.Http.Method;
  * @author Yuriy Kovalek
  *
  */
-public class ListJobs implements Request<List<Job>> {
-
+public class RunJob implements Request<Job> {
+	private final Job job;
+	
+	public RunJob(Job job) {
+		this.job = job;
+	}
+	
 	@Override
 	public String getName() {
-		return Xplenty.Resource.Jobs.name;
+		return Xplenty.Resource.RunJob.name;
 	}
 
 	@Override
 	public Method getHttpMethod() {
-		return Http.Method.GET;
+		return Http.Method.POST;
 	}
 
 	@Override
@@ -38,27 +44,28 @@ public class ListJobs implements Request<List<Job>> {
 
 	@Override
 	public String getEndpoint() {
-		return Xplenty.Resource.Jobs.value;
-	}
-
-	@Override
-	public List<Job> getResponse(ClientResponse response) {
-		String json = response.getEntity(String.class);
-		try {
-			return new ObjectMapper().readValue(json, new TypeReference<List<Job>>() {});
-		} catch (Exception e) {
-			throw new XplentyAPIException(getName() + ": error parsing response object", e);
-		}
+		return Xplenty.Resource.RunJob.value;
 	}
 
 	@Override
 	public boolean hasBody() {
-		return false;
+		return true;
 	}
 
 	@Override
-	public List<Job> getBody() {
-		return null;
+	public Object getBody() {
+		Map<String, Object> j = new HashMap<String, Object>();
+		j.put("job", job);
+		return j;
 	}
 
+	@Override
+	public Job getResponse(ClientResponse response) {
+		String json = response.getEntity(String.class);		
+		try {
+			return new ObjectMapper().readValue(json, new TypeReference<Job>() {});
+		} catch (Exception e) {
+			throw new XplentyAPIException(getName() + ": error parsing response object", e);
+		}
+	}
 }

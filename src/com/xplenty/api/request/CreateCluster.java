@@ -3,14 +3,15 @@
  */
 package com.xplenty.api.request;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
-import com.xplenty.api.model.Job;
+import com.xplenty.api.model.Cluster;
 import com.xplenty.api.util.Http;
 import com.xplenty.api.util.Http.MediaType;
 import com.xplenty.api.util.Http.Method;
@@ -19,16 +20,21 @@ import com.xplenty.api.util.Http.Method;
  * @author Yuriy Kovalek
  *
  */
-public class ListJobs implements Request<List<Job>> {
+public class CreateCluster implements Request<Cluster> {
+	private final Cluster cluster;
 
+	public CreateCluster(Cluster cluster) {
+		this.cluster = cluster;
+	}
+	
 	@Override
 	public String getName() {
-		return Xplenty.Resource.Jobs.name;
+		return Xplenty.Resource.CreateCluster.name;
 	}
 
 	@Override
 	public Method getHttpMethod() {
-		return Http.Method.GET;
+		return Http.Method.POST;
 	}
 
 	@Override
@@ -38,14 +44,14 @@ public class ListJobs implements Request<List<Job>> {
 
 	@Override
 	public String getEndpoint() {
-		return Xplenty.Resource.Jobs.value;
+		return Xplenty.Resource.CreateCluster.value;
 	}
 
 	@Override
-	public List<Job> getResponse(ClientResponse response) {
-		String json = response.getEntity(String.class);
+	public Cluster getResponse(ClientResponse response) {
+		String json = response.getEntity(String.class);		
 		try {
-			return new ObjectMapper().readValue(json, new TypeReference<List<Job>>() {});
+			return new ObjectMapper().readValue(json, new TypeReference<Cluster>() {});
 		} catch (Exception e) {
 			throw new XplentyAPIException(getName() + ": error parsing response object", e);
 		}
@@ -53,12 +59,13 @@ public class ListJobs implements Request<List<Job>> {
 
 	@Override
 	public boolean hasBody() {
-		return false;
+		return true;
 	}
 
 	@Override
-	public List<Job> getBody() {
-		return null;
+	public Object getBody() {
+		Map<String, Object> j = new HashMap<String, Object>();
+		j.put("cluster", cluster);
+		return j;
 	}
-
 }

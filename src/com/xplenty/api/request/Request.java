@@ -28,5 +28,9 @@ public interface Request<T> {
 	
 	String getEndpoint();
 	
+	boolean hasBody();
+	
+	Object getBody();
+	
 	T getResponse(ClientResponse response);
 }

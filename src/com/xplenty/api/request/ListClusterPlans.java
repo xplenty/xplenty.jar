@@ -50,4 +50,14 @@ public class ListClusterPlans implements Request<List<ClusterPlan>> {
 		return Xplenty.Resource.ClusterPlans.name;
 	}
 
+	@Override
+	public boolean hasBody() {
+		return false;
+	}
+
+	@Override
+	public List<ClusterPlan> getBody() {
+		return null;
+	}
+
 }

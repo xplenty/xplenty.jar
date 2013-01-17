@@ -7,31 +7,51 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
+ * Data model for Xplenty cluster
+ * 
  * @author Yuriy Kovalek
  *
  */
 @XmlRootElement
+@JsonInclude(Include.NON_NULL)
 public class Cluster {
-	private long id;
+	private Long id;
 	private String name;
 	private String description;
 	private String status;
 	@JsonProperty("owner_id")
-	private long ownerId;
+	private Long ownerId;
 	@JsonProperty("plan_id")
-	private long planId;
+	private Long planId;
 	@JsonProperty("created_at")
 	private Date createdAt;
 	@JsonProperty("updated_at")
 	private Date updatedAt;
 	@JsonProperty("running_jobs_count")
-	private long runningJobsCount;
+	private Long runningJobsCount;
 	private String url;
 	
-	public long getId() {
+	public Cluster onPlan(long planId) {
+		this.planId = planId;
+		return this;
+	}
+	
+	public Cluster named(String name) {
+		this.name = name;
+		return this;
+	}
+	
+	public Cluster withDescription(String description) {
+		this.description = description;
+		return this;
+	}
+	
+	public Long getId() {
 		return id;
 	}
 	public String getName() {
@@ -43,10 +63,10 @@ public class Cluster {
 	public String getStatus() {
 		return status;
 	}
-	public long getOwnerId() {
+	public Long getOwnerId() {
 		return ownerId;
 	}
-	public long getPlanId() {
+	public Long getPlanId() {
 		return planId;
 	}
 	public Date getCreatedAt() {
@@ -55,7 +75,7 @@ public class Cluster {
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
-	public long getRunningJobsCount() {
+	public Long getRunningJobsCount() {
 		return runningJobsCount;
 	}
 	public String getUrl() {

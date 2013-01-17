@@ -14,7 +14,7 @@ public class RequestFailedException extends XplentyAPIException {
 	private String response;
 	
 	public RequestFailedException(String msg, int status, String response) {
-		super(msg + "HTTP status code: " + status + ", server response: " + response);
+		super(msg + " HTTP status code: " + status + ", server response: " + response);
 		this.status = status;
 		this.response = response;
 	}

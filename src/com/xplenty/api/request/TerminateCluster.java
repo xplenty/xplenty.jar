@@ -3,14 +3,12 @@
  */
 package com.xplenty.api.request;
 
-import java.util.List;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
-import com.xplenty.api.model.Job;
+import com.xplenty.api.model.Cluster;
 import com.xplenty.api.util.Http;
 import com.xplenty.api.util.Http.MediaType;
 import com.xplenty.api.util.Http.Method;
@@ -19,16 +17,21 @@ import com.xplenty.api.util.Http.Method;
  * @author Yuriy Kovalek
  *
  */
-public class ListJobs implements Request<List<Job>> {
+public class TerminateCluster implements Request<Cluster> {
+	private final long clusterId;
+	
+	public TerminateCluster(long clusterId) {
+		this.clusterId = clusterId;
+	}
 
 	@Override
 	public String getName() {
-		return Xplenty.Resource.Jobs.name;
+		return Xplenty.Resource.TerminateCluster.name;
 	}
 
 	@Override
 	public Method getHttpMethod() {
-		return Http.Method.GET;
+		return Http.Method.DELETE;
 	}
 
 	@Override
@@ -38,14 +41,14 @@ public class ListJobs implements Request<List<Job>> {
 
 	@Override
 	public String getEndpoint() {
-		return Xplenty.Resource.Jobs.value;
+		return Xplenty.Resource.TerminateCluster.format(Long.toString(clusterId));
 	}
 
 	@Override
-	public List<Job> getResponse(ClientResponse response) {
-		String json = response.getEntity(String.class);
+	public Cluster getResponse(ClientResponse response) {
+		String json = response.getEntity(String.class);		
 		try {
-			return new ObjectMapper().readValue(json, new TypeReference<List<Job>>() {});
+			return new ObjectMapper().readValue(json, new TypeReference<Cluster>() {});
 		} catch (Exception e) {
 			throw new XplentyAPIException(getName() + ": error parsing response object", e);
 		}
@@ -57,7 +60,7 @@ public class ListJobs implements Request<List<Job>> {
 	}
 
 	@Override
-	public List<Job> getBody() {
+	public Cluster getBody() {
 		return null;
 	}
 

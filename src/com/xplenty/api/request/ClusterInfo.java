@@ -3,6 +3,8 @@
  */
 package com.xplenty.api.request;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
@@ -45,11 +47,22 @@ public class ClusterInfo implements Request<Cluster> {
 
 	@Override
 	public Cluster getResponse(ClientResponse response) {
+		String json = response.getEntity(String.class);		
 		try {
-			return response.getEntity(Cluster.class);
+			return new ObjectMapper().readValue(json, new TypeReference<Cluster>() {});
 		} catch (Exception e) {
 			throw new XplentyAPIException(getName() + ": error parsing response object", e);
 		}
+	}
+
+	@Override
+	public boolean hasBody() {
+		return false;
+	}
+
+	@Override
+	public Cluster getBody() {
+		return null;
 	}
 
 }

@@ -3,6 +3,8 @@
  */
 package com.xplenty.api.request;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
@@ -45,11 +47,22 @@ public class JobInfo implements Request<Job> {
 
 	@Override
 	public Job getResponse(ClientResponse response) {
+		String json = response.getEntity(String.class);		
 		try {
-			return response.getEntity(Job.class);
+			return new ObjectMapper().readValue(json, new TypeReference<Job>() {});
 		} catch (Exception e) {
 			throw new XplentyAPIException(getName() + ": error parsing response object", e);
 		}
+	}
+
+	@Override
+	public boolean hasBody() {
+		return false;
+	}
+
+	@Override
+	public Job getBody() {
+		return null;
 	}
 
 }
