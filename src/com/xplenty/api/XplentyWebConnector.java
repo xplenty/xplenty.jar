@@ -16,6 +16,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.exceptions.AuthFailedException;
 import com.xplenty.api.exceptions.RequestFailedException;
 import com.xplenty.api.request.Request;
@@ -35,6 +36,7 @@ public class XplentyWebConnector {
 	private final String API_KEY;
 	
 	private final Client client;
+	private Version version = null;
 
 	/**
 	 * Construct a new instance for given account and API key
@@ -75,7 +77,9 @@ public class XplentyWebConnector {
 	 */
 	private <T> WebResource.Builder getConfiguredResource(Request<T> request) {
 		WebResource.Builder b = client.resource(getMethodURL(request.getEndpoint()))
-										.accept(request.getResponseType().value);
+										.accept(request.getResponseType().value
+													+ (version == null ? "" : "; " + version.format())
+												);
 		if (request.hasBody()) {
 			StringWriter sw = new StringWriter();
 			try {
@@ -128,5 +132,9 @@ public class XplentyWebConnector {
 
 	String getApiKey() {
 		return API_KEY;
+	}
+
+	public void setVersion(Version ver) {
+		version = ver;
 	}
 }

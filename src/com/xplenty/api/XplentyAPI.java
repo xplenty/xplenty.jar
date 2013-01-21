@@ -6,6 +6,7 @@ package com.xplenty.api;
 import java.util.List;
 import java.util.Map;
 
+import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.model.Cluster;
 import com.xplenty.api.model.ClusterPlan;
 import com.xplenty.api.model.Job;
@@ -45,6 +46,11 @@ public class XplentyAPI {
      */
 	public XplentyAPI(String accountName, String apiKey) {
 		connector = new XplentyWebConnector(accountName, apiKey);
+	}
+	
+	public XplentyAPI withVersion(Version ver) {
+		connector.setVersion(ver);
+		return this;
 	}
 
 	/**

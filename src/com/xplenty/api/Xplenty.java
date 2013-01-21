@@ -35,4 +35,18 @@ public class Xplenty {
 			return String.format(value, values);
 		}
 	}
+	
+	public static enum Version {
+		V1(1);
+		
+		private final int value;
+		
+		Version(int ver) {
+			this.value = ver;
+		}
+		
+		public String format() {
+			return "version=" + Integer.toString(value);
+		}
+	}
 }
