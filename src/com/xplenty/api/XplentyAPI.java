@@ -6,6 +6,7 @@ package com.xplenty.api;
 import java.util.List;
 import java.util.Map;
 
+import com.xplenty.api.Xplenty.Protocol;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.model.Cluster;
 import com.xplenty.api.model.ClusterPlan;
@@ -50,6 +51,16 @@ public class XplentyAPI {
 	
 	public XplentyAPI withVersion(Version ver) {
 		connector.setVersion(ver);
+		return this;
+	}
+	
+	public XplentyAPI withHost(String host) {
+		connector.setHost(host);
+		return this;
+	}
+	
+	public XplentyAPI withProtocol(Protocol proto) {
+		connector.setProtocol(proto);
 		return this;
 	}
 

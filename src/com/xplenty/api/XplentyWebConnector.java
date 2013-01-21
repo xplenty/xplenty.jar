@@ -16,6 +16,7 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.xplenty.api.Xplenty.Protocol;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.exceptions.AuthFailedException;
 import com.xplenty.api.exceptions.RequestFailedException;
@@ -28,10 +29,11 @@ import com.xplenty.api.util.Http;
  * @author Yuriy Kovalek
  *
  */
-public class XplentyWebConnector {
-	private static final String BASE_URL = "https://api-staging.xplenty.com";	
+class XplentyWebConnector {	
 	private static final String API_PATH = "api";
 	
+	private String HOST = "api-staging.xplenty.com";
+	private Protocol PROTOCOL = Protocol.Https;
 	private final String ACCOUNT_NAME;
 	private final String API_KEY;
 	
@@ -106,7 +108,7 @@ public class XplentyWebConnector {
 	 * @return
 	 */
 	private String getMethodURL(String methodEndpoint) {
-		return BASE_URL + "/" + ACCOUNT_NAME + "/" + API_PATH + "/" + methodEndpoint;
+		return PROTOCOL + "://" + HOST + "/" + ACCOUNT_NAME + "/" + API_PATH + "/" + methodEndpoint;
 	}
 	
 	/**
@@ -136,5 +138,13 @@ public class XplentyWebConnector {
 
 	public void setVersion(Version ver) {
 		version = ver;
+	}
+
+	public void setHost(String host) {
+		HOST = host;
+	}
+
+	public void setProtocol(Protocol proto) {
+		PROTOCOL = proto;
 	}
 }
