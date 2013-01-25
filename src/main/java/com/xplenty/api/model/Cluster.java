@@ -8,8 +8,10 @@ import java.util.Date;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xplenty.api.Xplenty.ClusterStatus;
+import com.xplenty.api.exceptions.XplentyAPIException;
 
 /**
  * Data model for Xplenty cluster
@@ -19,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 @XmlRootElement
 @JsonInclude(Include.NON_NULL)
-public class Cluster {
+public class Cluster extends XplentyObject<Cluster>{
 	private Long id;
 	private String name;
 	private String description;
@@ -36,6 +38,10 @@ public class Cluster {
 	private Long runningJobsCount;
 	private String url;
 	
+	public Cluster() {
+		super(Cluster.class);
+	}
+	
 	public Cluster onPlan(long planId) {
 		this.planId = planId;
 		return this;
@@ -49,6 +55,40 @@ public class Cluster {
 	public Cluster withDescription(String description) {
 		this.description = description;
 		return this;
+	}
+	
+	/**
+	 * Shorthand method for {@code waitForStatus(null, ClusterStatus...)} Will wait forever until the required status is received.
+	 * @param statuses see {@link #waitForStatus(Long, ClusterStatus...)}
+	 */
+	public void waitForStatus(ClusterStatus... statuses) {
+		waitForStatus(null, statuses);
+	}
+	
+	/**
+	 * Blocks execution until required status is received from the Xplenty server, or until timeout occurs.
+	 * @param timeout time in seconds before terminating the wait, {@code null} to wait forever
+	 * @param statuses list of statuses to wait for, see {@link ClusterStatus} for the list of supported statuses
+	 */
+	public void waitForStatus(Long timeout, ClusterStatus... statuses) {
+		if (getParentApiInstance() == null)
+			throw new XplentyAPIException("The parent API instance is not set");
+		long start = System.currentTimeMillis();
+		statusWait:
+		while (true) {
+			try {
+				Thread.sleep(XplentyObject.StatusRefreshInterval);
+			} catch (InterruptedException e) {
+				throw new XplentyAPIException("Error sleeping", e);
+			}
+			Cluster c = getParentApiInstance().clusterInformation(id);
+			for (ClusterStatus status: statuses) {
+				if (ClusterStatus.valueOf(c.getStatus()) == status)
+					break statusWait;
+			}
+			if (System.currentTimeMillis() - timeout*1000 > start)
+				throw new XplentyAPIException("Timeout occurred while waiting for required cluster status");
+		}
 	}
 	
 	public Long getId() {

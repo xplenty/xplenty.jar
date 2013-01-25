@@ -9,6 +9,20 @@ package com.xplenty.api;
  *
  */
 public class Xplenty {
+	public static enum ClusterStatus {
+		Creating("creating"),
+		Running("running"),
+		Terminating("terminating"),
+		Terminated("terminated"),
+		Error("error");
+		
+		private final String status;
+		
+		ClusterStatus(String status) {
+			this.status = status;
+		}
+	}
+
 	/**
 	 * Endpoints and short descriptions for REST resources
 	 */

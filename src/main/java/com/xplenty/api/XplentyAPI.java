@@ -86,7 +86,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Cluster clusterInformation(long clusterId) {
-		return connector.execute(new ClusterInfo(clusterId));
+		return connector.execute(new ClusterInfo(clusterId)).withParentApiInstance(this);
 	}
 	
 	/**
