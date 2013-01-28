@@ -51,7 +51,7 @@ public class Job extends XplentyObject<Job> {
 	private String url;
 	@JsonProperty("runtime_in_seconds")
 	private Long runtimeInSeconds;
-	
+
 	/**
 	 * Shorthand method for {@code waitForStatus(null, JobStatus...)} Will wait forever until the required status is received.
 	 * @param statuses see {@link #waitForStatus(Long, JobStatus...)}
