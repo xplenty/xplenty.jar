@@ -97,7 +97,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Cluster createCluster(long planId, String name, String description) {
-		return connector.execute(new CreateCluster(new Cluster().onPlan(planId).named(name).withDescription(description)));
+		return connector.execute(new CreateCluster(new Cluster().onPlan(planId).named(name).withDescription(description))).withParentApiInstance(this);
 	}
 	
 	/**
@@ -106,7 +106,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Cluster terminateCluster(long clusterId) {
-		return connector.execute(new TerminateCluster(clusterId));
+		return connector.execute(new TerminateCluster(clusterId)).withParentApiInstance(this);
 	}
 	
 	/**
@@ -123,7 +123,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Job jobInformation(long jobId) {
-		return connector.execute(new JobInfo(jobId));
+		return connector.execute(new JobInfo(jobId)).withParentApiInstance(this);
 	}
 	
 	/**
@@ -134,7 +134,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Job runJob(long clusterId, long packageId, Map<String, String> variables) {
-		return connector.execute(new RunJob(new Job().onCluster(clusterId).withPackage(packageId).withVariables(variables)));
+		return connector.execute(new RunJob(new Job().onCluster(clusterId).withPackage(packageId).withVariables(variables))).withParentApiInstance(this);
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Job stopJob(long jobId) {
-		return connector.execute(new StopJob(jobId));
+		return connector.execute(new StopJob(jobId)).withParentApiInstance(this);
 	}
 	
 	/**

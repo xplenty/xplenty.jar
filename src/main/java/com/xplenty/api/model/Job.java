@@ -11,6 +11,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xplenty.api.Xplenty.JobStatus;
+import com.xplenty.api.exceptions.XplentyAPIException;
 
 /**
  * Data model for Xplenty job
@@ -20,12 +22,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @XmlRootElement
 @JsonInclude(Include.NON_NULL)
-public class Job {
-//	public static class Variables {}
+public class Job extends XplentyObject<Job> {
 	
+	public Job() {
+		super(Job.class);
+	}
 	private Long id;
 	private String status;
-//	private Variables variables;
 	private Map<String, String> variables;
 	@JsonProperty("owner_id")
 	private Long ownerId;
@@ -48,6 +51,40 @@ public class Job {
 	private String url;
 	@JsonProperty("runtime_in_seconds")
 	private Long runtimeInSeconds;
+	
+	/**
+	 * Shorthand method for {@code waitForStatus(null, JobStatus...)} Will wait forever until the required status is received.
+	 * @param statuses see {@link #waitForStatus(Long, JobStatus...)}
+	 */
+	public void waitForStatus(JobStatus... statuses) {
+		waitForStatus(null, statuses);
+	}
+	
+	/**
+	 * Blocks execution until required status is received from the Xplenty server, or until timeout occurs.
+	 * @param timeout time in seconds before terminating the wait, {@code null} to wait forever
+	 * @param statuses list of statuses to wait for, see {@link JobStatus} for the list of supported statuses
+	 */
+	public void waitForStatus(Long timeout, JobStatus... statuses) {
+		if (getParentApiInstance() == null)
+			throw new XplentyAPIException("The parent API instance is not set");
+		long start = System.currentTimeMillis();
+		statusWait:
+		while (true) {
+			try {
+				Thread.sleep(XplentyObject.StatusRefreshInterval);
+			} catch (InterruptedException e) {
+				throw new XplentyAPIException("Error sleeping", e);
+			}
+			Job c = getParentApiInstance().jobInformation(id);
+			for (JobStatus status: statuses) {
+				if (JobStatus.valueOf(c.getStatus()) == status)
+					break statusWait;
+			}
+			if (System.currentTimeMillis() - timeout*1000 > start)
+				throw new XplentyAPIException("Timeout occurred while waiting for required job status");
+		}
+	}
 	
 	public Job withId(long id) {
 		this.id = id;

@@ -9,12 +9,33 @@ package com.xplenty.api;
  *
  */
 public class Xplenty {
-	public static enum ClusterStatus {
-		Creating("creating"),
+	public enum JobStatus {		
+		Idle("idle"),
+		Stopped("stopped"),
+		Completed("completed"),
+		Pending("pending"),
+		Failed("failed"),
 		Running("running"),
+		PendingStoppage("pending_stoppage"),
+		Stopping("stopping");
+		
+		private final String status;
+		
+		JobStatus(String status) {
+			this.status = status;
+		}
+
+	}
+
+	public static enum ClusterStatus {
+		Pending("pending"),
+		Error("error"),
+		Creating("creating"),
+		Available("available"),
+		Scaling("scaling"),
+		PendingTerminate("pending_terminate"),
 		Terminating("terminating"),
-		Terminated("terminated"),
-		Error("error");
+		Terminated("terminated");
 		
 		private final String status;
 		
