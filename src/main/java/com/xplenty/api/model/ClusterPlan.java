@@ -14,8 +14,8 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class ClusterPlan {
-	private Long id;
-	private String name;
+	protected Long id;
+	protected String name;
 	
 	public Long getId() {
 		return id;
