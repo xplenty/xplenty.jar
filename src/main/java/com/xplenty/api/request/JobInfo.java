@@ -22,7 +22,7 @@ public class JobInfo implements Request<Job> {
 	private long jobId;
 	
 	public JobInfo(long jobId) {
-		
+		this.jobId = jobId;
 	}
 
 	@Override

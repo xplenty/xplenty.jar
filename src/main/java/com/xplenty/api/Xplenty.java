@@ -3,6 +3,8 @@
  */
 package com.xplenty.api;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * A bunch of convenience structures
  * @author Yuriy Kovalek
@@ -10,14 +12,14 @@ package com.xplenty.api;
  */
 public class Xplenty {
 	public enum JobStatus {		
-		Idle("idle"),
-		Stopped("stopped"),
-		Completed("completed"),
-		Pending("pending"),
-		Failed("failed"),
-		Running("running"),
-		PendingStoppage("pending_stoppage"),
-		Stopping("stopping");
+		idle("idle"),
+		stopped("stopped"),
+		completed("completed"),
+		pending("pending"),
+		failed("failed"),
+		running("running"),
+		pending_stoppage("pending_stoppage"),
+		stopping("stopping");
 		
 		private final String status;
 		
@@ -27,15 +29,16 @@ public class Xplenty {
 
 	}
 
+	@JsonFormat(shape= JsonFormat.Shape.SCALAR)
 	public static enum ClusterStatus {
-		Pending("pending"),
-		Error("error"),
-		Creating("creating"),
-		Available("available"),
-		Scaling("scaling"),
-		PendingTerminate("pending_terminate"),
-		Terminating("terminating"),
-		Terminated("terminated");
+		pending("pending"),
+		error("error"),
+		creating("creating"),
+		available("available"),
+		scaling("scaling"),
+		pending_terminate("pending_terminate"),
+		terminating("terminating"),
+		terminated("terminated");
 		
 		private final String status;
 		

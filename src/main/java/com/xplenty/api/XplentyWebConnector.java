@@ -3,11 +3,8 @@
  */
 package com.xplenty.api;
 
-import java.io.IOException;
 import java.io.StringWriter;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -20,6 +17,7 @@ import com.xplenty.api.Xplenty.Protocol;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.exceptions.AuthFailedException;
 import com.xplenty.api.exceptions.RequestFailedException;
+import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.request.Request;
 import com.xplenty.api.util.Http;
 
@@ -86,15 +84,8 @@ class XplentyWebConnector {
 			StringWriter sw = new StringWriter();
 			try {
 				new ObjectMapper().writeValue(sw, request.getBody());
-			} catch (JsonGenerationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				throw new XplentyAPIException(e);
 			}
 			b.entity(sw.toString()).type(Http.MediaType.JSON.value);
 		}
@@ -146,5 +137,17 @@ class XplentyWebConnector {
 
 	public void setProtocol(Protocol proto) {
 		PROTOCOL = proto;
+	}
+
+	public Protocol getProtocol() {
+		return PROTOCOL;
+	}
+
+	public String getHost() {
+		return HOST;
+	}
+
+	public Version getVersion() {
+		return version;
 	}
 }

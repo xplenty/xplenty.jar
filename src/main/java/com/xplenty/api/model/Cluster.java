@@ -22,21 +22,21 @@ import com.xplenty.api.exceptions.XplentyAPIException;
 @XmlRootElement
 @JsonInclude(Include.NON_NULL)
 public class Cluster extends XplentyObject<Cluster>{
-	private Long id;
-	private String name;
-	private String description;
-	private String status;
+	protected Long id;
+	protected String name;
+	protected String description;
+	protected ClusterStatus status;
 	@JsonProperty("owner_id")
-	private Long ownerId;
+	protected Long ownerId;
 	@JsonProperty("plan_id")
-	private Long planId;
+	protected Long planId;
 	@JsonProperty("created_at")
-	private Date createdAt;
+	protected Date createdAt;
 	@JsonProperty("updated_at")
-	private Date updatedAt;
+	protected Date updatedAt;
 	@JsonProperty("running_jobs_count")
-	private Long runningJobsCount;
-	private String url;
+	protected Long runningJobsCount;
+	protected String url;
 	
 	public Cluster() {
 		super(Cluster.class);
@@ -83,7 +83,7 @@ public class Cluster extends XplentyObject<Cluster>{
 			}
 			Cluster c = getParentApiInstance().clusterInformation(id);
 			for (ClusterStatus status: statuses) {
-				if (ClusterStatus.valueOf(c.getStatus()) == status)
+				if (c.getStatus() == status)
 					break statusWait;
 			}
 			if (System.currentTimeMillis() - timeout*1000 > start)
@@ -100,7 +100,7 @@ public class Cluster extends XplentyObject<Cluster>{
 	public String getDescription() {
 		return description;
 	}
-	public String getStatus() {
+	public ClusterStatus getStatus() {
 		return status;
 	}
 	public Long getOwnerId() {
@@ -134,7 +134,7 @@ public class Cluster extends XplentyObject<Cluster>{
 		this.description = description;
 	}
 	@SuppressWarnings("unused")
-	private void setStatus(String status) {
+	private void setStatus(ClusterStatus status) {
 		this.status = status;
 	}
 	@SuppressWarnings("unused")

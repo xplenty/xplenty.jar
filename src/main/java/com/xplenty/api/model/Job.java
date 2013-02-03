@@ -27,31 +27,31 @@ public class Job extends XplentyObject<Job> {
 	public Job() {
 		super(Job.class);
 	}
-	private Long id;
-	private String status;
-	private Map<String, String> variables;
+	protected Long id;
+	protected JobStatus status;
+	protected Map<String, String> variables;
 	@JsonProperty("owner_id")
-	private Long ownerId;
-	private Double progress;
+	protected Long ownerId;
+	protected Double progress;
 	@JsonProperty("outputs_count")
-	private Integer outputsCount;
+	protected Integer outputsCount;
 	@JsonProperty("started_at")
-	private Date startedAt;
+	protected Date startedAt;
 	@JsonProperty("created_at")
-	private Date createdAt;
+	protected Date createdAt;
 	@JsonProperty("updated_at")
-	private Date updatedAt;
+	protected Date updatedAt;
 	@JsonProperty("cluster_id")
-	private Long clusterId;
+	protected Long clusterId;
 	@JsonProperty("job_id")
-	private Long jobId;
+	protected Long jobId;
 	@JsonProperty("package_id")
-	private Long packageId;
-	private String errors;
-	private String url;
+	protected Long packageId;
+	protected String errors;
+	protected String url;
 	@JsonProperty("runtime_in_seconds")
-	private Long runtimeInSeconds;
-
+	protected Long runtimeInSeconds;
+	
 	/**
 	 * Shorthand method for {@code waitForStatus(null, JobStatus...)} Will wait forever until the required status is received.
 	 * @param statuses see {@link #waitForStatus(Long, JobStatus...)}
@@ -78,7 +78,7 @@ public class Job extends XplentyObject<Job> {
 			}
 			Job c = getParentApiInstance().jobInformation(id);
 			for (JobStatus status: statuses) {
-				if (JobStatus.valueOf(c.getStatus()) == status)
+				if (c.getStatus() == status)
 					break statusWait;
 			}
 			if (System.currentTimeMillis() - timeout*1000 > start)
@@ -109,7 +109,7 @@ public class Job extends XplentyObject<Job> {
 	public Long getId() {
 		return id;
 	}
-	public String getStatus() {
+	public JobStatus getStatus() {
 		return status;
 	}
 	public Map<String, String> getVariables() {
@@ -158,7 +158,7 @@ public class Job extends XplentyObject<Job> {
 		this.ownerId = ownerId;
 	}
 	@SuppressWarnings("unused")
-	private void setStatus(String status) {
+	private void setStatus(JobStatus status) {
 		this.status = status;
 	}
 	@SuppressWarnings("unused")

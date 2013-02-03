@@ -161,4 +161,28 @@ public class XplentyAPI {
 	public String getApiKey() {
 		return connector.getApiKey();
 	}
+
+	/**
+	 * API host this instance uses
+	 * @return
+	 */
+	public String getHost() {
+		return connector.getHost();
+	}
+
+	/**
+	 * Protocol this API instance uses
+	 * @return
+	 */
+	public Protocol getProtocol() {
+		return connector.getProtocol();
+	}
+
+	/**
+	 * API version
+	 * @return
+	 */
+	public Version getVersion() {
+		return connector.getVersion();
+	}
 }
