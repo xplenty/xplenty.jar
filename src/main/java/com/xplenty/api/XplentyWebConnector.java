@@ -13,13 +13,13 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
-import com.xplenty.api.Xplenty.Protocol;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.exceptions.AuthFailedException;
 import com.xplenty.api.exceptions.RequestFailedException;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.request.Request;
 import com.xplenty.api.util.Http;
+import com.xplenty.api.util.Http.Protocol;
 
 /**
  * Proxy for connecting to the XplentyAPI over HTTP
@@ -31,7 +31,7 @@ class XplentyWebConnector {
 	private static final String API_PATH = "api";
 	
 	private String HOST = "api-staging.xplenty.com";
-	private Protocol PROTOCOL = Protocol.Https;
+	private Http.Protocol PROTOCOL = Http.Protocol.Https;
 	private final String ACCOUNT_NAME;
 	private final String API_KEY;
 	
@@ -135,11 +135,11 @@ class XplentyWebConnector {
 		HOST = host;
 	}
 
-	public void setProtocol(Protocol proto) {
+	public void setProtocol(Http.Protocol proto) {
 		PROTOCOL = proto;
 	}
 
-	public Protocol getProtocol() {
+	public Http.Protocol getProtocol() {
 		return PROTOCOL;
 	}
 

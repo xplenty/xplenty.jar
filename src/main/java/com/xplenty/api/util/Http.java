@@ -31,4 +31,15 @@ public class Http {
 		GET, POST, PUT, DELETE
 	}
 
+	public static enum Protocol {
+		Http("http"),
+		Https("https");
+		
+		public final String value;
+		
+		Protocol(String value) {
+			this.value = value;
+		}
+	}
+
 }

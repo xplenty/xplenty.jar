@@ -87,15 +87,4 @@ public class Xplenty {
 			return "version=" + Integer.toString(value);
 		}
 	}
-	
-	public static enum Protocol {
-		Http("http"),
-		Https("https");
-		
-		public final String value;
-		
-		Protocol(String value) {
-			this.value = value;
-		}
-	}
 }

@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.XplentyAPI;
+import com.xplenty.api.util.Http;
 
 import junit.framework.TestCase;
 
@@ -28,12 +29,12 @@ public class XplentyAPITest extends TestCase {
 	@Test
 	public void testBuilder() {
 		XplentyAPI api = new XplentyAPI("testAcc", "testKey").withHost("www.example.com")
-																.withProtocol(Xplenty.Protocol.Http)
+																.withProtocol(Http.Protocol.Http)
 																.withVersion(Xplenty.Version.V1);
 		
 		assertNotNull(api);
 		assertEquals("www.example.com", api.getHost());
-		assertEquals(Xplenty.Protocol.Http, api.getProtocol());
+		assertEquals(Http.Protocol.Http, api.getProtocol());
 		assertEquals(Xplenty.Version.V1, api.getVersion());
 	}
 }

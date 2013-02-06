@@ -6,7 +6,6 @@ package com.xplenty.api;
 import java.util.List;
 import java.util.Map;
 
-import com.xplenty.api.Xplenty.Protocol;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.model.Cluster;
 import com.xplenty.api.model.ClusterPlan;
@@ -20,6 +19,8 @@ import com.xplenty.api.request.ListJobs;
 import com.xplenty.api.request.RunJob;
 import com.xplenty.api.request.StopJob;
 import com.xplenty.api.request.TerminateCluster;
+import com.xplenty.api.util.Http;
+import com.xplenty.api.util.Http.Protocol;
 /**
  * A convenience class for making HTTP requests to the Xplenty API for a given user. An underlying {@link XplentyWebConnector} is created
  * for each instance of XplentyAPI.
@@ -59,7 +60,7 @@ public class XplentyAPI {
 		return this;
 	}
 	
-	public XplentyAPI withProtocol(Protocol proto) {
+	public XplentyAPI withProtocol(Http.Protocol proto) {
 		connector.setProtocol(proto);
 		return this;
 	}
@@ -174,7 +175,7 @@ public class XplentyAPI {
 	 * Protocol this API instance uses
 	 * @return
 	 */
-	public Protocol getProtocol() {
+	public Http.Protocol getProtocol() {
 		return connector.getProtocol();
 	}
 
