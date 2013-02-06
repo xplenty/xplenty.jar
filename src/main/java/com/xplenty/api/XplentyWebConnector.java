@@ -19,7 +19,6 @@ import com.xplenty.api.exceptions.RequestFailedException;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.request.Request;
 import com.xplenty.api.util.Http;
-import com.xplenty.api.util.Http.Protocol;
 
 /**
  * Proxy for connecting to the XplentyAPI over HTTP

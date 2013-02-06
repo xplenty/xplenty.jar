@@ -21,6 +21,7 @@ public class Xplenty {
 		pending_stoppage("pending_stoppage"),
 		stopping("stopping");
 		
+		@SuppressWarnings("unused")
 		private final String status;
 		
 		JobStatus(String status) {
@@ -40,6 +41,7 @@ public class Xplenty {
 		terminating("terminating"),
 		terminated("terminated");
 		
+		@SuppressWarnings("unused")
 		private final String status;
 		
 		ClusterStatus(String status) {
@@ -70,7 +72,7 @@ public class Xplenty {
 		}
 		
 		public String format(String... values) {
-			return String.format(value, values);
+			return String.format(value, (Object[]) values);
 		}
 	}
 	

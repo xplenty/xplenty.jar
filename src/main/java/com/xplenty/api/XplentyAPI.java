@@ -20,7 +20,6 @@ import com.xplenty.api.request.RunJob;
 import com.xplenty.api.request.StopJob;
 import com.xplenty.api.request.TerminateCluster;
 import com.xplenty.api.util.Http;
-import com.xplenty.api.util.Http.Protocol;
 /**
  * A convenience class for making HTTP requests to the Xplenty API for a given user. An underlying {@link XplentyWebConnector} is created
  * for each instance of XplentyAPI.
