@@ -125,10 +125,10 @@ XplentyAPI.listJobs() is shorthand for XplentyAPI.listJobs(new Properties())
 This method returns information for all the jobs that have been created under your account.
 
 	Properties params = new Properties();
-	params.put(ListClusters.PARAMETER_STATUS, JobStatus.available);
-	//params.put(ListClusters.PARAMETER_STATUS, "all");
-	params.put(ListClusters.PARAMETER_SORT, Sort.updated);
-	params.put(ListClusters.PARAMETER_DIRECTION, SortDirection.ascending);
+	params.put(ListJobs.PARAMETER_STATUS, JobStatus.available);
+	//params.put(ListJobs.PARAMETER_STATUS, "all");
+	params.put(ListJobs.PARAMETER_SORT, Sort.updated);
+	params.put(ListJobs.PARAMETER_DIRECTION, SortDirection.ascending);
 	
     for(Job job : xplentyAPI.listJobs(params))
     {
