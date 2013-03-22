@@ -12,16 +12,27 @@ Pass your account ID and API key to the XplentyAPI constructor.
     String api_key = "V4eyfgNqYcSasXGhzNxS";
     XplentyAPI xplentyAPI = new XplentyAPI(account_id , api_key);
 
+### Create an XplentyAPI Object with Custom Version / Protocol / Host
+
+You can use XplentyAPI builder methods to customize these properties.
+
+	String account_id = "MyAccountID";
+    String api_key = "V4eyfgNqYcSasXGhzNxS";
+    Xplenty.Version version = Xplenty.Version.V1;
+    String host = 'myHost';
+    Http.Protocol proto = Http.Protocol.Https;
+    XplentyAPI xplentyAPI = new XplentyAPI(account_id , api_key)
+    								.withVersion(version)
+    								.withHost(host)
+    								.withProtocol(proto); 
+
 ### List the Cluster Plans
 
 A cluster plan is a definition of a cluster type, which includes the number of nodes in the cluster and its pricing. Cluster plan details can be viewed in the Xplenty web application.
 After you've determined which cluster plan is appropriate for your needs, use this method to retrieve the cluster plan ID. The cluster plan ID can then be used when creating a new cluster.
 
-    List<ClusterPlan> clusterPlans = xplentyAPI.listClusterPlans();
-    Iterator it = clusterPlans.iterator();
-    while(it.hasNext())
+    for(ClusterPlan plan : xplentyAPI.listClusterPlans())
     {
-      ClusterPlan plan = (ClusterPlan)it.next();
       long clusterPlanId = plan.getId();
     }
 
@@ -41,12 +52,27 @@ You will need to provide an active cluster when starting a new job. Save the clu
 This method returns the list of clusters that were created by users in your account.
 You can use this information to monitor and display your clusters and their statuses.
 
-    List<Cluster> clusters = xplentyAPI.listClusters();
-    Iterator it = clusters .iterator();
-    
-    while(it.hasNext())
+    for(Cluster cluster: xplentyAPI.listClusters())
     {
-      Cluster cluster = (Cluster)it.next();
+      String name = cluster.getName();
+      long id = cluster.getId();
+    }
+ 
+XplentyAPI.listClusters() is shorthand for XplentyAPI.listClusters(new Properties())
+
+### List All Clusters - Parameterized
+
+This method returns the list of clusters that were created by users in your account, based on additional parameters.
+You can use this information to monitor and display your clusters and their statuses.
+
+	Properties params = new Properties();
+	params.put(ListClusters.PARAMETER_STATUS, ClusterStatus.available);
+	//params.put(ListClusters.PARAMETER_STATUS, "all");
+	params.put(ListClusters.PARAMETER_SORT, Sort.updated);
+	params.put(ListClusters.PARAMETER_DIRECTION, SortDirection.ascending);
+	
+    for(Cluster cluster: xplentyAPI.listClusters(params))
+    {
       String name = cluster.getName();
       long id = cluster.getId();
     }
@@ -85,13 +111,27 @@ This method creates a new job and triggers it to run. The job performs the serie
 
 This method returns information for all the jobs that have been created under your account.
 
-    List<Job> jobs = xplentyAPI.listJobs();
-
-    Iterator it = jobs.iterator();
-    
-    while(it.hasNext())
+    for(Job job : xplentyAPI.listJobs())
     {
-      Job job = (Job)it.next();
+      long id = job.getId();
+      JobStatus status = job.getStatus();
+      Double progress = job.getProgress();
+    }
+   
+XplentyAPI.listJobs() is shorthand for XplentyAPI.listJobs(new Properties())
+
+### List All Jobs - Parameterized
+
+This method returns information for all the jobs that have been created under your account.
+
+	Properties params = new Properties();
+	params.put(ListJobs.PARAMETER_STATUS, JobStatus.available);
+	//params.put(ListJobs.PARAMETER_STATUS, "all");
+	params.put(ListJobs.PARAMETER_SORT, Sort.updated);
+	params.put(ListJobs.PARAMETER_DIRECTION, SortDirection.ascending);
+	
+    for(Job job : xplentyAPI.listJobs(params))
+    {
       long id = job.getId();
       JobStatus status = job.getStatus();
       Double progress = job.getProgress();
