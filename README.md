@@ -17,11 +17,8 @@ Pass your account ID and API key to the XplentyAPI constructor.
 A cluster plan is a definition of a cluster type, which includes the number of nodes in the cluster and its pricing. Cluster plan details can be viewed in the Xplenty web application.
 After you've determined which cluster plan is appropriate for your needs, use this method to retrieve the cluster plan ID. The cluster plan ID can then be used when creating a new cluster.
 
-    List<ClusterPlan> clusterPlans = xplentyAPI.listClusterPlans();
-    Iterator it = clusterPlans.iterator();
-    while(it.hasNext())
+    for(ClusterPlan plan : xplentyAPI.listClusterPlans())
     {
-      ClusterPlan plan = (ClusterPlan)it.next();
       long clusterPlanId = plan.getId();
     }
 
@@ -41,12 +38,8 @@ You will need to provide an active cluster when starting a new job. Save the clu
 This method returns the list of clusters that were created by users in your account.
 You can use this information to monitor and display your clusters and their statuses.
 
-    List<Cluster> clusters = xplentyAPI.listClusters();
-    Iterator it = clusters .iterator();
-    
-    while(it.hasNext())
+    for(Cluster cluster: xplentyAPI.listClusters())
     {
-      Cluster cluster = (Cluster)it.next();
       String name = cluster.getName();
       long id = cluster.getId();
     }
@@ -85,13 +78,8 @@ This method creates a new job and triggers it to run. The job performs the serie
 
 This method returns information for all the jobs that have been created under your account.
 
-    List<Job> jobs = xplentyAPI.listJobs();
-
-    Iterator it = jobs.iterator();
-    
-    while(it.hasNext())
+    for(Job job : xplentyAPI.listJobs())
     {
-      Job job = (Job)it.next();
       long id = job.getId();
       JobStatus status = job.getStatus();
       Double progress = job.getProgress();
