@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ import junit.framework.TestCase;
 public class ListClustersTest extends TestCase {
 	@Test
 	public void testIntegrity() {
-		ListClusters lc = new ListClusters();
+		ListClusters lc = new ListClusters(new Properties());
 		
 		assertEquals(Xplenty.Resource.Clusters.value, lc.getEndpoint());
 		assertEquals(Xplenty.Resource.Clusters.name, lc.getName());
@@ -44,7 +45,7 @@ public class ListClustersTest extends TestCase {
 
 	@Test
 	public void testValidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
-		ListClusters lc = new ListClusters();
+		ListClusters lc = new ListClusters(new Properties());
 		List<Cluster> list = new ArrayList<Cluster>();
 		list.add(ClusterTest.createMockCluster(new Date()));
 		
@@ -59,7 +60,7 @@ public class ListClustersTest extends TestCase {
 	
 	@Test
 	public void testInvalidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
-		ListClusters lc = new ListClusters();
+		ListClusters lc = new ListClusters(new Properties());
 		List<Cluster> list = new ArrayList<Cluster>();
 		list.add(ClusterTest.createMockCluster(new Date()));
 		

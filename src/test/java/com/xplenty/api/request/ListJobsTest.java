@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
 
 import junit.framework.TestCase;
 
@@ -32,7 +33,7 @@ import com.xplenty.api.util.Http;
 public class ListJobsTest extends TestCase {
 	@Test
 	public void testIntegrity() {
-		ListJobs lj = new ListJobs();
+		ListJobs lj = new ListJobs(new Properties());
 		
 		assertEquals(Xplenty.Resource.Jobs.value, lj.getEndpoint());
 		assertEquals(Xplenty.Resource.Jobs.name, lj.getName());
@@ -44,7 +45,7 @@ public class ListJobsTest extends TestCase {
 	
 	@Test
 	public void testValidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
-		ListJobs lj = new ListJobs();
+		ListJobs lj = new ListJobs(new Properties());
 		List<Job> list = new ArrayList<Job>();
 		list.add(JobTest.createMockJob(new Date()));
 		
@@ -59,7 +60,7 @@ public class ListJobsTest extends TestCase {
 	
 	@Test
 	public void testInvalidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
-		ListJobs lj = new ListJobs();
+		ListJobs lj = new ListJobs(new Properties());
 		List<Job> list = new ArrayList<Job>();
 		list.add(JobTest.createMockJob(new Date()));
 		

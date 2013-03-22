@@ -5,6 +5,7 @@ package com.xplenty.api;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.model.Cluster;
@@ -77,9 +78,17 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public List<Cluster> listClusters() {
-		return connector.execute(new ListClusters());
+		return listClusters(new Properties());
 	}
 	
+	/**
+	 * List of clusters associated with the account
+	 * @param props map of request parameters, see {@link Xplenty.ClusterStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link ListClusters}
+	 * @return
+	 */
+	public List<Cluster> listClusters(Properties props) {
+		return connector.execute(new ListClusters(props));
+	}
 	/**
 	 * Information about a particular cluster
 	 * @param clusterId id of the cluster, see {@link #listClusters()} to get a list of clusters with id's
@@ -114,7 +123,16 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public List<Job> listJobs() {
-		return connector.execute(new ListJobs());
+		return listJobs(new Properties());
+	}
+	
+	/**
+	 * List of jobs associated with the account
+	 * @param props map of request parameters, see {@link Xplenty.JobStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link ListJobs}
+	 * @return
+	 */
+	public List<Job> listJobs(Properties params) {
+		return connector.execute(new ListJobs(params));
 	}
 	
 	/**

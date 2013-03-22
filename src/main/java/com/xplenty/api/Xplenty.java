@@ -11,6 +11,36 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  *
  */
 public class Xplenty {
+	public enum Sort {
+		updated("updated"),
+		created("created");
+		
+		public final String value;
+		
+		Sort(String value) {
+			this.value = value;
+		}
+		
+		public String toString() {
+			return value;
+		}
+	}
+	
+	public enum SortDirection {
+		ascending("asc"),
+		descending("desc");
+		
+		public final String value;
+		
+		SortDirection(String value) {
+			this.value = value;
+		}
+		
+		public String toString() {
+			return value;
+		}
+	}
+	
 	public enum JobStatus {		
 		idle("idle"),
 		stopped("stopped"),
