@@ -12,11 +12,11 @@ Pass your account ID and API key to the XplentyAPI constructor.
     String api_key = "V4eyfgNqYcSasXGhzNxS";
     XplentyAPI xplentyAPI = new XplentyAPI(account_id , api_key);
 
-### Create an XplentyAPI Object with Custom Version / Protocol / Host
 
-You can use XplentyAPI builder methods to customize these properties.
+If you want to supply custom values for the version, protocol or host that the XplentyAPI object will use,
+you can use XplentyAPI builder methods to customize these properties.
 
-	String account_id = "MyAccountID";
+    String account_id = "MyAccountID";
     String api_key = "V4eyfgNqYcSasXGhzNxS";
     Xplenty.Version version = Xplenty.Version.V1;
     String host = 'myHost';
@@ -58,18 +58,17 @@ You can use this information to monitor and display your clusters and their stat
       long id = cluster.getId();
     }
  
-XplentyAPI.listClusters() is shorthand for XplentyAPI.listClusters(new Properties())
+XplentyAPI.listClusters() is shorthand for XplentyAPI.listClusters(new Properties()), which returns all clusters with no filtering.
+You can also pass property parameters which filter the clusters according to their status, and determine the order in which they'll be sorted.
+Only clusters which have the status passed in the PARAMETER_STATUS property will be returned, sorted according to the field passed in PARAMETER_SORT,
+in ascending or descending order according to the PARAMETER_DIRECTION property.
 
-### List All Clusters - Parameterized
 
-This method returns the list of clusters that were created by users in your account, based on additional parameters.
-You can use this information to monitor and display your clusters and their statuses.
-
-	Properties params = new Properties();
-	params.put(ListClusters.PARAMETER_STATUS, ClusterStatus.available);
-	//params.put(ListClusters.PARAMETER_STATUS, "all");
-	params.put(ListClusters.PARAMETER_SORT, Sort.updated);
-	params.put(ListClusters.PARAMETER_DIRECTION, SortDirection.ascending);
+    Properties params = new Properties();
+    params.put(ListClusters.PARAMETER_STATUS, ClusterStatus.available);
+    //params.put(ListClusters.PARAMETER_STATUS, "all");
+    params.put(ListClusters.PARAMETER_SORT, Sort.updated);
+    params.put(ListClusters.PARAMETER_DIRECTION, SortDirection.ascending);
 	
     for(Cluster cluster: xplentyAPI.listClusters(params))
     {
@@ -118,11 +117,10 @@ This method returns information for all the jobs that have been created under yo
       Double progress = job.getProgress();
     }
    
-XplentyAPI.listJobs() is shorthand for XplentyAPI.listJobs(new Properties())
-
-### List All Jobs - Parameterized
-
-This method returns information for all the jobs that have been created under your account.
+XplentyAPI.listJobs() is shorthand for XplentyAPI.listJobs(new Properties()), which returns all jobs with no filtering.
+You can also pass property parameters which filter the jobs according to their status, and determine the order in which they'll be sorted.
+Only jobs which have the status passed in the PARAMETER_STATUS property will be returned, sorted according to the field passed in PARAMETER_SORT,
+in ascending or descending order according to the PARAMETER_DIRECTION property.
 
 	Properties params = new Properties();
 	params.put(ListJobs.PARAMETER_STATUS, JobStatus.available);
