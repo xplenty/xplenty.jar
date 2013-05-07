@@ -22,7 +22,7 @@ import com.xplenty.api.request.StopJob;
 import com.xplenty.api.request.TerminateCluster;
 import com.xplenty.api.util.Http;
 /**
- * A convenience class for making HTTP requests to the Xplenty API for a given user. An underlying {@link XplentyWebConnector} is created
+ * A convenience class for making HTTP requests to the Xplenty API for a given user. An underlying {@link XplentyWebConnectivity} is created
  * for each instance of XplentyAPI.
  * <p/>
  * Example usage:
@@ -36,32 +36,30 @@ import com.xplenty.api.util.Http;
  * 
  * @author Yuriy Kovalek
  */
-public class XplentyAPI {
+public class XplentyAPI extends XplentyWebConnectivity {
 		
-	private final XplentyWebConnector connector;
-	
 	/**
-     * Constructs a XplentyAPI with a {@link XplentyWebConnector} based on API key, account name,
+     * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
      * and internal configuration.
      * @param accountName account name used for Xplenty sign-up
      * @param apiKey User's API key found at //TODO add link to API key source
      */
 	public XplentyAPI(String accountName, String apiKey) {
-		connector = new XplentyWebConnector(accountName, apiKey);
+		super(accountName, apiKey);
 	}
 	
 	public XplentyAPI withVersion(Version ver) {
-		connector.setVersion(ver);
+		this.setVersion(ver);
 		return this;
 	}
 	
 	public XplentyAPI withHost(String host) {
-		connector.setHost(host);
+		this.setHost(host);
 		return this;
 	}
 	
 	public XplentyAPI withProtocol(Http.Protocol proto) {
-		connector.setProtocol(proto);
+		this.setProtocol(proto);
 		return this;
 	}
 
@@ -70,7 +68,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public List<ClusterPlan> listClusterPlans() {
-		return connector.execute(new ListClusterPlans());
+		return this.execute(new ListClusterPlans());
 	}
 
 	/**
@@ -87,7 +85,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public List<Cluster> listClusters(Properties props) {
-		return connector.execute(new ListClusters(props));
+		return this.execute(new ListClusters(props));
 	}
 	/**
 	 * Information about a particular cluster
@@ -95,7 +93,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Cluster clusterInformation(long clusterId) {
-		return connector.execute(new ClusterInfo(clusterId)).withParentApiInstance(this);
+		return this.execute(new ClusterInfo(clusterId)).withParentApiInstance(this);
 	}
 	
 	/**
@@ -106,7 +104,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Cluster createCluster(long planId, String name, String description) {
-		return connector.execute(new CreateCluster(new Cluster().onPlan(planId).named(name).withDescription(description))).withParentApiInstance(this);
+		return this.execute(new CreateCluster(new Cluster().onPlan(planId).named(name).withDescription(description))).withParentApiInstance(this);
 	}
 	
 	/**
@@ -115,7 +113,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Cluster terminateCluster(long clusterId) {
-		return connector.execute(new TerminateCluster(clusterId)).withParentApiInstance(this);
+		return this.execute(new TerminateCluster(clusterId)).withParentApiInstance(this);
 	}
 	
 	/**
@@ -132,7 +130,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public List<Job> listJobs(Properties params) {
-		return connector.execute(new ListJobs(params));
+		return this.execute(new ListJobs(params));
 	}
 	
 	/**
@@ -141,7 +139,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Job jobInformation(long jobId) {
-		return connector.execute(new JobInfo(jobId)).withParentApiInstance(this);
+		return this.execute(new JobInfo(jobId)).withParentApiInstance(this);
 	}
 	
 	/**
@@ -152,7 +150,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Job runJob(long clusterId, long packageId, Map<String, String> variables) {
-		return connector.execute(new RunJob(new Job().onCluster(clusterId).withPackage(packageId).withVariables(variables))).withParentApiInstance(this);
+		return this.execute(new RunJob(new Job().onCluster(clusterId).withPackage(packageId).withVariables(variables))).withParentApiInstance(this);
 	}
 
 	/**
@@ -161,7 +159,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Job stopJob(long jobId) {
-		return connector.execute(new StopJob(jobId)).withParentApiInstance(this);
+		return this.execute(new StopJob(jobId)).withParentApiInstance(this);
 	}
 	
 	/**
@@ -169,7 +167,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public String getAccountName() {
-		return connector.getAccountName();
+		return super.getAccountName();
 	}
 
 	/**
@@ -177,7 +175,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public String getApiKey() {
-		return connector.getApiKey();
+		return super.getApiKey();
 	}
 
 	/**
@@ -185,7 +183,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public String getHost() {
-		return connector.getHost();
+		return super.getHost();
 	}
 
 	/**
@@ -193,7 +191,7 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Http.Protocol getProtocol() {
-		return connector.getProtocol();
+		return super.getProtocol();
 	}
 
 	/**
@@ -201,6 +199,6 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Version getVersion() {
-		return connector.getVersion();
+		return super.getVersion();
 	}
 }

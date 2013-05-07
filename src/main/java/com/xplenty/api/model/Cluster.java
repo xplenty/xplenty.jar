@@ -37,7 +37,16 @@ public class Cluster extends XplentyObject<Cluster>{
 	@JsonProperty("running_jobs_count")
 	protected Long runningJobsCount;
 	protected String url;
-	
+
+    @JsonProperty("nodes")
+    protected Integer nodes;
+    @JsonProperty("type")
+    protected String type;
+    @JsonProperty("available_since")
+    protected Date availableSince;
+    @JsonProperty("terminated_at")
+    protected Date terminatedAt;
+
 	public Cluster() {
 		super(Cluster.class);
 	}

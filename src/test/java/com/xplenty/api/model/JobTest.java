@@ -28,8 +28,7 @@ public class JobTest extends TestCase {
 		assertEquals(new Long(1), j.getClusterId());
 		assertEquals(new Long(7), j.getId());
 		assertEquals(new Long(8), j.getPackageId());
-		assertNotNull(j.getVariables());
-		assertTrue(j.getVariables().isEmpty());
+		assertNull(j.getVariables());
 	}
 	
 	public static Job createMockJob(Date now) {

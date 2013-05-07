@@ -26,7 +26,7 @@ import com.xplenty.api.util.Http;
  * @author Yuriy Kovalek
  *
  */
-class XplentyWebConnector {	
+class XplentyWebConnectivity {
 	private static final String API_PATH = "api";
 	
 	private String HOST = "api-staging.xplenty.com";
@@ -42,7 +42,7 @@ class XplentyWebConnector {
 	 * @param accountName name of the associated account, used in URL's
 	 * @param apiKey used for authentication
 	 */
-	XplentyWebConnector(String accountName, String apiKey) {
+	XplentyWebConnectivity(String accountName, String apiKey) {
 		ACCOUNT_NAME = accountName;
 		API_KEY = apiKey;
 		

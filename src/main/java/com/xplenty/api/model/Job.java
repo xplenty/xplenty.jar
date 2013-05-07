@@ -51,6 +51,12 @@ public class Job extends XplentyObject<Job> {
 	protected String url;
 	@JsonProperty("runtime_in_seconds")
 	protected Long runtimeInSeconds;
+
+
+    @JsonProperty("completed_at")
+    protected Date completedAt;
+    @JsonProperty("failed_at")
+    protected Date failedAt;
 	
 	/**
 	 * Shorthand method for {@code waitForStatus(null, JobStatus...)} Will wait forever until the required status is received.
