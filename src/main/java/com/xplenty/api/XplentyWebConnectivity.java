@@ -8,7 +8,6 @@ import java.io.StringWriter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
@@ -109,13 +108,11 @@ class XplentyWebConnectivity {
 	 * @throws RequestFailedException
 	 */
 	private <T> void validate(Request<T> request, ClientResponse response) {
-		if (Status.OK == response.getClientResponseStatus()
-				|| Status.CREATED == response.getClientResponseStatus())
-			return;
-		if (Status.UNAUTHORIZED == response.getClientResponseStatus())
-			throw new AuthFailedException(response.getStatus(), response.getEntity(String.class));
-		
-		throw new RequestFailedException(request.getName() + " failed", response.getStatus(), response.getEntity(String.class));	
+        switch (response.getClientResponseStatus()){
+            case OK : case CREATED : case NO_CONTENT : return;
+            case UNAUTHORIZED : throw new AuthFailedException(response.getStatus(), response.getEntity(String.class));
+            default: throw new RequestFailedException(request.getName() + " failed", response.getStatus(), response.getEntity(String.class));
+        }
 	}
 
 	String getAccountName() {

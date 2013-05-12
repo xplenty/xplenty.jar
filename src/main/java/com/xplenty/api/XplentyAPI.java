@@ -8,18 +8,12 @@ import java.util.Map;
 import java.util.Properties;
 
 import com.xplenty.api.Xplenty.Version;
-import com.xplenty.api.model.Cluster;
-import com.xplenty.api.model.ClusterPlan;
-import com.xplenty.api.model.Job;
-import com.xplenty.api.request.ClusterInfo;
-import com.xplenty.api.request.CreateCluster;
-import com.xplenty.api.request.JobInfo;
-import com.xplenty.api.request.ListClusterPlans;
-import com.xplenty.api.request.ListClusters;
-import com.xplenty.api.request.ListJobs;
-import com.xplenty.api.request.RunJob;
-import com.xplenty.api.request.StopJob;
-import com.xplenty.api.request.TerminateCluster;
+import com.xplenty.api.model.*;
+import com.xplenty.api.request.*;
+import com.xplenty.api.request.watching.AddClusterWatcher;
+import com.xplenty.api.request.watching.AddJobWatcher;
+import com.xplenty.api.request.watching.ListWatchers;
+import com.xplenty.api.request.watching.WatchingStop;
 import com.xplenty.api.util.Http;
 /**
  * A convenience class for making HTTP requests to the Xplenty API for a given user. An underlying {@link XplentyWebConnectivity} is created
@@ -47,6 +41,12 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	public XplentyAPI(String accountName, String apiKey) {
 		super(accountName, apiKey);
 	}
+
+    public XplentyAPI(String accountName, String apiKey, String host, Http.Protocol proto){
+        this(accountName, apiKey);
+        this.setHost(host);
+        this.setProtocol(proto);
+    }
 	
 	public XplentyAPI withVersion(Version ver) {
 		this.setVersion(ver);
@@ -109,7 +109,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	
 	/**
 	 * Terminate cluster with given id
-	 * @param clusterId
+	 * @param clusterId  is clusterId
 	 * @return
 	 */
 	public Cluster terminateCluster(long clusterId) {
@@ -126,7 +126,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	
 	/**
 	 * List of jobs associated with the account
-	 * @param props map of request parameters, see {@link Xplenty.JobStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link ListJobs}
+	 * @param params map of request parameters, see {@link Xplenty.JobStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link ListJobs}
 	 * @return
 	 */
 	public List<Job> listJobs(Properties params) {
@@ -161,8 +161,33 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	public Job stopJob(long jobId) {
 		return this.execute(new StopJob(jobId)).withParentApiInstance(this);
 	}
-	
-	/**
+
+    public List<Watcher> listClusterWatchers(long clusterId) {
+        return this.execute(new ListWatchers(Xplenty.SubjectType.CLUSTER, clusterId));
+    }
+
+    public List<Watcher> listJobWatchers(long clusterId) {
+        return this.execute(new ListWatchers(Xplenty.SubjectType.JOB, clusterId));
+    }
+
+    public ClusterWatchingLogEntry addClusterWatchers(long clusterId) {
+        return this.execute(new AddClusterWatcher(clusterId)).withParentApiInstance(this);
+    }
+
+    public JobWatchingLogEntry addJobWatchers(long jobId) {
+        return this.execute(new AddJobWatcher(jobId)).withParentApiInstance(this);
+    }
+
+
+    public Boolean removeClusterWatchers(long clusterId) {
+        return this.execute(new WatchingStop(Xplenty.SubjectType.CLUSTER, clusterId));
+    }
+
+    public Boolean removeJobWatchers(long jobId) {
+        return this.execute(new WatchingStop(Xplenty.SubjectType.JOB, jobId));
+    }
+
+    /**
 	 * Account name this XplentyAPI instance is associated with
 	 * @return
 	 */

@@ -91,7 +91,9 @@ public class Xplenty {
 		Jobs("jobs", "List jobs"),
 		Job("jobs/%s", "Get job info"),
 		RunJob("jobs", "Run job"),
-		StopJob("jobs/%s", "Stop job");
+		StopJob("jobs/%s", "Stop job"),
+        ClusterWatcher("clusters/%s/watchers", "adding/removing a cluster watchers"),
+        JobWatcher("jobs/%s/watchers", "adding/removing a job watchers") ;
 		
 		public final String value;
 		public final String name;
@@ -119,4 +121,8 @@ public class Xplenty {
 			return "version=" + Integer.toString(value);
 		}
 	}
+
+    public static enum SubjectType {
+        CLUSTER, JOB
+    }
 }
