@@ -53,7 +53,7 @@ class XplentyWebConnectivity {
 	/**
 	 * Synchronously execute given request
 	 * @param request request to execute
-	 * @return
+	 * @return respective response type
 	 */
 	public <T> T execute(Request<T> request) {
 		WebResource.Builder builder = getConfiguredResource(request);
@@ -66,12 +66,12 @@ class XplentyWebConnectivity {
 		}
 		validate(request, response);
 		return request.getResponse(response);		
-	};
+	}
 	
 	/**
 	 * Convenience method for getting a configured {@link WebResource.Builder} for given request
-	 * @param request
-	 * @return
+	 * @param request that would be submitted to the XPlenty Server
+	 * @return  builder
 	 */
 	private <T> WebResource.Builder getConfiguredResource(Request<T> request) {
 		WebResource.Builder b = client.resource(getMethodURL(request.getEndpoint()))
@@ -93,8 +93,8 @@ class XplentyWebConnectivity {
 	
 	/**
 	 * Constructs the actual URL
-	 * @param methodEndpoint
-	 * @return
+	 * @param methodEndpoint - describes the action type
+	 * @return filly qualified URL
 	 */
 	private String getMethodURL(String methodEndpoint) {
 		return PROTOCOL + "://" + HOST + "/" + ACCOUNT_NAME + "/" + API_PATH + "/" + methodEndpoint;
