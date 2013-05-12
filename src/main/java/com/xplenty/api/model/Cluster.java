@@ -130,6 +130,20 @@ public class Cluster extends XplentyObject<Cluster>{
 	public String getUrl() {
 		return url;
 	}
+
+    public Integer getNodes() {
+        return nodes;
+    }
+    public String getType() {
+        return type;
+    }
+    public Date getAvailableSince() {
+        return availableSince;
+    }
+    public Date getTerminatedAt() {
+        return terminatedAt;
+    }
+
 	@SuppressWarnings("unused")
 	private void setId(long id) {
 		this.id = id;
@@ -170,4 +184,20 @@ public class Cluster extends XplentyObject<Cluster>{
 	private void setUrl(String url) {
 		this.url = url;
 	}
+    @SuppressWarnings("unused")
+    private void setNodes(Integer nodes) {
+        this.nodes = nodes;
+    }
+    @SuppressWarnings("unused")
+    private void setType(String type) {
+        this.type = type;
+    }
+    @SuppressWarnings("unused")
+    private void setAvailableSince(Date as) {
+        this.availableSince = as;
+    }
+    @SuppressWarnings("unused")
+    private void setTerminatedAt(Date terminatedAt) {
+        this.terminatedAt  = terminatedAt;
+    }
 }

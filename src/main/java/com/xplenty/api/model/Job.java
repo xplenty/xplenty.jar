@@ -57,7 +57,14 @@ public class Job extends XplentyObject<Job> {
     protected Date completedAt;
     @JsonProperty("failed_at")
     protected Date failedAt;
-	
+
+    public Date getFailedAt() {
+        return failedAt;
+    }
+    public Date getCompletedAt() {
+        return completedAt;
+    }
+
 	/**
 	 * Shorthand method for {@code waitForStatus(null, JobStatus...)} Will wait forever until the required status is received.
 	 * @param statuses see {@link #waitForStatus(Long, JobStatus...)}
@@ -211,5 +218,12 @@ public class Job extends XplentyObject<Job> {
 	private void setRuntimeInSeconds(long runtimeInSeconds) {
 		this.runtimeInSeconds = runtimeInSeconds;
 	}
-	
+    @SuppressWarnings("unused")
+    public void setFailedAt(Date failedAt) {
+        this.failedAt = failedAt;
+    }
+    @SuppressWarnings("unused")
+    public void setCompletedAt(Date completedAt) {
+        this.completedAt = completedAt;
+    }
 }
