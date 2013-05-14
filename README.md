@@ -153,4 +153,44 @@ long job_id = 235;
 Job job = xplentyAPI.stopJob(job_id);
 JobStatus status = job.getStatus();
 ```
+### Watch Cluster
+
+You can watch a cluster that you or others have created. If you'r watching a cluster, you'll receive notifications (email messages or web notifications) on important updates.
+
+This method adds the calling user as a watcher of the specifeid cluster.
+```java
+TODO:INSERT CODE
+```
+### Stop Watching Cluster
+
+This method removes the calling user from the watcher list of the specified cluster.
+```java
+TODO:INSERT CODE
+```
+### Get Cluster Watchers
+
+This call retrieves the list of users watching the specified cluster.
+```java
+TODO:INSERT CODE
+```
+### Watch Job
+
+You can watch a job that you or others have executed. If you'r watching a job, you'll receive notifications (email messages or web notifications) on important updates.
+
+This method adds the calling user as a watcher of the specifeid job.
+```java
+TODO:INSERT CODE
+```
+### Stop Watching Job
+
+This method removes the calling user from the watcher list of the specified job.
+```java
+TODO:INSERT CODE
+```
+### Get Job Watchers
+
+This call retrieves the list of users watching the specified job.
+```java
+TODO:INSERT CODE
+```
 Released under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
