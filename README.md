@@ -153,3 +153,4 @@ long job_id = 235;
 Job job = xplentyAPI.stopJob(job_id);
 JobStatus status = job.getStatus();
 ```
+Released under the [MIT license](http://www.opensource.org/licenses/mit-license.php).
