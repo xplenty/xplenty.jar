@@ -159,19 +159,22 @@ You can watch a cluster that you or others have created. If you'r watching a clu
 
 This method adds the calling user as a watcher of the specifeid cluster.
 ```java
-TODO:INSERT CODE
+long clusterId = 17;
+ClusterWatchingLogEntry res = xplentyAPI.addClusterWatchers(clusterId);
 ```
 ### Stop Watching Cluster
 
 This method removes the calling user from the watcher list of the specified cluster.
 ```java
-TODO:INSERT CODE
+long clusterId = 17;
+Boolean res = xplentyAPI.removeClusterWatchers(clusterId);
 ```
 ### Get Cluster Watchers
 
 This call retrieves the list of users watching the specified cluster.
 ```java
-TODO:INSERT CODE
+long clusterId = 17;
+List<Watcher> res = xplentyAPI.listClusterWatchers(clusterId);
 ```
 ### Watch Job
 
@@ -179,19 +182,23 @@ You can watch a job that you or others have executed. If you'r watching a job, y
 
 This method adds the calling user as a watcher of the specifeid job.
 ```java
-TODO:INSERT CODE
+long jobId = 5;
+JobWatchingLogEntry res = xplentyAPI.addJobWatchers(jobId);
+
 ```
 ### Stop Watching Job
 
 This method removes the calling user from the watcher list of the specified job.
 ```java
-TODO:INSERT CODE
+long jobId = 5;
+Boolean res = xplentyAPI.removeJobWatchers(jobId);
 ```
 ### Get Job Watchers
 
 This call retrieves the list of users watching the specified job.
 ```java
-TODO:INSERT CODE
+long jobId = 5;
+List<Watcher> res = xplentyAPI.listJobWatchers(jobId);
 ```
 ## Contributing
 
