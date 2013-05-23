@@ -28,7 +28,7 @@ import com.xplenty.api.util.Http;
 class XplentyWebConnectivity {
 	private static final String API_PATH = "api";
 	
-	private String HOST = "api-staging.xplenty.com";
+	private String HOST = "api.xplenty.com";
 	private Http.Protocol PROTOCOL = Http.Protocol.Https;
 	private final String ACCOUNT_NAME;
 	private final String API_KEY;
