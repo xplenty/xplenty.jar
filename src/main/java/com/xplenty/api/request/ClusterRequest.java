@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
-import com.xplenty.api.model.Job;
+import com.xplenty.api.model.Cluster;
 import com.xplenty.api.util.Http;
 import com.xplenty.api.util.Http.MediaType;
 import com.xplenty.api.util.Http.Method;
@@ -20,22 +20,20 @@ import com.xplenty.api.util.Http.Method;
  * @author Yuriy Kovalek
  *
  */
-public class RunJob implements Request<Job> {
-	private final Job job;
-	
-	public RunJob(Job job) {
-		this.job = job;
+public abstract class ClusterRequest implements Request<Cluster> {
+	private final Cluster cluster;
+
+	public ClusterRequest(Cluster cluster) {
+		this.cluster = cluster;
 	}
 	
 	@Override
 	public String getName() {
-		return Xplenty.Resource.RunJob.name;
+		return Xplenty.Resource.CreateCluster.name;
 	}
 
 	@Override
-	public Method getHttpMethod() {
-		return Http.Method.POST;
-	}
+	public abstract Method getHttpMethod();
 
 	@Override
 	public MediaType getResponseType() {
@@ -44,7 +42,17 @@ public class RunJob implements Request<Job> {
 
 	@Override
 	public String getEndpoint() {
-		return Xplenty.Resource.RunJob.value;
+		return Xplenty.Resource.CreateCluster.value;
+	}
+
+	@Override
+	public Cluster getResponse(ClientResponse response) {
+		String json = response.getEntity(String.class);		
+		try {
+			return new ObjectMapper().readValue(json, new TypeReference<Cluster>() {});
+		} catch (Exception e) {
+			throw new XplentyAPIException(getName() + ": error parsing response object", e);
+		}
 	}
 
 	@Override
@@ -55,17 +63,7 @@ public class RunJob implements Request<Job> {
 	@Override
 	public Object getBody() {
 		Map<String, Object> j = new HashMap<String, Object>();
-		j.put("job", job);
+		j.put("cluster", cluster);
 		return j;
-	}
-
-	@Override
-	public Job getResponse(ClientResponse response) {
-		String json = response.getEntity(String.class);		
-		try {
-			return new ObjectMapper().readValue(json, new TypeReference<Job>() {});
-		} catch (Exception e) {
-			throw new XplentyAPIException(getName() + ": error parsing response object", e);
-		}
 	}
 }

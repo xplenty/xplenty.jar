@@ -4,9 +4,12 @@
 package com.xplenty.api.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -20,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @XmlRootElement
 @JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Job {
 //	public static class Variables {}
 	
@@ -32,16 +36,18 @@ public class Job {
 	private Double progress;
 	@JsonProperty("outputs_count")
 	private Integer outputsCount;
+	@JsonProperty("outputs")
+	private List<String> outputs;
 	@JsonProperty("started_at")
 	private Date startedAt;
 	@JsonProperty("created_at")
 	private Date createdAt;
+	@JsonProperty("failed_at")
+	private Date failedAt;
 	@JsonProperty("updated_at")
 	private Date updatedAt;
 	@JsonProperty("cluster_id")
 	private Long clusterId;
-	@JsonProperty("job_id")
-	private Long jobId;
 	@JsonProperty("package_id")
 	private Long packageId;
 	private String errors;
@@ -49,13 +55,8 @@ public class Job {
 	@JsonProperty("runtime_in_seconds")
 	private Long runtimeInSeconds;
 	
-	public Job withId(long id) {
-		this.id = id;
-		return this;
-	}
-	
 	public Job withPackage(long packageId) {
-		this.jobId = packageId;
+		this.packageId = packageId;
 		return this;
 	}
 	
@@ -88,6 +89,9 @@ public class Job {
 	public Integer getOutputsCount() {
 		return outputsCount;
 	}
+	public List<String> getOutputs() {
+		return outputs;
+	}
 	public Date getStartedAt() {
 		return startedAt;
 	}
@@ -97,11 +101,14 @@ public class Job {
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
+	public Date getFailedAt() {
+		return failedAt;
+	}
 	public Long getClusterId() {
 		return clusterId;
 	}
 	public Long getPackageId() {
-		return packageId == null ? jobId : packageId;
+		return packageId == null ? id : packageId;
 	}
 	public String getErrors() {
 		return errors;
@@ -137,12 +144,20 @@ public class Job {
 		this.outputsCount = outputsCount;
 	}
 	@SuppressWarnings("unused")
+	private void setOutputs(List<String> outputs) {
+		this.outputs = outputs;
+	}
+	@SuppressWarnings("unused")
 	private void setStartedAt(Date startedAt) {
 		this.startedAt = startedAt;
 	}
 	@SuppressWarnings("unused")
 	private void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
+	}
+	@SuppressWarnings("unused")
+	private void setFailedAt(Date failedAt) {
+		this.failedAt = failedAt;
 	}
 	@SuppressWarnings("unused")
 	private void setUpdatedAt(Date updatedAt) {

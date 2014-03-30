@@ -9,12 +9,10 @@ import java.util.Map;
 import com.xplenty.api.Xplenty.Protocol;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.model.Cluster;
-import com.xplenty.api.model.ClusterPlan;
 import com.xplenty.api.model.Job;
 import com.xplenty.api.request.ClusterInfo;
 import com.xplenty.api.request.CreateCluster;
 import com.xplenty.api.request.JobInfo;
-import com.xplenty.api.request.ListClusterPlans;
 import com.xplenty.api.request.ListClusters;
 import com.xplenty.api.request.ListJobs;
 import com.xplenty.api.request.RunJob;
@@ -64,13 +62,6 @@ public class XplentyAPI {
 		return this;
 	}
 
-	/**
-	 * Information about available cluster plans
-	 * @return
-	 */
-	public List<ClusterPlan> listClusterPlans() {
-		return connector.execute(new ListClusterPlans());
-	}
 
 	/**
 	 * List of clusters associated with the account
@@ -91,13 +82,36 @@ public class XplentyAPI {
 	
 	/**
 	 * Create cluster with specified properties
-	 * @param planId cluster plan id
+	 * @param nodes number of nodes
+	 * @param type of cluster - 'sandbox' if sandbox
 	 * @param name cluster name
 	 * @param description cluster description
+	 * @param terminateOnIdle should the cluster terminate on idle status
+	 * @param timeToIdle time in seconds before cluster is considered idle
 	 * @return
 	 */
-	public Cluster createCluster(long planId, String name, String description) {
-		return connector.execute(new CreateCluster(new Cluster().onPlan(planId).named(name).withDescription(description)));
+	public Cluster createCluster(int nodes, String type, String name, String description, Boolean terminateOnIdle, Long timeToIdle) {
+		return connector.execute(new CreateCluster(
+				new Cluster().withNodes(nodes).ofType(type)
+				.named(name).withDescription(description).withTerminateOnIdle(terminateOnIdle).withTimeToIdle(timeToIdle)
+				));
+	}
+	
+	/**
+	 * Update cluster with specified properties
+	 * @param id id of cluster
+	 * @param nodes number of nodes
+	 * @param name cluster name
+	 * @param description cluster description
+	 * @param terminateOnIdle should the cluster terminate on idle status
+	 * @param timeToIdle time in seconds before cluster is considered idle
+	 * @return
+	 */
+	public Cluster updateCluster(long id, Integer nodes, String name, String description, Boolean terminateOnIdle, Long timeToIdle) {
+		return connector.execute(new CreateCluster(
+				new Cluster().withId(id).withNodes(nodes).named(name).withDescription(description)
+				.withTerminateOnIdle(terminateOnIdle).withTimeToIdle(timeToIdle)
+				));
 	}
 	
 	/**

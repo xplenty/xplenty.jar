@@ -4,16 +4,16 @@ import com.xplenty.api.model.Cluster;
 import com.xplenty.api.util.Http;
 import com.xplenty.api.util.Http.Method;
 
-public class CreateCluster extends ClusterRequest {
+public class UpdateCluster extends ClusterRequest {
 
-	public CreateCluster(Cluster cluster) {
+	public UpdateCluster(Cluster cluster) {
 		super(cluster);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Method getHttpMethod() {
-		return Http.Method.POST;
+		return Http.Method.PUT;
 	}
 
 }

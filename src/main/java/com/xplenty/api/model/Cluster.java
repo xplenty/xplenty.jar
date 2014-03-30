@@ -7,6 +7,8 @@ import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,6 +23,7 @@ import com.xplenty.api.exceptions.XplentyAPIException;
  */
 @XmlRootElement
 @JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Cluster extends XplentyObject<Cluster>{
 	private Long id;
 	private String name;
@@ -28,22 +31,37 @@ public class Cluster extends XplentyObject<Cluster>{
 	private String status;
 	@JsonProperty("owner_id")
 	private Long ownerId;
-	@JsonProperty("plan_id")
-	private Long planId;
+	private Integer nodes;
+	private String type;
 	@JsonProperty("created_at")
 	private Date createdAt;
 	@JsonProperty("updated_at")
 	private Date updatedAt;
+	@JsonProperty("available_since")
+	private Date availableSince;
+	@JsonProperty("terminated_at")
+	private Date terminatedAt;
 	@JsonProperty("running_jobs_count")
 	private Long runningJobsCount;
 	private String url;
+	@JsonProperty("terminate_on_idle")
+	private Boolean terminateOnIdle;
+	@JsonProperty("time_to_idle")
+	private Long timeToIdle;
+	@JsonProperty("terminated_on_idle")
+	private Boolean terminatedOnIdle;
 	
 	public Cluster() {
 		super(Cluster.class);
 	}
 	
-	public Cluster onPlan(long planId) {
-		this.planId = planId;
+	public Cluster withNodes(int nodes) {
+		this.nodes = nodes;
+		return this;
+	}
+	
+	public Cluster withId(Long id) {
+		this.id = id;
 		return this;
 	}
 	
@@ -54,6 +72,21 @@ public class Cluster extends XplentyObject<Cluster>{
 	
 	public Cluster withDescription(String description) {
 		this.description = description;
+		return this;
+	}
+	
+	public Cluster ofType(String type) {
+		this.type = type;
+		return this;
+	}
+	
+	public Cluster withTerminateOnIdle(boolean terminateOnIdle) {
+		this.terminateOnIdle = terminateOnIdle;
+		return this;
+	}
+	
+	public Cluster withTimeToIdle(long timeToIdle) {
+		this.timeToIdle = timeToIdle;
 		return this;
 	}
 	
@@ -106,8 +139,11 @@ public class Cluster extends XplentyObject<Cluster>{
 	public Long getOwnerId() {
 		return ownerId;
 	}
-	public Long getPlanId() {
-		return planId;
+	public Integer getNodes() {
+		return nodes;
+	}
+	public String getType() {
+		return type;
 	}
 	public Date getCreatedAt() {
 		return createdAt;
@@ -115,11 +151,26 @@ public class Cluster extends XplentyObject<Cluster>{
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
+	public Date getAvailableSince() {
+		return availableSince;
+	}
+	public Date getTerminatedAt() {
+		return terminatedAt;
+	}
 	public Long getRunningJobsCount() {
 		return runningJobsCount;
 	}
 	public String getUrl() {
 		return url;
+	}
+	public Boolean getTerminateOnIdle() {
+		return terminateOnIdle;
+	}
+	public Long getTimeToIdle() {
+		return timeToIdle;
+	}
+	public Boolean getTerminatedOnIdle() {
+		return terminatedOnIdle;
 	}
 	@SuppressWarnings("unused")
 	private void setId(long id) {
@@ -142,8 +193,12 @@ public class Cluster extends XplentyObject<Cluster>{
 		this.ownerId = ownerId;
 	}
 	@SuppressWarnings("unused")
-	private void setPlanId(long planId) {
-		this.planId = planId;
+	private void setNodes(int nodes) {
+		this.nodes = nodes;
+	}
+	@SuppressWarnings("unused")
+	private void setType(String type) {
+		this.type = type;
 	}
 	@SuppressWarnings("unused")
 	private void setCreatedAt(Date createdAt) {
@@ -154,11 +209,31 @@ public class Cluster extends XplentyObject<Cluster>{
 		this.updatedAt = updatedAt;
 	}
 	@SuppressWarnings("unused")
+	private void setAvailableSince(Date availableSince) {
+		this.availableSince = availableSince;
+	}
+	@SuppressWarnings("unused")
+	private void setTerminatedAt(Date terminatedAt) {
+		this.terminatedAt = terminatedAt;
+	}
+	@SuppressWarnings("unused")
 	private void setRunningJobsCount(long runningJobsCount) {
 		this.runningJobsCount = runningJobsCount;
 	}
 	@SuppressWarnings("unused")
 	private void setUrl(String url) {
 		this.url = url;
+	}
+	@SuppressWarnings("unused")
+	private void setTerminateOnIdle(Boolean terminateOnIdle) {
+		this.terminateOnIdle = terminateOnIdle;
+	}
+	@SuppressWarnings("unused")
+	private void setTimeToIdle(Long timeToIdle) {
+		this.timeToIdle= timeToIdle ;
+	}
+	@SuppressWarnings("unused")
+	private void setTerminatedOnIdle(Boolean terminatedOnIdle) {
+		this.terminatedOnIdle = terminatedOnIdle;
 	}
 }

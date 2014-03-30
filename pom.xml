@@ -58,4 +58,19 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <distributionManagement>
+    <repository>
+        <id>xplenty</id>
+        <name>xplenty-releases</name>
+        <url>http://xplenty.artifactoryonline.com/xplenty/libs-releases-local</url>
+    </repository>
+	<snapshotRepository>
+        <id>xplenty</id>
+        <name>xplenty-snapshots</name>
+        <url>http://xplenty.artifactoryonline.com/xplenty/libs-snapshots-local</url>
+    </snapshotRepository>
+  </distributionManagement>
+
+  
 </project>

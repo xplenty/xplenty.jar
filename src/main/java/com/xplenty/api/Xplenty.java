@@ -11,6 +11,7 @@ package com.xplenty.api;
 public class Xplenty {
 	public static enum ClusterStatus {
 		Creating("creating"),
+		Available("available"),
 		Running("running"),
 		Terminating("terminating"),
 		Terminated("terminated"),
@@ -27,7 +28,6 @@ public class Xplenty {
 	 * Endpoints and short descriptions for REST resources
 	 */
 	public static enum Resource {
-		ClusterPlans("cluster_plans", "List cluster plans"),
 		Clusters("clusters", "List clusters"), 
 		Cluster("clusters/%s", "Get cluster information"),
 		CreateCluster("clusters", "Create cluster"),
