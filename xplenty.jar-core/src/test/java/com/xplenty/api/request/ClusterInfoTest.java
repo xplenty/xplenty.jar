@@ -21,6 +21,7 @@ import com.sun.jersey.api.client.ClientResponse.Status;
 import com.sun.jersey.core.header.InBoundHeaders;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.Xplenty.ClusterStatus;
+import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.model.Cluster;
 import com.xplenty.api.model.ClusterTest;
@@ -65,10 +66,13 @@ public class ClusterInfoTest extends TestCase {
 		assertEquals("description", c.getDescription());
 		assertEquals(ClusterStatus.available, c.getStatus());
 		assertEquals(new Long(1), c.getOwnerId());
-		assertEquals(new Long(2), c.getPlanId());
+		assertEquals(new Integer(2), c.getNodes());
+		assertEquals(ClusterType.production, c.getType());
 		assertEquals(new Long(0), c.getRunningJobsCount());
 		assertTrue(Math.abs(now.getTime() - c.getCreatedAt().getTime()) < 1000); //fractions of second are not serialized
 		assertTrue(Math.abs(now.getTime() - c.getUpdatedAt().getTime()) < 1000);
+		assertTrue(Math.abs(now.getTime() - c.getAvailableSince().getTime()) < 1000);
+		assertTrue(Math.abs(now.getTime() - c.getTerminatedAt().getTime()) < 1000);
 		assertEquals("https://www.xplenty.com/api/" + Xplenty.Resource.Cluster.format(Long.toString(3)), c.getUrl());
 	}
 	
@@ -96,7 +100,7 @@ public class ClusterInfoTest extends TestCase {
 													new InBoundHeaders(), 
 													new ByteArrayInputStream(json.getBytes("UTF-8")),
 													Client.create().getMessageBodyWorkers()));
-			assertTrue(false);
+			fail();
 		} catch (XplentyAPIException e) {
 			assertEquals(Xplenty.Resource.Cluster.name + ": error parsing response object", e.getMessage());
 		}

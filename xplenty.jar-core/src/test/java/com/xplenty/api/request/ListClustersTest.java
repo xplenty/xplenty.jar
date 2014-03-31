@@ -59,7 +59,7 @@ public class ListClustersTest extends TestCase {
 	}
 	
 	@Test
-	public void testInvalidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
+	public void testInvalidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		ListClusters lc = new ListClusters(new Properties());
 		List<Cluster> list = new ArrayList<Cluster>();
 		list.add(ClusterTest.createMockCluster(new Date()));

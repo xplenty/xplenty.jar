@@ -41,7 +41,7 @@ public class RunJobTest extends TestCase {
 	}
 
 	@Test
-	public void testValidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
+	public void testValidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		RunJob lc = new RunJob(JobTest.createMockJob(new Date()));
 		Job j = JobTest.createMockJob(new Date());
 		
@@ -54,7 +54,7 @@ public class RunJobTest extends TestCase {
 	}
 	
 	@Test
-	public void testInvalidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
+	public void testInvalidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		RunJob lc = new RunJob(JobTest.createMockJob(new Date()));
 		Job j = JobTest.createMockJob(new Date());
 		
@@ -64,7 +64,7 @@ public class RunJobTest extends TestCase {
 									new InBoundHeaders(), 
 									new ByteArrayInputStream(json.getBytes("UTF-8")),
 									Client.create().getMessageBodyWorkers()));
-			assertTrue(false);
+			fail();
 		} catch (XplentyAPIException e) {
 			assertEquals(Xplenty.Resource.RunJob.name + ": error parsing response object", e.getMessage());
 		} 

@@ -59,6 +59,19 @@ public class Xplenty {
 		}
 
 	}
+	
+	public enum ClusterType {		
+		production("production"),
+		sandbox("sandbox");
+		
+		@SuppressWarnings("unused")
+		private final String type;
+		
+		ClusterType(String type) {
+			this.type = type;
+		}
+
+	}
 
 	@JsonFormat(shape= JsonFormat.Shape.SCALAR)
 	public static enum ClusterStatus {
@@ -87,6 +100,7 @@ public class Xplenty {
 		Clusters("clusters", "List clusters"), 
 		Cluster("clusters/%s", "Get cluster information"),
 		CreateCluster("clusters", "Create cluster"),
+		UpdateCluster("clusters/%s", "Update cluster"),
 		TerminateCluster("clusters/%s", "Terminate cluster"),
 		Jobs("jobs", "List jobs"),
 		Job("jobs/%s", "Get job info"),

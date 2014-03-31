@@ -41,7 +41,7 @@ public class StopJobTest extends TestCase {
 	}
 
 	@Test
-	public void testValidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
+	public void testValidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		StopJob sj = new StopJob(1);
 		Job j = JobTest.createMockJob(new Date());
 		
@@ -54,7 +54,7 @@ public class StopJobTest extends TestCase {
 	}
 	
 	@Test
-	public void testInvalidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
+	public void testInvalidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		StopJob sj = new StopJob(1);
 		Job j = JobTest.createMockJob(new Date());
 		
