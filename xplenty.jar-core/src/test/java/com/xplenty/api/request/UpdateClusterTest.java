@@ -31,7 +31,7 @@ import junit.framework.TestCase;
  * @author Yuriy Kovalek
  *
  */
-public class CreateClusterTest extends TestCase {
+public class UpdateClusterTest extends TestCase {
 	
 	@Before
 	public void setUp() {
@@ -40,15 +40,16 @@ public class CreateClusterTest extends TestCase {
 	
 	@Test
 	public void testIntegrity() {
-		CreateCluster cc = new CreateCluster(new Cluster().named("my cluster")
+		UpdateCluster cc = new UpdateCluster(new Cluster().withId(1L)
+															.named("my cluster")
 															.withNodes(2)
 															.withDescription("desc")
 															.ofType(ClusterType.production)
 															.withTerminateOnIdle(true)
 															.withTimeToIdle(3600L));
-		assertEquals(Xplenty.Resource.CreateCluster.value, cc.getEndpoint());
-		assertEquals(Xplenty.Resource.CreateCluster.name, cc.getName());
-		assertEquals(Http.Method.POST, cc.getHttpMethod());
+		assertEquals(Xplenty.Resource.UpdateCluster.format(Long.toString(1)), cc.getEndpoint());
+		assertEquals(Xplenty.Resource.UpdateCluster.name, cc.getName());
+		assertEquals(Http.Method.PUT, cc.getHttpMethod());
 		assertEquals(Http.MediaType.JSON, cc.getResponseType());
 		assertTrue(cc.hasBody());
 		assertNotNull(cc.getBody());
@@ -61,7 +62,7 @@ public class CreateClusterTest extends TestCase {
 		
 		String json = new ObjectMapper().writeValueAsString(c);
 		CreateCluster cc = new CreateCluster(c);
-		c = cc.getResponse(new ClientResponse(Status.CREATED.getStatusCode(),
+		c = cc.getResponse(new ClientResponse(Status.OK.getStatusCode(),
 												new InBoundHeaders(), 
 												new ByteArrayInputStream(json.getBytes("UTF-8")),
 												Client.create().getMessageBodyWorkers()));
@@ -88,29 +89,29 @@ public class CreateClusterTest extends TestCase {
 		Cluster c = ClusterTest.createMockCluster(now);
 		
 		String json = new ObjectMapper().writeValueAsString(c).replace("1", "one");
-		CreateCluster cc = new CreateCluster(c);
+		UpdateCluster cc = new UpdateCluster(c);
 		try {
-			c = cc.getResponse(new ClientResponse(Status.CREATED.getStatusCode(),
-													new InBoundHeaders(), 
-													new ByteArrayInputStream(json.getBytes("UTF-8")),
-													Client.create().getMessageBodyWorkers()));
-			assertTrue(false);
-		} catch (XplentyAPIException e) {
-			assertEquals(Xplenty.Resource.CreateCluster.name + ": error parsing response object", e.getMessage());
-		}
-		
-		c = ClusterTest.createMockCluster(now);
-		
-		json = new ObjectMapper().writeValueAsString(c).replace("available", "ready");
-		cc = new CreateCluster(c);
-		try {
-			c = cc.getResponse(new ClientResponse(Status.CREATED.getStatusCode(),
+			c = cc.getResponse(new ClientResponse(Status.OK.getStatusCode(),
 													new InBoundHeaders(), 
 													new ByteArrayInputStream(json.getBytes("UTF-8")),
 													Client.create().getMessageBodyWorkers()));
 			fail();
 		} catch (XplentyAPIException e) {
-			assertEquals(Xplenty.Resource.CreateCluster.name + ": error parsing response object", e.getMessage());
+			assertEquals(Xplenty.Resource.UpdateCluster.name + ": error parsing response object", e.getMessage());
+		}
+		
+		c = ClusterTest.createMockCluster(now);
+		
+		json = new ObjectMapper().writeValueAsString(c).replace("available", "ready");
+		cc = new UpdateCluster(c);
+		try {
+			c = cc.getResponse(new ClientResponse(Status.OK.getStatusCode(),
+													new InBoundHeaders(), 
+													new ByteArrayInputStream(json.getBytes("UTF-8")),
+													Client.create().getMessageBodyWorkers()));
+			fail();
+		} catch (XplentyAPIException e) {
+			assertEquals(Xplenty.Resource.UpdateCluster.name + ": error parsing response object", e.getMessage());
 		}
 	}
 }

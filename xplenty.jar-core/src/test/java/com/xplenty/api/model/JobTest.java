@@ -3,6 +3,7 @@
  */
 package com.xplenty.api.model;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -40,14 +41,16 @@ public class JobTest extends TestCase {
 		j.createdAt = now;
 		j.startedAt = now;
 		j.updatedAt = now;
-		j.jobId = j.id;
+		j.completedAt = now;
+		j.failedAt = now;
 		j.ownerId = (long)2;
 		j.errors = "";
 		j.outputsCount = 3;
+		j.outputs = Arrays.asList("output1","output2","output3");
 		j.runtimeInSeconds = (long)333;
 		j.progress = 50.0;
 		j.status = JobStatus.running;
-		j.url = "https://www.xplenty.com/api/" + Xplenty.Resource.Job.format(Long.toString(j.jobId));
+		j.url = "https://www.xplenty.com/api/" + Xplenty.Resource.Job.format(Long.toString(j.id));
 		
 		return j;
 	}

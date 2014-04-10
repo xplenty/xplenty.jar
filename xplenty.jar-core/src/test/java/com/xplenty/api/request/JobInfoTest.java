@@ -69,6 +69,8 @@ public class JobInfoTest extends TestCase {
 		assertTrue(Math.abs(now.getTime() - j.getCreatedAt().getTime()) < 1000); //fractions of second are not serialized
 		assertTrue(Math.abs(now.getTime() - j.getUpdatedAt().getTime()) < 1000);
 		assertTrue(Math.abs(now.getTime() - j.getStartedAt().getTime()) < 1000);
+		assertTrue(Math.abs(now.getTime() - j.getCompletedAt().getTime()) < 1000);
+		assertTrue(Math.abs(now.getTime() - j.getFailedAt().getTime()) < 1000);
 	}
 	
 	@Test

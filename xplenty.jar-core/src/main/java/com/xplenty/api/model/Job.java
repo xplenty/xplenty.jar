@@ -4,10 +4,12 @@
 package com.xplenty.api.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,6 +24,7 @@ import com.xplenty.api.exceptions.XplentyAPIException;
  */
 @XmlRootElement
 @JsonInclude(Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Job extends XplentyObject<Job> {
 	
 	public Job() {
@@ -35,16 +38,19 @@ public class Job extends XplentyObject<Job> {
 	protected Double progress;
 	@JsonProperty("outputs_count")
 	protected Integer outputsCount;
+	protected List<String> outputs;
 	@JsonProperty("started_at")
 	protected Date startedAt;
 	@JsonProperty("created_at")
 	protected Date createdAt;
+    @JsonProperty("completed_at")
+    protected Date completedAt;
+    @JsonProperty("failed_at")
+    protected Date failedAt;
 	@JsonProperty("updated_at")
 	protected Date updatedAt;
 	@JsonProperty("cluster_id")
 	protected Long clusterId;
-	@JsonProperty("job_id")
-	protected Long jobId;
 	@JsonProperty("package_id")
 	protected Long packageId;
 	protected String errors;
@@ -53,17 +59,7 @@ public class Job extends XplentyObject<Job> {
 	protected Long runtimeInSeconds;
 
 
-    @JsonProperty("completed_at")
-    protected Date completedAt;
-    @JsonProperty("failed_at")
-    protected Date failedAt;
 
-    public Date getFailedAt() {
-        return failedAt;
-    }
-    public Date getCompletedAt() {
-        return completedAt;
-    }
 
 	/**
 	 * Shorthand method for {@code waitForStatus(null, JobStatus...)} Will wait forever until the required status is received.
@@ -105,7 +101,7 @@ public class Job extends XplentyObject<Job> {
 	}
 	
 	public Job withPackage(long packageId) {
-		this.jobId = packageId;
+		this.packageId = packageId;
 		return this;
 	}
 	
@@ -138,12 +134,21 @@ public class Job extends XplentyObject<Job> {
 	public Integer getOutputsCount() {
 		return outputsCount;
 	}
+	public List<String> getOutputs() {
+		return outputs;
+	}
 	public Date getStartedAt() {
 		return startedAt;
 	}
 	public Date getCreatedAt() {
 		return createdAt;
 	}
+    public Date getFailedAt() {
+        return failedAt;
+    }
+    public Date getCompletedAt() {
+        return completedAt;
+    }
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
@@ -151,7 +156,7 @@ public class Job extends XplentyObject<Job> {
 		return clusterId;
 	}
 	public Long getPackageId() {
-		return packageId == null ? jobId : packageId;
+		return packageId;
 	}
 	public String getErrors() {
 		return errors;
@@ -187,6 +192,10 @@ public class Job extends XplentyObject<Job> {
 		this.outputsCount = outputsCount;
 	}
 	@SuppressWarnings("unused")
+	private void setOutputs(List<String> outputs) {
+		this.outputs = outputs;
+	}
+	@SuppressWarnings("unused")
 	private void setStartedAt(Date startedAt) {
 		this.startedAt = startedAt;
 	}
@@ -194,6 +203,14 @@ public class Job extends XplentyObject<Job> {
 	private void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
+    @SuppressWarnings("unused")
+    private void setFailedAt(Date failedAt) {
+        this.failedAt = failedAt;
+    }
+    @SuppressWarnings("unused")
+    private void setCompletedAt(Date completedAt) {
+        this.completedAt = completedAt;
+    }
 	@SuppressWarnings("unused")
 	private void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
@@ -218,12 +235,4 @@ public class Job extends XplentyObject<Job> {
 	private void setRuntimeInSeconds(long runtimeInSeconds) {
 		this.runtimeInSeconds = runtimeInSeconds;
 	}
-    @SuppressWarnings("unused")
-    public void setFailedAt(Date failedAt) {
-        this.failedAt = failedAt;
-    }
-    @SuppressWarnings("unused")
-    public void setCompletedAt(Date completedAt) {
-        this.completedAt = completedAt;
-    }
 }

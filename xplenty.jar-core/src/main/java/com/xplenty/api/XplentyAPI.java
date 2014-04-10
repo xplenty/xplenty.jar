@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.model.*;
 import com.xplenty.api.request.*;
@@ -64,14 +65,6 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	}
 
 	/**
-	 * Information about available cluster plans
-	 * @return
-	 */
-	public List<ClusterPlan> listClusterPlans() {
-		return this.execute(new ListClusterPlans());
-	}
-
-	/**
 	 * List of clusters associated with the account
 	 * @return
 	 */
@@ -98,13 +91,40 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	
 	/**
 	 * Create cluster with specified properties
-	 * @param planId cluster plan id
+	 * @param nodes number of nodes
+	 * @param type of cluster - 'sandbox' if sandbox
 	 * @param name cluster name
 	 * @param description cluster description
+	 * @param terminateOnIdle should the cluster terminate on idle status
+	 * @param timeToIdle time in seconds before cluster is considered idle
 	 * @return
 	 */
-	public Cluster createCluster(long planId, String name, String description) {
-		return this.execute(new CreateCluster(new Cluster().onPlan(planId).named(name).withDescription(description))).withParentApiInstance(this);
+	public Cluster createCluster(int nodes, ClusterType type, String name, String description, Boolean terminateOnIdle, Long timeToIdle) {
+		return this.execute(new CreateCluster(
+				new Cluster().withNodes(nodes)
+					.ofType(type)
+					.named(name)
+					.withDescription(description)
+					.withTerminateOnIdle(terminateOnIdle)
+					.withTimeToIdle(timeToIdle)
+				)).withParentApiInstance(this);
+	}
+	
+	/**
+	 * Update cluster with specified properties
+	 * @param id id of cluster
+	 * @param nodes number of nodes
+	 * @param name cluster name
+	 * @param description cluster description
+	 * @param terminateOnIdle should the cluster terminate on idle status
+	 * @param timeToIdle time in seconds before cluster is considered idle
+	 * @return
+	 */
+	public Cluster updateCluster(long id, Integer nodes, String name, String description, Boolean terminateOnIdle, Long timeToIdle) {
+		return this.execute(new UpdateCluster(
+				new Cluster().withId(id).withNodes(nodes).named(name).withDescription(description)
+				.withTerminateOnIdle(terminateOnIdle).withTimeToIdle(timeToIdle)
+				)).withParentApiInstance(this);
 	}
 	
 	/**
