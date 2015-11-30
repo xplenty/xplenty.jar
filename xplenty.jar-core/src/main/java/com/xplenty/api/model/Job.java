@@ -38,7 +38,7 @@ public class Job extends XplentyObject<Job> {
 	protected Double progress;
 	@JsonProperty("outputs_count")
 	protected Integer outputsCount;
-	protected List<String> outputs;
+	protected List<JobOutput> outputs;
 	@JsonProperty("started_at")
 	protected Date startedAt;
 	@JsonProperty("created_at")
@@ -134,7 +134,7 @@ public class Job extends XplentyObject<Job> {
 	public Integer getOutputsCount() {
 		return outputsCount;
 	}
-	public List<String> getOutputs() {
+	public List<JobOutput> getOutputs() {
 		return outputs;
 	}
 	public Date getStartedAt() {
@@ -192,7 +192,7 @@ public class Job extends XplentyObject<Job> {
 		this.outputsCount = outputsCount;
 	}
 	@SuppressWarnings("unused")
-	private void setOutputs(List<String> outputs) {
+	private void setOutputs(List<JobOutput> outputs) {
 		this.outputs = outputs;
 	}
 	@SuppressWarnings("unused")

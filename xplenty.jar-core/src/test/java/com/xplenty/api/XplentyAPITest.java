@@ -4,13 +4,17 @@
 package com.xplenty.api;
 
 import com.sun.jersey.api.client.ClientResponse;
+import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.model.*;
 import com.xplenty.api.request.Request;
-import junit.framework.Assert;
-import org.joda.time.DateTime;
-import com.xplenty.api.util.Http;
-import junit.framework.TestCase;
 
+import junit.framework.Assert;
+
+import org.joda.time.DateTime;
+
+import com.xplenty.api.util.Http;
+
+import junit.framework.TestCase;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -59,7 +63,7 @@ public class XplentyAPITest extends TestCase {
         };
         Cluster res = api.listClusters().get(0);
         Assert.assertEquals(res.getNodes(), new Integer(1));
-        Assert.assertEquals(res.getType(), "sandbox");
+        Assert.assertEquals(res.getType(), ClusterType.sandbox);
         Assert.assertEquals(res.getAvailableSince(), new DateTime(2000, 1, 1, 2, 0, 0).toDate());
         Assert.assertEquals(res.getTerminatedAt(), new DateTime(2000, 1, 1, 2, 0, 0).toDate());
     }
