@@ -108,11 +108,13 @@ class XplentyWebConnectivity {
 	 * @throws RequestFailedException
 	 */
 	private <T> void validate(Request<T> request, ClientResponse response) {
-        switch (response.getClientResponseStatus()){
-            case OK : case CREATED : case NO_CONTENT : return;
-            case UNAUTHORIZED : throw new AuthFailedException(response.getStatus(), response.getEntity(String.class));
-            default: throw new RequestFailedException(request.getName() + " failed", response.getStatus(), response.getEntity(String.class));
-        }
+		if (response.getClientResponseStatus() != null)
+			switch (response.getClientResponseStatus()){
+	            case OK : case CREATED : case NO_CONTENT : return;
+	            case UNAUTHORIZED : throw new AuthFailedException(response.getStatus(), response.getEntity(String.class));
+	            default: break;
+	        }
+		throw new RequestFailedException(request.getName() + " failed", response.getStatus(), response.getEntity(String.class));
 	}
 
 	String getAccountName() {

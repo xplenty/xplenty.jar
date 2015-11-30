@@ -46,12 +46,25 @@ public class JobTest extends TestCase {
 		j.ownerId = (long)2;
 		j.errors = "";
 		j.outputsCount = 3;
-		j.outputs = Arrays.asList("output1","output2","output3");
+		j.outputs = Arrays.asList(createMockJobOutput(now));
 		j.runtimeInSeconds = (long)333;
 		j.progress = 50.0;
 		j.status = JobStatus.running;
 		j.url = "https://www.xplenty.com/api/" + Xplenty.Resource.Job.format(Long.toString(j.id));
 		
 		return j;
+	}
+	
+	public static JobOutput createMockJobOutput(Date now) {
+		JobOutput jo = new JobOutput();
+		jo.id = 1L;
+		jo.name = "mock job output";
+		jo.recordsCount = 2L;
+		jo.createdAt = now;
+		jo.updatedAt = now;
+		jo.componentName = "mock component name";
+		jo.previewUrl = "http://example.com/mockuoutput.txt";
+		
+		return jo;
 	}
 }
