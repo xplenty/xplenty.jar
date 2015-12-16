@@ -44,7 +44,6 @@ public class AddClusterWatcher implements Request<ClusterWatchingLogEntry> {
         try {
             return new ObjectMapper().readValue(json, new TypeReference<ClusterWatchingLogEntry>() {});
         } catch (Exception e) {
-            e.printStackTrace();
             throw new XplentyAPIException(getName() + ": error parsing response object", e);
         }
     }
