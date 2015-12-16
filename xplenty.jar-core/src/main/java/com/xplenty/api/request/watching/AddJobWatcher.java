@@ -46,7 +46,6 @@ public class AddJobWatcher implements Request<JobWatchingLogEntry> {
         try {
             return new ObjectMapper().readValue(json, new TypeReference<JobWatchingLogEntry>() {});
         } catch (Exception e) {
-            e.printStackTrace();
             throw new XplentyAPIException(getName() + ": error parsing response object", e);
         }
     }

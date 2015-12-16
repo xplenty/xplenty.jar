@@ -8,10 +8,12 @@ import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.model.Watcher;
 import com.xplenty.api.request.Request;
 import com.xplenty.api.util.Http;
-import static com.xplenty.api.util.Http.Method.*;
-import static com.xplenty.api.Xplenty.*;
 
 import java.util.List;
+
+import static com.xplenty.api.Xplenty.Resource;
+import static com.xplenty.api.Xplenty.SubjectType;
+import static com.xplenty.api.util.Http.Method.GET;
 
 public class ListWatchers implements Request<List<Watcher>> {
     private SubjectType _kind = null;
@@ -58,7 +60,6 @@ public class ListWatchers implements Request<List<Watcher>> {
         try {
             return new ObjectMapper().readValue(json, new TypeReference<List<Watcher>>() {});
         } catch (Exception e) {
-            e.printStackTrace();
             throw new XplentyAPIException(getName() + ": error parsing response object", e);
         }
     }
