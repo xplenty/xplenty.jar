@@ -11,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  *
  */
 public class Xplenty {
+    public static final int MAX_LIMIT = 100;
+
 	public enum Sort {
 		updated("updated"),
 		created("created");
