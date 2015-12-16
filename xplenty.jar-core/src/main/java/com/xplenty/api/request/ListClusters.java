@@ -3,9 +3,6 @@
  */
 package com.xplenty.api.request;
 
-import java.util.List;
-import java.util.Properties;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
@@ -18,6 +15,9 @@ import com.xplenty.api.model.Cluster;
 import com.xplenty.api.util.Http;
 import com.xplenty.api.util.Http.MediaType;
 import com.xplenty.api.util.Http.Method;
+
+import java.util.List;
+import java.util.Properties;
 
 /**
  * @author Yuriy Kovalek
@@ -77,9 +77,9 @@ public class ListClusters implements Request<List<Cluster>> {
 			return Xplenty.Resource.Clusters.value;
 		String params = "?";
 		for (Object var: parameters.keySet()) {
-			params += (String)var + "=" + parameters.get(var).toString() + "&";
+			params += (String) var + "=" + parameters.get(var).toString() + "&";
 		}
-		return Xplenty.Resource.Clusters.value + params.substring(0, params.length()-1);
+		return Xplenty.Resource.Clusters.value + params.substring(0, params.length() - 1);
 	}
 
 	@Override

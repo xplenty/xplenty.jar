@@ -59,6 +59,38 @@ public class Xplenty {
 		}
 
 	}
+
+    public enum ScheduleStatus {
+        enabled("enabled"),
+        disabled("disabled"),
+        /**
+         * used only for filtering meaning all the statuses above
+         */
+        all("all")
+        ;
+        @SuppressWarnings("unused")
+        private final String status;
+
+        ScheduleStatus(String status) {
+            this.status = status;
+        }
+    }
+    
+    public enum ScheduleIntervalUnit {
+
+        minutes("minutes"),
+        hours("hours"),
+        days("days"),
+        weeks("weeks"),
+        months("months");
+
+        @SuppressWarnings("unused")
+        private final String unit;
+
+        ScheduleIntervalUnit(String unit) {
+            this.unit = unit;
+        }
+    }
 	
 	public enum ClusterType {		
 		production("production"),
@@ -96,6 +128,7 @@ public class Xplenty {
 	 * Endpoints and short descriptions for REST resources
 	 */
 	public static enum Resource {
+        Packages("packages", "List packages"),
 		ClusterPlans("cluster_plans", "List cluster plans"),
 		Clusters("clusters", "List clusters"), 
 		Cluster("clusters/%s", "Get cluster information"),
@@ -107,7 +140,9 @@ public class Xplenty {
 		RunJob("jobs", "Run job"),
 		StopJob("jobs/%s", "Stop job"),
         ClusterWatcher("clusters/%s/watchers", "adding/removing a cluster watchers"),
-        JobWatcher("jobs/%s/watchers", "adding/removing a job watchers") ;
+        JobWatcher("jobs/%s/watchers", "adding/removing a job watchers"),
+        Schedules("schedules", "list schedules")
+        ;
 		
 		public final String value;
 		public final String name;

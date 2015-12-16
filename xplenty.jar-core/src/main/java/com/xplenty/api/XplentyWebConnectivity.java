@@ -3,8 +3,6 @@
  */
 package com.xplenty.api;
 
-import java.io.StringWriter;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
@@ -12,12 +10,15 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.config.ClientConfig;
 import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
+import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.exceptions.AuthFailedException;
 import com.xplenty.api.exceptions.RequestFailedException;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.request.Request;
 import com.xplenty.api.util.Http;
+
+import java.io.StringWriter;
 
 /**
  * Proxy for connecting to the XplentyAPI over HTTP
@@ -36,18 +37,31 @@ class XplentyWebConnectivity {
 	private final Client client;
 	private Version version = null;
 
+    /**
+     * Construct a new instance for given account and API key
+     * @param accountName name of the associated account, used in URL's
+     * @param apiKey used for authentication
+     */
+    XplentyWebConnectivity(String accountName, String apiKey) {
+        this(accountName, apiKey, false);
+    }
+
 	/**
 	 * Construct a new instance for given account and API key
 	 * @param accountName name of the associated account, used in URL's
 	 * @param apiKey used for authentication
+     * @param logHttpCommunication enables logging of requests and responses
 	 */
-	XplentyWebConnectivity(String accountName, String apiKey) {
+	XplentyWebConnectivity(String accountName, String apiKey, boolean logHttpCommunication) {
 		ACCOUNT_NAME = accountName;
 		API_KEY = apiKey;
 		
 		ClientConfig config = new DefaultClientConfig();
 		client = Client.create(config);
 		client.addFilter(new HTTPBasicAuthFilter(apiKey, ""));
+        if (logHttpCommunication) {
+            client.addFilter(new LoggingFilter());
+        }
 	}
 
 	/**

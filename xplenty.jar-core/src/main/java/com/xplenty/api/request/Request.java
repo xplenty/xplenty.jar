@@ -11,6 +11,8 @@ import com.xplenty.api.util.Http;
  *
  */
 public interface Request<T> {
+    public static final String PARAMETER_OFFSET = "offset";
+    public static final String PARAMETER_LIMIT = "limit";
 	
 	String getName();
 	

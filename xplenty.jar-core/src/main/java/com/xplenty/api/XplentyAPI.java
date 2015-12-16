@@ -3,19 +3,20 @@
  */
 package com.xplenty.api;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.model.*;
+import com.xplenty.api.model.Package;
 import com.xplenty.api.request.*;
 import com.xplenty.api.request.watching.AddClusterWatcher;
 import com.xplenty.api.request.watching.AddJobWatcher;
 import com.xplenty.api.request.watching.ListWatchers;
 import com.xplenty.api.request.watching.WatchingStop;
 import com.xplenty.api.util.Http;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 /**
  * A convenience class for making HTTP requests to the Xplenty API for a given user. An underlying {@link XplentyWebConnectivity} is created
  * for each instance of XplentyAPI.
@@ -37,14 +38,46 @@ public class XplentyAPI extends XplentyWebConnectivity {
      * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
      * and internal configuration.
      * @param accountName account name used for Xplenty sign-up
-     * @param apiKey User's API key found at //TODO add link to API key source
+     * @param apiKey User's API key found at https://www.xplenty.com/settings/edit
      */
 	public XplentyAPI(String accountName, String apiKey) {
 		super(accountName, apiKey);
 	}
 
+    /**
+     * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
+     * and internal configuration.
+     * @param accountName account name used for Xplenty sign-up
+     * @param apiKey User's API key found at https://www.xplenty.com/settings/edit
+     * @param logHttpCommunication enables logging of requests and responses
+     */
+    public XplentyAPI(String accountName, String apiKey, boolean logHttpCommunication) {
+        super(accountName, apiKey, logHttpCommunication);
+    }
+
+    /**
+     * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
+     * and manual configuration.
+     * @param accountName account name used for Xplenty sign-up
+     * @param apiKey  User's API key found at https://www.xplenty.com/settings/edit
+     * @param host Base API host
+     * @param proto API protocol (plain or encrypted)
+     */
     public XplentyAPI(String accountName, String apiKey, String host, Http.Protocol proto){
-        this(accountName, apiKey);
+        this(accountName, apiKey, host, proto, false);
+    }
+
+    /**
+     * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
+     * and manual configuration.
+     * @param accountName account name used for Xplenty sign-up
+     * @param apiKey  User's API key found at https://www.xplenty.com/settings/edit
+     * @param host Base API host
+     * @param proto API protocol (plain or encrypted)
+     * @param logHttpCommunication enables logging of requests and responses
+     */
+    public XplentyAPI(String accountName, String apiKey, String host, Http.Protocol proto, boolean logHttpCommunication){
+        this(accountName, apiKey, logHttpCommunication);
         this.setHost(host);
         this.setProtocol(proto);
     }
@@ -63,6 +96,24 @@ public class XplentyAPI extends XplentyWebConnectivity {
 		this.setProtocol(proto);
 		return this;
 	}
+
+    /**
+     * List of packages associated with the account
+     * @param props map of request parameters
+     * @return list of packages
+     */
+    public List<Package> listPackages(Properties props) {
+        return this.execute(new ListPackages(props));
+    }
+
+    /**
+     * List of schedules associated with the account
+     * @param props map of request parameters
+     * @return lis of schedules
+     */
+    public List<Schedule> listSchedules(Properties props) {
+        return this.execute(new ListSchedules(props));
+    }
 
 	/**
 	 * List of clusters associated with the account
