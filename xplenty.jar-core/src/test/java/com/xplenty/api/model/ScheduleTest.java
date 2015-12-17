@@ -2,6 +2,7 @@ package com.xplenty.api.model;
 
 import com.xplenty.api.Xplenty;
 import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,6 +15,14 @@ import java.util.Map;
  * Time: 21:18
  */
 public class ScheduleTest extends TestCase {
+
+    @Test
+    public void testBuilder() {
+        // TODO implement actual test after implementing schedule creation
+        Schedule sched = new Schedule();
+        assertNotNull(sched);
+    }
+
     public static Schedule createMockSchedule(Date now) {
         final Schedule sched = new Schedule();
 
