@@ -31,7 +31,7 @@ public class Schedule extends XplentyObject<Schedule> {
     @JsonProperty
     protected Xplenty.ScheduleStatus status;
     @JsonProperty("start_at")
-    protected Date StartAt;
+    protected Date startAt;
     @JsonProperty("next_run_at")
     protected Date nextRunAt;
     @JsonProperty("interval_amount")
@@ -98,7 +98,7 @@ public class Schedule extends XplentyObject<Schedule> {
      * @return the date and time when the schedule should start executing
      */
     public Date getStartAt() {
-        return StartAt;
+        return startAt;
     }
 
     /**
@@ -209,7 +209,7 @@ public class Schedule extends XplentyObject<Schedule> {
 
 	@SuppressWarnings("unused")
     private void setStartAt(Date startAt) {
-        StartAt = startAt;
+        this.startAt = startAt;
     }
 
 	@SuppressWarnings("unused")

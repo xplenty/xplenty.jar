@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author Yuriy Kovalek
  *
  */
+@SuppressWarnings("unused")
 public class Xplenty {
     public static final int MAX_LIMIT = 100;
 
@@ -143,7 +144,8 @@ public class Xplenty {
 		StopJob("jobs/%s", "Stop job"),
         ClusterWatcher("clusters/%s/watchers", "adding/removing a cluster watchers"),
         JobWatcher("jobs/%s/watchers", "adding/removing a job watchers"),
-        Schedules("schedules", "list schedules")
+        Schedules("schedules", "list schedules"),
+        Schedule("schedules/%s", "Get schedule information")
         ;
 		
 		public final String value;

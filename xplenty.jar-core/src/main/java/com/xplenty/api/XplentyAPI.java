@@ -108,8 +108,42 @@ public class XplentyAPI extends XplentyWebConnectivity {
 
     /**
      * List of schedules associated with the account
-     * @param props map of request parameters
-     * @return lis of schedules
+     * @param offset number of record to  start results from
+     * @param limit number of results
+     * @return list of schedules
+     */
+    public List<Package> listPackages(int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractParametrizedRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractParametrizedRequest.PARAMETER_OFFSET, offset);
+        return listPackages(props);
+    }
+
+    /**
+     * List of schedules associated with the account
+     * @return list of schedules
+     */
+    public List<Schedule> listSchedules() {
+        return listSchedules(new Properties());
+    }
+
+    /**
+     * List of schedules associated with the account
+     * @param offset number of record to  start results from
+     * @param limit number of results
+     * @return list of schedules
+     */
+    public List<Schedule> listSchedules(int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractParametrizedRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractParametrizedRequest.PARAMETER_OFFSET, offset);
+        return listSchedules(props);
+    }
+
+    /**
+     * List of schedules associated with the account
+     * @param props map of request parameters, see {@link com.xplenty.api.Xplenty.ScheduleStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link com.xplenty.api.request.ListSchedules}
+     * @return list of schedules
      */
     public List<Schedule> listSchedules(Properties props) {
         return this.execute(new ListSchedules(props));
@@ -117,16 +151,30 @@ public class XplentyAPI extends XplentyWebConnectivity {
 
 	/**
 	 * List of clusters associated with the account
-	 * @return
+	 * @return list of clusters
 	 */
 	public List<Cluster> listClusters() {
 		return listClusters(new Properties());
 	}
-	
-	/**
+
+    /**
+     * List of clusters associated with the account
+     * @param offset number of record to  start results from
+     * @param limit number of results
+     * @return list of clusters
+     */
+    public List<Cluster> listClusters(int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractParametrizedRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractParametrizedRequest.PARAMETER_OFFSET, offset);
+        return listClusters(props);
+    }
+
+
+    /**
 	 * List of clusters associated with the account
 	 * @param props map of request parameters, see {@link Xplenty.ClusterStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link ListClusters}
-	 * @return
+	 * @return list of clusters
 	 */
 	public List<Cluster> listClusters(Properties props) {
 		return this.execute(new ListClusters(props));
@@ -189,16 +237,29 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	
 	/**
 	 * List of jobs associated with the account
-	 * @return
+	 * @return list of jobs
 	 */
 	public List<Job> listJobs() {
 		return listJobs(new Properties());
 	}
+
+    /**
+     * List of jobs associated with the account
+     * @param offset number of record to  start results from
+     * @param limit number of results
+     * @return list of jobs
+     */
+    public List<Job> listJobs(int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractParametrizedRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractParametrizedRequest.PARAMETER_OFFSET, offset);
+        return listJobs(props);
+    }
 	
 	/**
 	 * List of jobs associated with the account
 	 * @param params map of request parameters, see {@link Xplenty.JobStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link ListJobs}
-	 * @return
+	 * @return list of jobs
 	 */
 	public List<Job> listJobs(Properties params) {
 		return this.execute(new ListJobs(params));

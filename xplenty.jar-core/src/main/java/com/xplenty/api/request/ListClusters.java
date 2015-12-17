@@ -8,8 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.Xplenty.ClusterStatus;
-import com.xplenty.api.Xplenty.Sort;
-import com.xplenty.api.Xplenty.SortDirection;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.model.Cluster;
 import com.xplenty.api.util.Http;
@@ -23,16 +21,11 @@ import java.util.Properties;
  * @author Yuriy Kovalek
  *
  */
-public class ListClusters implements Request<List<Cluster>> {
-	public static final String PARAMETER_STATUS = "status";
-	public static final String PARAMETER_SORT = "sort";
-	public static final String PARAMETER_DIRECTION = "direction";
-	
-	private Properties parameters;
+public class ListClusters extends AbstractParametrizedRequest<List<Cluster>> {
 	
 	public ListClusters(Properties params) {
-		validateParameters(params);
-		parameters = params;
+        super(params, true);
+        validateParameters(params);
 	}
 
 	private void validateParameters(Properties params) {
@@ -41,24 +34,6 @@ public class ListClusters implements Request<List<Cluster>> {
 				&& !(params.get(PARAMETER_STATUS) instanceof String && "all".equals(params.get(PARAMETER_STATUS)))
 			)
 			throw new XplentyAPIException("Invalid 'status' parameter");
-		
-		if (
-				params.containsKey(PARAMETER_SORT)
-				&& !(params.get(PARAMETER_SORT) instanceof Sort)
-			)
-			throw new XplentyAPIException("Invalid 'sort' parameter");
-		
-		if (
-				!params.containsKey(PARAMETER_SORT)
-				&& params.containsKey(PARAMETER_DIRECTION)
-			)
-			throw new XplentyAPIException("Missing the 'sort' parameter");
-		
-		if (
-				params.containsKey(PARAMETER_DIRECTION)
-				&& !(params.get(PARAMETER_DIRECTION) instanceof SortDirection)
-			)
-			throw new XplentyAPIException("Invalid 'direction' parameter");
 	}
 
 	@Override
@@ -71,18 +46,12 @@ public class ListClusters implements Request<List<Cluster>> {
 		return Http.MediaType.JSON;
 	}
 
-	@Override
-	public String getEndpoint() {
-		if (parameters.isEmpty())
-			return Xplenty.Resource.Clusters.value;
-		String params = "?";
-		for (Object var: parameters.keySet()) {
-			params += (String) var + "=" + parameters.get(var).toString() + "&";
-		}
-		return Xplenty.Resource.Clusters.value + params.substring(0, params.length() - 1);
-	}
+    @Override
+    protected String getEndpointRoot() {
+        return Xplenty.Resource.Clusters.value;
+    }
 
-	@Override
+    @Override
 	public List<Cluster> getResponse(ClientResponse response) {
 		String json = response.getEntity(String.class);
 		try {

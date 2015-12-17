@@ -23,16 +23,10 @@ import java.util.Properties;
  * Date: 16.12.15
  * Time: 18:08
  */
-public class ListPackages implements Request<List<Package>> {
-
-	private Properties parameters;
+public class ListPackages extends AbstractParametrizedRequest<List<Package>> {
 
 	public ListPackages(Properties params) {
-		validateParameters(params);
-		parameters = params;
-	}
-
-	private void validateParameters(Properties params) {
+		super(params, false);
 	}
 
 	@Override
@@ -45,18 +39,12 @@ public class ListPackages implements Request<List<Package>> {
 		return MediaType.JSON;
 	}
 
-	@Override
-	public String getEndpoint() {
-		if (parameters.isEmpty())
-			return Xplenty.Resource.Packages.value;
-//		String params = "?";
-//		for (Object var: parameters.keySet()) {
-//			params += (String) var + "=" + parameters.get(var).toString() + "&";
-//		}
-		return Xplenty.Resource.Packages.value + "?limit=1&offset=0"; // + params.substring(0, params.length() - 1);
-	}
+    @Override
+    protected String getEndpointRoot() {
+        return Xplenty.Resource.Packages.value;
+    }
 
-	@Override
+    @Override
 	public List<Package> getResponse(ClientResponse response) {
 		String json = response.getEntity(String.class);
 		try {
