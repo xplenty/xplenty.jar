@@ -16,7 +16,7 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Schedule extends XplentyObject<Schedule> {
-    protected Schedule() {
+    public Schedule() {
         super(Schedule.class);
     }
     
@@ -183,17 +183,17 @@ public class Schedule extends XplentyObject<Schedule> {
 
 
 	@SuppressWarnings("unused")
-    private void setId(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
 	@SuppressWarnings("unused")
-    private void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
 	@SuppressWarnings("unused")
-    private void setDescription(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
@@ -203,12 +203,12 @@ public class Schedule extends XplentyObject<Schedule> {
     }
 
 	@SuppressWarnings("unused")
-    private void setStatus(Xplenty.ScheduleStatus status) {
+    public void setStatus(Xplenty.ScheduleStatus status) {
         this.status = status;
     }
 
 	@SuppressWarnings("unused")
-    private void setStartAt(Date startAt) {
+    public void setStartAt(Date startAt) {
         this.startAt = startAt;
     }
 
@@ -218,12 +218,12 @@ public class Schedule extends XplentyObject<Schedule> {
     }
 
 	@SuppressWarnings("unused")
-    private void setIntervalAmount(Long intervalAmount) {
+    public void setIntervalAmount(Long intervalAmount) {
         this.intervalAmount = intervalAmount;
     }
 
 	@SuppressWarnings("unused")
-    private void setIntervalUnit(Xplenty.ScheduleIntervalUnit intervalUnit) {
+    public void setIntervalUnit(Xplenty.ScheduleIntervalUnit intervalUnit) {
         this.intervalUnit = intervalUnit;
     }
 
@@ -258,7 +258,7 @@ public class Schedule extends XplentyObject<Schedule> {
     }
 
 	@SuppressWarnings("unused")
-    private void setTask(ScheduleTask task) {
+    public void setTask(ScheduleTask task) {
         this.task = task;
     }
 }

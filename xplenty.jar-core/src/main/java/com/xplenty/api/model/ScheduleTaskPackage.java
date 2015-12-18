@@ -30,12 +30,12 @@ public class ScheduleTaskPackage {
 
 
     @SuppressWarnings("unused")
-    private void setPackageId(Long packageId) {
+    public void setPackageId(Long packageId) {
         this.packageId = packageId;
     }
 
     @SuppressWarnings("unused")
-    private void setVariables(Map<String, String> variables) {
+    public void setVariables(Map<String, String> variables) {
         this.variables = variables;
     }
 }

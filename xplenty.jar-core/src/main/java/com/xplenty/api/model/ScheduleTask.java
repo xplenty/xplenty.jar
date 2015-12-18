@@ -3,11 +3,12 @@ package com.xplenty.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,8 +31,8 @@ public class ScheduleTask {
     @JsonProperty("time_to_idle")
     protected Integer timeToIdle;
     @JsonProperty
+    @JsonSerialize(using = PackageSerializer.class)
     protected List<ScheduleTaskPackage> packages;
-
 
     public Integer getNodes() {
         return nodes;
@@ -51,22 +52,22 @@ public class ScheduleTask {
 
 
     @SuppressWarnings("unused")
-    private void setNodes(Integer nodes) {
+    public void setNodes(Integer nodes) {
         this.nodes = nodes;
     }
 
     @SuppressWarnings("unused")
-    private void setTerminateOnIdle(Boolean terminateOnIdle) {
+    public void setTerminateOnIdle(Boolean terminateOnIdle) {
         this.terminateOnIdle = terminateOnIdle;
     }
 
     @SuppressWarnings("unused")
-    private void setTimeToIdle(Integer timeToIdle) {
+    public void setTimeToIdle(Integer timeToIdle) {
         this.timeToIdle = timeToIdle;
     }
 
     @SuppressWarnings("unused")
-    private void setPackages(List<ScheduleTaskPackage> packages) {
+    public void setPackages(List<ScheduleTaskPackage> packages) {
         this.packages = packages;
     }
 
@@ -75,6 +76,21 @@ public class ScheduleTask {
         @Override
         public Boolean deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JsonProcessingException {
             return jsonParser.getValueAsInt() == 1;
+        }
+    }
+
+    protected static class PackageSerializer extends JsonSerializer<List<ScheduleTaskPackage>> {
+        @Override
+        public void serialize(List<ScheduleTaskPackage> packageList, JsonGenerator jgen, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+            if (packageList == null) {
+                return;
+            }
+            jgen.writeStartObject();
+            for (int i = 0; i < packageList.size(); i++) {
+                jgen.writeFieldName(String.valueOf(i));
+                serializerProvider.defaultSerializeValue(packageList.get(i), jgen);
+            }
+            jgen.writeEndObject();
         }
     }
 }

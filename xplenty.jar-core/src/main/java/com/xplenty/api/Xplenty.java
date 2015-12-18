@@ -145,6 +145,9 @@ public class Xplenty {
         ClusterWatcher("clusters/%s/watchers", "adding/removing a cluster watchers"),
         JobWatcher("jobs/%s/watchers", "adding/removing a job watchers"),
         Schedules("schedules", "list schedules"),
+        CreateSchedule("schedules", "Create schedule"),
+        UpdateSchedule("schedules/%s", "Update schedule"),
+        RemoveSchedule("schedules/%s", "Remove schedule"),
         Schedule("schedules/%s", "Get schedule information")
         ;
 		

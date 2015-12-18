@@ -15,6 +15,8 @@ import java.util.Map;
  * Time: 21:18
  */
 public class ScheduleTest extends TestCase {
+    //TODO implement schedule add, schedule get info, schedule remove, schedule update, clone schedule
+
 
     @Test
     public void testBuilder() {
