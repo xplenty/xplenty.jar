@@ -12,7 +12,7 @@ import com.xplenty.api.model.Job;
  */
 public class StopJob extends AbstractDeleteRequest<Job> {
 
-    protected StopJob(Long entityId) {
+    public StopJob(Long entityId) {
         super(entityId);
     }
 

@@ -3,14 +3,6 @@
  */
 package com.xplenty.api.request;
 
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-
-import junit.framework.TestCase;
-
-import org.junit.Test;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
@@ -22,6 +14,12 @@ import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.model.Cluster;
 import com.xplenty.api.model.ClusterTest;
 import com.xplenty.api.util.Http;
+import junit.framework.TestCase;
+import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 /**
  * @author Yuriy Kovalek
@@ -30,7 +28,7 @@ import com.xplenty.api.util.Http;
 public class TerminateClusterTest extends TestCase {
 	@Test
 	public void testIntegrity() {
-		TerminateCluster tc = new TerminateCluster(1);
+		TerminateCluster tc = new TerminateCluster(1L);
 		
 		assertEquals(Xplenty.Resource.TerminateCluster.format(Long.toString(1)), tc.getEndpoint());
 		assertEquals(Xplenty.Resource.TerminateCluster.name, tc.getName());
@@ -42,7 +40,7 @@ public class TerminateClusterTest extends TestCase {
 
 	@Test
 	public void testValidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
-		TerminateCluster tc = new TerminateCluster(1);
+		TerminateCluster tc = new TerminateCluster(1L);
 		Cluster c = ClusterTest.createMockCluster(new Date());
 		
 		String json = new ObjectMapper().writeValueAsString(c);
@@ -55,7 +53,7 @@ public class TerminateClusterTest extends TestCase {
 	
 	@Test
 	public void testInvalidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
-		TerminateCluster tc = new TerminateCluster(1);
+		TerminateCluster tc = new TerminateCluster(1L);
 		Cluster c = ClusterTest.createMockCluster(new Date());
 		
 		String json = new ObjectMapper().writeValueAsString(c).replace("2", "two");

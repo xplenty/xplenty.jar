@@ -7,7 +7,7 @@ import com.xplenty.api.util.Http.Method;
 
 public class UpdateCluster extends AbstractManipulationRequest<Cluster> {
 
-    protected UpdateCluster(Cluster entity) {
+    public UpdateCluster(Cluster entity) {
         super(entity);
     }
 

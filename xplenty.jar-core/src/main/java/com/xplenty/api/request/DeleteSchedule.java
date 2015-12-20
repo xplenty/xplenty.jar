@@ -10,7 +10,7 @@ import com.xplenty.api.model.Schedule;
  */
 public class DeleteSchedule extends AbstractDeleteRequest<Schedule> {
 
-    public DeleteSchedule(Long entityId) {
+    public DeleteSchedule(long entityId) {
         super(entityId);
     }
 

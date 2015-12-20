@@ -13,7 +13,7 @@ import com.xplenty.api.util.Http.Method;
  *
  */
 public class RunJob extends AbstractManipulationRequest<Job> {
-    protected RunJob(Job entity) {
+    public RunJob(Job entity) {
         super(entity);
     }
 

@@ -131,6 +131,7 @@ public class Xplenty {
 	 * Endpoints and short descriptions for REST resources
 	 */
 	public static enum Resource {
+        Package("packages/%s", "Get package info"),
         Packages("packages", "List packages"),
 		ClusterPlans("cluster_plans", "List cluster plans"),
 		Clusters("clusters", "List clusters"), 
@@ -146,6 +147,7 @@ public class Xplenty {
         JobWatcher("jobs/%s/watchers", "adding/removing a job watchers"),
         Schedules("schedules", "list schedules"),
         CreateSchedule("schedules", "Create schedule"),
+        CloneSchedule("schedules/%s/clone", "Clone schedule"),
         UpdateSchedule("schedules/%s", "Update schedule"),
         RemoveSchedule("schedules/%s", "Remove schedule"),
         Schedule("schedules/%s", "Get schedule information")

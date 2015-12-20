@@ -7,7 +7,7 @@ import com.xplenty.api.util.Http.Method;
 
 public class CreateCluster extends AbstractManipulationRequest<Cluster> {
 
-    protected CreateCluster(Cluster entity) {
+    public CreateCluster(Cluster entity) {
         super(entity);
     }
 

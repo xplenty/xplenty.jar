@@ -2,40 +2,43 @@ package com.xplenty.api.request;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
+import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
+import com.xplenty.api.model.Schedule;
 import com.xplenty.api.util.Http;
-
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 
 /**
  * Author: Xardas
  * Date: 18.12.15
- * Time: 20:20
+ * Time: 20:25
  */
-public abstract class AbstractDeleteRequest<T> implements Request<T> {
-    protected final long entityId;
-    private final Class<T> clazz;
+public class CloneSchedule implements Request<Schedule> {
+    private final Long entityId;
 
-    @SuppressWarnings("unchecked")
-    protected AbstractDeleteRequest(Long entityId) {
+
+    public CloneSchedule(long entityId) {
         this.entityId = entityId;
-        final Type superclass = this.getClass().getGenericSuperclass();
-        if (superclass instanceof Class) {
-            throw new XplentyAPIException("Developer error, no actual type information passed!");
-        }
-        this.clazz = (Class<T>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
     }
 
     @Override
-    public T getResponse(ClientResponse response) {
+    public Schedule getResponse(ClientResponse response) {
         String json = response.getEntity(String.class);
         try {
-            final T value = new ObjectMapper().readValue(json, this.clazz);
+            final Schedule value = new ObjectMapper().readValue(json, Schedule.class);
             return value;
         } catch (Exception e) {
             throw new XplentyAPIException(getName() + ": error parsing response object", e);
         }
+    }
+
+    @Override
+    public String getName() {
+        return Xplenty.Resource.CloneSchedule.name;
+    }
+
+    @Override
+    public String getEndpoint() {
+        return Xplenty.Resource.CloneSchedule.format(String.valueOf(entityId));
     }
 
     @Override
@@ -56,6 +59,6 @@ public abstract class AbstractDeleteRequest<T> implements Request<T> {
 
     @Override
     public Http.Method getHttpMethod() {
-        return Http.Method.DELETE;
+        return Http.Method.POST;
     }
 }

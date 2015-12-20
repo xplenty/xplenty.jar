@@ -99,6 +99,15 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	}
 
     /**
+     * Get package information
+     * @param packageId of the package to get
+     * @return package object
+     */
+    public Package getPackageInfo(long packageId) {
+        return this.execute(new PackageInfo(packageId));
+    }
+
+    /**
      * List of packages associated with the account
      * @param props map of request parameters
      * @return list of packages
@@ -349,11 +358,35 @@ public class XplentyAPI extends XplentyWebConnectivity {
      * @param scheduleId Id of schedule to delete
      * @return deleted schedule object
      */
-    public Schedule deleteSchedule(Long scheduleId) {
-        if (scheduleId == null) {
+    public Schedule deleteSchedule(long scheduleId) {
+        if (scheduleId == 0) {
             throw new XplentyAPIException("No id specified!");
         }
         return this.execute(new DeleteSchedule(scheduleId));
+    }
+
+    /**
+     * Clone schedule
+     * @param scheduleId Id of schedule to clone
+     * @return cloned schedule object
+     */
+    public Schedule cloneSchedule(long scheduleId) {
+        if (scheduleId == 0) {
+            throw new XplentyAPIException("No id specified!");
+        }
+        return this.execute(new CloneSchedule(scheduleId));
+    }
+
+    /**
+     * Get schedule info
+     * @param scheduleId Id of schedule to get
+     * @return schedule object
+     */
+    public Schedule getScheduleInfo(long scheduleId) {
+        if (scheduleId == 0) {
+            throw new XplentyAPIException("No id specified!");
+        }
+        return this.execute(new ScheduleInfo(scheduleId));
     }
 
     /**

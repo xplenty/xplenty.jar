@@ -3,14 +3,6 @@
  */
 package com.xplenty.api.request;
 
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-
-import junit.framework.TestCase;
-
-import org.junit.Test;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
@@ -23,6 +15,12 @@ import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.model.Job;
 import com.xplenty.api.model.JobTest;
 import com.xplenty.api.util.Http;
+import junit.framework.TestCase;
+import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 /**
  * @author Yuriy Kovalek
@@ -32,7 +30,7 @@ public class JobInfoTest extends TestCase {
 
 	@Test
 	public void testIntegrity() {
-		JobInfo ji = new JobInfo(111);
+		JobInfo ji = new JobInfo(111L);
 		
 		assertEquals(Xplenty.Resource.Job.format(Long.toString(111)), ji.getEndpoint());
 		assertEquals(Xplenty.Resource.Job.name, ji.getName());
@@ -45,7 +43,7 @@ public class JobInfoTest extends TestCase {
 	@Test
 	public void testValidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		Date now = new Date();
-		JobInfo ji = new JobInfo(111);
+		JobInfo ji = new JobInfo(111L);
 		Job j = JobTest.createMockJob(now);
 		String json = new ObjectMapper().writeValueAsString(j);
 		
@@ -76,7 +74,7 @@ public class JobInfoTest extends TestCase {
 	@Test
 	public void testInvalidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		Date now = new Date();
-		JobInfo ji = new JobInfo(111);
+		JobInfo ji = new JobInfo(111L);
 		Job j = JobTest.createMockJob(now);
 		String json = new ObjectMapper().writeValueAsString(j).replace("running", "success");
 		

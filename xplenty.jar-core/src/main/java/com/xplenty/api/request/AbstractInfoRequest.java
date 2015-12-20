@@ -10,15 +10,15 @@ import java.lang.reflect.Type;
 
 /**
  * Author: Xardas
- * Date: 18.12.15
- * Time: 20:20
+ * Date: 20.12.15
+ * Time: 19:48
  */
-public abstract class AbstractDeleteRequest<T> implements Request<T> {
+public abstract class AbstractInfoRequest<T> implements Request<T> {
     protected final long entityId;
     private final Class<T> clazz;
 
     @SuppressWarnings("unchecked")
-    protected AbstractDeleteRequest(Long entityId) {
+    protected AbstractInfoRequest(long entityId) {
         this.entityId = entityId;
         final Type superclass = this.getClass().getGenericSuperclass();
         if (superclass instanceof Class) {
@@ -56,6 +56,6 @@ public abstract class AbstractDeleteRequest<T> implements Request<T> {
 
     @Override
     public Http.Method getHttpMethod() {
-        return Http.Method.DELETE;
+        return Http.Method.GET;
     }
 }

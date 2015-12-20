@@ -13,7 +13,7 @@ import com.xplenty.api.model.Cluster;
 public class TerminateCluster extends AbstractDeleteRequest<Cluster> {
 
 
-    protected TerminateCluster(Long entityId) {
+    public TerminateCluster(Long entityId) {
         super(entityId);
     }
 
