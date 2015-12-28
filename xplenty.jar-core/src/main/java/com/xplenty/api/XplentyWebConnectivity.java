@@ -19,6 +19,8 @@ import com.xplenty.api.request.Request;
 import com.xplenty.api.util.Http;
 
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /**
  * Proxy for connecting to the XplentyAPI over HTTP
@@ -28,6 +30,7 @@ import java.io.StringWriter;
  */
 class XplentyWebConnectivity {
 	private static final String API_PATH = "api";
+    protected final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	
 	private String HOST = "api.xplenty.com";
 	private Http.Protocol PROTOCOL = Http.Protocol.Https;
@@ -95,7 +98,10 @@ class XplentyWebConnectivity {
 		if (request.hasBody()) {
 			StringWriter sw = new StringWriter();
 			try {
-				new ObjectMapper().writeValue(sw, request.getBody());
+                final ObjectMapper objectMapper = new ObjectMapper();
+
+                objectMapper.setDateFormat(dateFormat);
+                objectMapper.writeValue(sw, request.getBody());
 			} catch (Exception e) {
 				throw new XplentyAPIException(e);
 			}

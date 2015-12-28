@@ -5,13 +5,13 @@ import com.xplenty.api.model.Cluster;
 import com.xplenty.api.util.Http;
 import com.xplenty.api.util.Http.Method;
 
-public class UpdateCluster extends ClusterRequest {
+public class UpdateCluster extends AbstractManipulationRequest<Cluster> {
 
-	public UpdateCluster(Cluster cluster) {
-		super(cluster);
-	}
+    public UpdateCluster(Cluster entity) {
+        super(entity);
+    }
 
-	@Override
+    @Override
 	public Method getHttpMethod()  {
 		return Http.Method.PUT;
 	}
@@ -23,7 +23,11 @@ public class UpdateCluster extends ClusterRequest {
 
 	@Override
 	public String getEndpoint() {
-		return Xplenty.Resource.UpdateCluster.format(Long.toString(cluster.getId()));
+		return Xplenty.Resource.UpdateCluster.format(Long.toString(entity.getId()));
 	}
 
+    @Override
+    protected String getPackKey() {
+        return "cluster";
+    }
 }

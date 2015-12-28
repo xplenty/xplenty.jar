@@ -16,9 +16,9 @@ import java.util.Map;
  */
 public class ScheduleTest extends TestCase {
 
+
     @Test
     public void testBuilder() {
-        // TODO implement actual test after implementing schedule creation
         Schedule sched = new Schedule();
         assertNotNull(sched);
     }

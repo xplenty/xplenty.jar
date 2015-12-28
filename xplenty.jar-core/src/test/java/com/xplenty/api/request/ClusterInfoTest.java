@@ -3,16 +3,6 @@
  */
 package com.xplenty.api.request;
 
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
-import java.util.Date;
-
-import junit.framework.TestCase;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
@@ -26,6 +16,14 @@ import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.model.Cluster;
 import com.xplenty.api.model.ClusterTest;
 import com.xplenty.api.util.Http;
+import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * @author Yuriy Kovalek
@@ -37,7 +35,7 @@ public class ClusterInfoTest extends TestCase {
 	
 	@Before
 	public void setUp() {
-		ci = new ClusterInfo(1);
+		ci = new ClusterInfo(1L);
 	}
 	
 	@Test

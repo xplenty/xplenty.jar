@@ -10,3 +10,5 @@ target/
 .classpath
 .project
 .settings/
+testpackage/*
+XplentyApiTest.java

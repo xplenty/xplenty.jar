@@ -5,6 +5,7 @@ package com.xplenty.api;
 
 import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.Xplenty.Version;
+import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.model.*;
 import com.xplenty.api.model.Package;
 import com.xplenty.api.request.*;
@@ -96,6 +97,15 @@ public class XplentyAPI extends XplentyWebConnectivity {
 		this.setProtocol(proto);
 		return this;
 	}
+
+    /**
+     * Get package information
+     * @param packageId of the package to get
+     * @return package object
+     */
+    public Package getPackageInfo(long packageId) {
+        return this.execute(new PackageInfo(packageId));
+    }
 
     /**
      * List of packages associated with the account
@@ -317,6 +327,66 @@ public class XplentyAPI extends XplentyWebConnectivity {
 
     public Boolean removeJobWatchers(long jobId) {
         return this.execute(new WatchingStop(Xplenty.SubjectType.JOB, jobId));
+    }
+
+    /**
+     * Creates new schedule
+     * @param schedule Schedule to create. All fields that have public setters (except for id) should be set
+     * @return newly created schedule object
+     */
+    public Schedule createSchedule(Schedule schedule) {
+        if (schedule.getId() != null) {
+            schedule.setId(null);
+        }
+        return this.execute(new CreateSchedule(schedule));
+    }
+
+    /**
+     * Update schedule
+     * @param schedule Schedule to update. Any fields that have public setters can be set. Id must be set!
+     * @return updated schedule object
+     */
+    public Schedule updateSchedule(Schedule schedule) {
+        if (schedule.getId() == null) {
+            throw new XplentyAPIException("No id specified!");
+        }
+        return this.execute(new UpdateSchedule(schedule));
+    }
+
+    /**
+     * Delete schedule
+     * @param scheduleId Id of schedule to delete
+     * @return deleted schedule object
+     */
+    public Schedule deleteSchedule(long scheduleId) {
+        if (scheduleId == 0) {
+            throw new XplentyAPIException("No id specified!");
+        }
+        return this.execute(new DeleteSchedule(scheduleId));
+    }
+
+    /**
+     * Clone schedule
+     * @param scheduleId Id of schedule to clone
+     * @return cloned schedule object
+     */
+    public Schedule cloneSchedule(long scheduleId) {
+        if (scheduleId == 0) {
+            throw new XplentyAPIException("No id specified!");
+        }
+        return this.execute(new CloneSchedule(scheduleId));
+    }
+
+    /**
+     * Get schedule info
+     * @param scheduleId Id of schedule to get
+     * @return schedule object
+     */
+    public Schedule getScheduleInfo(long scheduleId) {
+        if (scheduleId == 0) {
+            throw new XplentyAPIException("No id specified!");
+        }
+        return this.execute(new ScheduleInfo(scheduleId));
     }
 
     /**

@@ -5,13 +5,13 @@ import com.xplenty.api.model.Cluster;
 import com.xplenty.api.util.Http;
 import com.xplenty.api.util.Http.Method;
 
-public class CreateCluster extends ClusterRequest {
+public class CreateCluster extends AbstractManipulationRequest<Cluster> {
 
-	public CreateCluster(Cluster cluster) {
-		super(cluster);
-	}
+    public CreateCluster(Cluster entity) {
+        super(entity);
+    }
 
-	@Override
+    @Override
 	public Method getHttpMethod()  {
 		return Http.Method.POST;
 	}
@@ -26,4 +26,8 @@ public class CreateCluster extends ClusterRequest {
 		return Xplenty.Resource.CreateCluster.value;
 	}
 
+    @Override
+    protected String getPackKey() {
+        return "cluster";
+    }
 }
