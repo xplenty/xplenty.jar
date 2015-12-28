@@ -7,55 +7,55 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.Xplenty;
-import com.xplenty.api.Xplenty.ClusterStatus;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.model.Cluster;
-import com.xplenty.api.util.Http;
+import com.xplenty.api.model.Schedule;
 import com.xplenty.api.util.Http.MediaType;
 import com.xplenty.api.util.Http.Method;
 
 import java.util.List;
 import java.util.Properties;
 
+
 /**
- * @author Yuriy Kovalek
- *
+ * Request for retrieval of all available schedules
+ * Author: Xardas
+ * Date: 16.12.15
+ * Time: 18:08
  */
-public class ListClusters extends AbstractParametrizedRequest<List<Cluster>> {
-	
-	public ListClusters(Properties params) {
-        super(params, true);
+public class ListSchedules extends AbstractParametrizedRequest<List<Schedule>> {
+
+
+	public ListSchedules(Properties params) {
+		super(params, true);
         validateParameters(params);
 	}
 
+
 	private void validateParameters(Properties params) {
-		if (	params.containsKey(PARAMETER_STATUS)
-				&& !(params.get(PARAMETER_STATUS) instanceof ClusterStatus) 
-				&& !(params.get(PARAMETER_STATUS) instanceof String && "all".equals(params.get(PARAMETER_STATUS)))
-			)
-			throw new XplentyAPIException("Invalid 'status' parameter");
+        if (params.containsKey(PARAMETER_STATUS)
+                && !(params.get(PARAMETER_STATUS) instanceof Xplenty.ScheduleStatus)) {
+            throw new XplentyAPIException("Invalid 'status' parameter");
+        }
 	}
 
 	@Override
 	public Method getHttpMethod() {
-		return Http.Method.GET;
+		return Method.GET;
 	}
-	
+
 	@Override
 	public MediaType getResponseType() {
-		return Http.MediaType.JSON;
+		return MediaType.JSON;
 	}
 
-    @Override
-    protected String getEndpointRoot() {
-        return Xplenty.Resource.Clusters.value;
-    }
 
-    @Override
-	public List<Cluster> getResponse(ClientResponse response) {
+
+	@Override
+	public List<Schedule> getResponse(ClientResponse response) {
 		String json = response.getEntity(String.class);
 		try {
-			return new ObjectMapper().readValue(json, new TypeReference<List<Cluster>>() {});
+			return new ObjectMapper().readValue(json, new TypeReference<List<Schedule>>() {});
 		} catch (Exception e) {
 			throw new XplentyAPIException(getName() + ": error parsing response object", e);
 		}
@@ -63,7 +63,7 @@ public class ListClusters extends AbstractParametrizedRequest<List<Cluster>> {
 
 	@Override
 	public String getName() {
-		return Xplenty.Resource.Clusters.name;
+		return Xplenty.Resource.Schedules.name;
 	}
 
 	@Override
@@ -76,4 +76,8 @@ public class ListClusters extends AbstractParametrizedRequest<List<Cluster>> {
 		return null;
 	}
 
+    @Override
+    protected String getEndpointRoot() {
+        return Xplenty.Resource.Schedules.value;
+    }
 }

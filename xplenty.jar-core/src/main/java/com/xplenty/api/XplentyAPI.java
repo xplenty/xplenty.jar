@@ -3,19 +3,20 @@
  */
 package com.xplenty.api;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.model.*;
+import com.xplenty.api.model.Package;
 import com.xplenty.api.request.*;
 import com.xplenty.api.request.watching.AddClusterWatcher;
 import com.xplenty.api.request.watching.AddJobWatcher;
 import com.xplenty.api.request.watching.ListWatchers;
 import com.xplenty.api.request.watching.WatchingStop;
 import com.xplenty.api.util.Http;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 /**
  * A convenience class for making HTTP requests to the Xplenty API for a given user. An underlying {@link XplentyWebConnectivity} is created
  * for each instance of XplentyAPI.
@@ -37,14 +38,46 @@ public class XplentyAPI extends XplentyWebConnectivity {
      * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
      * and internal configuration.
      * @param accountName account name used for Xplenty sign-up
-     * @param apiKey User's API key found at //TODO add link to API key source
+     * @param apiKey User's API key found at https://www.xplenty.com/settings/edit
      */
 	public XplentyAPI(String accountName, String apiKey) {
 		super(accountName, apiKey);
 	}
 
+    /**
+     * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
+     * and internal configuration.
+     * @param accountName account name used for Xplenty sign-up
+     * @param apiKey User's API key found at https://www.xplenty.com/settings/edit
+     * @param logHttpCommunication enables logging of requests and responses
+     */
+    public XplentyAPI(String accountName, String apiKey, boolean logHttpCommunication) {
+        super(accountName, apiKey, logHttpCommunication);
+    }
+
+    /**
+     * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
+     * and manual configuration.
+     * @param accountName account name used for Xplenty sign-up
+     * @param apiKey  User's API key found at https://www.xplenty.com/settings/edit
+     * @param host Base API host
+     * @param proto API protocol (plain or encrypted)
+     */
     public XplentyAPI(String accountName, String apiKey, String host, Http.Protocol proto){
-        this(accountName, apiKey);
+        this(accountName, apiKey, host, proto, false);
+    }
+
+    /**
+     * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
+     * and manual configuration.
+     * @param accountName account name used for Xplenty sign-up
+     * @param apiKey  User's API key found at https://www.xplenty.com/settings/edit
+     * @param host Base API host
+     * @param proto API protocol (plain or encrypted)
+     * @param logHttpCommunication enables logging of requests and responses
+     */
+    public XplentyAPI(String accountName, String apiKey, String host, Http.Protocol proto, boolean logHttpCommunication){
+        this(accountName, apiKey, logHttpCommunication);
         this.setHost(host);
         this.setProtocol(proto);
     }
@@ -64,18 +97,84 @@ public class XplentyAPI extends XplentyWebConnectivity {
 		return this;
 	}
 
+    /**
+     * List of packages associated with the account
+     * @param props map of request parameters
+     * @return list of packages
+     */
+    public List<Package> listPackages(Properties props) {
+        return this.execute(new ListPackages(props));
+    }
+
+    /**
+     * List of schedules associated with the account
+     * @param offset number of record to  start results from
+     * @param limit number of results
+     * @return list of schedules
+     */
+    public List<Package> listPackages(int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractParametrizedRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractParametrizedRequest.PARAMETER_OFFSET, offset);
+        return listPackages(props);
+    }
+
+    /**
+     * List of schedules associated with the account
+     * @return list of schedules
+     */
+    public List<Schedule> listSchedules() {
+        return listSchedules(new Properties());
+    }
+
+    /**
+     * List of schedules associated with the account
+     * @param offset number of record to  start results from
+     * @param limit number of results
+     * @return list of schedules
+     */
+    public List<Schedule> listSchedules(int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractParametrizedRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractParametrizedRequest.PARAMETER_OFFSET, offset);
+        return listSchedules(props);
+    }
+
+    /**
+     * List of schedules associated with the account
+     * @param props map of request parameters, see {@link com.xplenty.api.Xplenty.ScheduleStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link com.xplenty.api.request.ListSchedules}
+     * @return list of schedules
+     */
+    public List<Schedule> listSchedules(Properties props) {
+        return this.execute(new ListSchedules(props));
+    }
+
 	/**
 	 * List of clusters associated with the account
-	 * @return
+	 * @return list of clusters
 	 */
 	public List<Cluster> listClusters() {
 		return listClusters(new Properties());
 	}
-	
-	/**
+
+    /**
+     * List of clusters associated with the account
+     * @param offset number of record to  start results from
+     * @param limit number of results
+     * @return list of clusters
+     */
+    public List<Cluster> listClusters(int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractParametrizedRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractParametrizedRequest.PARAMETER_OFFSET, offset);
+        return listClusters(props);
+    }
+
+
+    /**
 	 * List of clusters associated with the account
 	 * @param props map of request parameters, see {@link Xplenty.ClusterStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link ListClusters}
-	 * @return
+	 * @return list of clusters
 	 */
 	public List<Cluster> listClusters(Properties props) {
 		return this.execute(new ListClusters(props));
@@ -138,16 +237,29 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	
 	/**
 	 * List of jobs associated with the account
-	 * @return
+	 * @return list of jobs
 	 */
 	public List<Job> listJobs() {
 		return listJobs(new Properties());
 	}
+
+    /**
+     * List of jobs associated with the account
+     * @param offset number of record to  start results from
+     * @param limit number of results
+     * @return list of jobs
+     */
+    public List<Job> listJobs(int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractParametrizedRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractParametrizedRequest.PARAMETER_OFFSET, offset);
+        return listJobs(props);
+    }
 	
 	/**
 	 * List of jobs associated with the account
 	 * @param params map of request parameters, see {@link Xplenty.JobStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link ListJobs}
-	 * @return
+	 * @return list of jobs
 	 */
 	public List<Job> listJobs(Properties params) {
 		return this.execute(new ListJobs(params));
