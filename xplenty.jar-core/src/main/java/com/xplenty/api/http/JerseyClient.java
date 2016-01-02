@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.xplenty.api;
+package com.xplenty.api.http;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.jersey.api.client.Client;
@@ -16,27 +16,25 @@ import com.xplenty.api.exceptions.AuthFailedException;
 import com.xplenty.api.exceptions.RequestFailedException;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.request.Request;
-import com.xplenty.api.util.Http;
 
+import javax.ws.rs.core.MultivaluedMap;
 import java.io.StringWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Proxy for connecting to the XplentyAPI over HTTP
  * 
- * @author Yuriy Kovalek
+ * @author Yuriy Kovalek and Xardas
  *
  */
-class XplentyWebConnectivity {
-	private static final String API_PATH = "api";
-    protected final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-	
-	private String HOST = "api.xplenty.com";
-	private Http.Protocol PROTOCOL = Http.Protocol.Https;
-	private final String ACCOUNT_NAME;
-	private final String API_KEY;
-	
+public class JerseyClient implements HttpClient {
+
+	private final String host;
+	private final Http.Protocol protocol;
+	private final String accountName;
+	private final String apiKey;
+
 	private final Client client;
 	private Version version = null;
 
@@ -44,21 +42,17 @@ class XplentyWebConnectivity {
      * Construct a new instance for given account and API key
      * @param accountName name of the associated account, used in URL's
      * @param apiKey used for authentication
-     */
-    XplentyWebConnectivity(String accountName, String apiKey) {
-        this(accountName, apiKey, false);
-    }
-
-	/**
-	 * Construct a new instance for given account and API key
-	 * @param accountName name of the associated account, used in URL's
-	 * @param apiKey used for authentication
+     * @param host host to connect
+     * @param protocol protocol to use
+     * @param timeout timeout for response.
      * @param logHttpCommunication enables logging of requests and responses
-	 */
-	XplentyWebConnectivity(String accountName, String apiKey, boolean logHttpCommunication) {
-		ACCOUNT_NAME = accountName;
-		API_KEY = apiKey;
-		
+     */
+	JerseyClient(String accountName, String apiKey, String host, Http.Protocol protocol, int timeout, boolean logHttpCommunication) {
+		this.accountName = accountName;
+		this.apiKey = apiKey;
+        this.host = host;
+        this.protocol = protocol;
+
 		ClientConfig config = new DefaultClientConfig();
 		client = Client.create(config);
 		client.addFilter(new HTTPBasicAuthFilter(apiKey, ""));
@@ -82,11 +76,21 @@ class XplentyWebConnectivity {
 			case DELETE: 	response = builder.delete(ClientResponse.class); break;
 		}
 		validate(request, response);
-		return request.getResponse(response);		
+        Response processedResponse = Response.forContentType(request.getResponseType(), response.getEntity(String.class),
+                response.getStatus(), convertJerseyHeaders(response.getHeaders()));
+		return request.getResponse(processedResponse);
 	}
-	
+
+    private Map<String, String> convertJerseyHeaders(MultivaluedMap<String, String> headers) {
+        final Map<String, String> convertedHeaders = new HashMap<>();
+        for (String header : headers.keySet()) {
+            convertedHeaders.put(header, headers.getFirst(header));
+        }
+        return convertedHeaders;
+    }
+
 	/**
-	 * Convenience method for getting a configured {@link WebResource.Builder} for given request
+	 * Convenience method for getting a configured {@link com.sun.jersey.api.client.WebResource.Builder} for given request
 	 * @param request that would be submitted to the XPlenty Server
 	 * @return  builder
 	 */
@@ -98,34 +102,32 @@ class XplentyWebConnectivity {
 		if (request.hasBody()) {
 			StringWriter sw = new StringWriter();
 			try {
-                final ObjectMapper objectMapper = new ObjectMapper();
-
-                objectMapper.setDateFormat(dateFormat);
+                ObjectMapper objectMapper = JsonMapperFactory.getInstance();
                 objectMapper.writeValue(sw, request.getBody());
 			} catch (Exception e) {
 				throw new XplentyAPIException(e);
 			}
 			b.entity(sw.toString()).type(Http.MediaType.JSON.value);
 		}
-		
+
 		return b;
 	}
-	
+
 	/**
 	 * Constructs the actual URL
 	 * @param methodEndpoint - describes the action type
 	 * @return filly qualified URL
 	 */
 	private String getMethodURL(String methodEndpoint) {
-		return PROTOCOL + "://" + HOST + "/" + ACCOUNT_NAME + "/" + API_PATH + "/" + methodEndpoint;
+		return protocol + "://" + host + "/" + accountName + "/" + API_PATH + "/" + methodEndpoint;
 	}
-	
+
 	/**
 	 * Check the response status and throws exception on errors
 	 * @param request used request
 	 * @param response received response
-	 * @throws AuthFailedException
-	 * @throws RequestFailedException
+	 * @throws com.xplenty.api.exceptions.AuthFailedException
+	 * @throws com.xplenty.api.exceptions.RequestFailedException
 	 */
 	private <T> void validate(Request<T> request, ClientResponse response) {
 		if (response.getClientResponseStatus() != null)
@@ -137,35 +139,34 @@ class XplentyWebConnectivity {
 		throw new RequestFailedException(request.getName() + " failed", response.getStatus(), response.getEntity(String.class));
 	}
 
-	String getAccountName() {
-		return ACCOUNT_NAME;
+	public String getAccountName() {
+		return accountName;
 	}
 
-	String getApiKey() {
-		return API_KEY;
+	public String getApiKey() {
+		return apiKey;
 	}
 
 	public void setVersion(Version ver) {
 		version = ver;
 	}
 
-	public void setHost(String host) {
-		HOST = host;
-	}
-
-	public void setProtocol(Http.Protocol proto) {
-		PROTOCOL = proto;
-	}
-
 	public Http.Protocol getProtocol() {
-		return PROTOCOL;
+		return protocol;
 	}
 
 	public String getHost() {
-		return HOST;
+		return host;
 	}
 
 	public Version getVersion() {
 		return version;
 	}
+
+    @Override
+    public void shutdown() {
+        if (client != null) {
+            client.destroy();
+        }
+    }
 }
