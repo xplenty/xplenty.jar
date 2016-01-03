@@ -36,7 +36,7 @@ public class ListJobsTest extends TestCase {
 	}
 	
 	@Test
-	public void testValidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
+	public void testValidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		ListJobs lj = new ListJobs(new Properties());
 		List<Job> list = new ArrayList<Job>();
 		list.add(JobTest.createMockJob(new Date()));
@@ -51,7 +51,7 @@ public class ListJobsTest extends TestCase {
 	}
 	
 	@Test
-	public void testInvalidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
+	public void testInvalidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		ListJobs lj = new ListJobs(new Properties());
 		List<Job> list = new ArrayList<Job>();
 		list.add(JobTest.createMockJob(new Date()));

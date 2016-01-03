@@ -37,7 +37,7 @@ public class TerminateClusterTest extends TestCase {
 	}
 
 	@Test
-	public void testValidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
+	public void testValidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		TerminateCluster tc = new TerminateCluster(1L);
 		Cluster c = ClusterTest.createMockCluster(new Date());
 		
@@ -50,7 +50,7 @@ public class TerminateClusterTest extends TestCase {
 	}
 	
 	@Test
-	public void testInvalidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
+	public void testInvalidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		TerminateCluster tc = new TerminateCluster(1L);
 		Cluster c = ClusterTest.createMockCluster(new Date());
 		

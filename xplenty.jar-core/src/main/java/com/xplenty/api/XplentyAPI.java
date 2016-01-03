@@ -265,7 +265,24 @@ public class XplentyAPI {
 	 * @return
 	 */
 	public Job runJob(long clusterId, long packageId, Map<String, String> variables) {
-		return client.execute(new RunJob(new Job().onCluster(clusterId).withPackage(packageId).withVariables(variables))).withParentApiInstance(this);
+		return runJob(clusterId, packageId, variables, false);
+	}
+	
+	/**
+	 * Execute a job on a cluster
+	 * @param clusterId cluster to execute on, see {@link #listClusters()} to get a list of available clusters
+	 * @param packageId package id, obtained from account web page
+	 * @param variables map of variables to be passed to the job
+	 * @param dynamicVariables indication whether the variables should be treated as dynamic
+	 * @return
+	 */
+	public Job runJob(long clusterId, long packageId, Map<String, String> variables, boolean dynamicVariables) {
+		Job job = new Job().onCluster(clusterId).withPackage(packageId);
+		if (dynamicVariables)
+			job = job.withDynamicVariables(variables);
+		else
+			job = job.withVariables(variables);
+		return client.execute(new RunJob(job)).withParentApiInstance(this);
 	}
 
 	/**
