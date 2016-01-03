@@ -14,8 +14,7 @@ import java.security.cert.X509Certificate;
  *
  * @author xardas
  */
-public class SSLUntruster {
-    private static SSLContext sc;
+public class SSLEngineDefaultImpl {
     private static SSLContext wc;
     private static HostnameVerifier hv;
     static {
@@ -34,19 +33,13 @@ public class SSLUntruster {
       };
 
       try {
-        sc = SSLContext.getInstance("SSL");
-        sc.init(null, trustAllCerts, new SecureRandom());
         wc = SSLContext.getInstance("TLS");
         wc.init(null, trustAllCerts, new SecureRandom());
       } catch (Exception ex) { }
 
     }
 
-    public static SSLContext getUntruster() {
-        return sc;
-    }
-
-    public static SSLContext getWebUntruster() {
+    public static SSLContext getSSLContext() {
         return wc;
     }
     

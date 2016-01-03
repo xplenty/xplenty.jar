@@ -51,6 +51,6 @@ public class WatchingStop implements Request<Boolean> {
         if (code == 204)
             return true;
         else
-            throw new RequestFailedException("204 expected, but something went wrong", code, "");
+            throw new RequestFailedException("204 expected, but something went wrong", response.getStatus(), "");
     }
 }

@@ -1,6 +1,8 @@
 package com.xplenty.api.http;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.xplenty.api.exceptions.AuthFailedException;
+import com.xplenty.api.exceptions.RequestFailedException;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.model.XplentyObject;
 
@@ -26,6 +28,19 @@ public abstract class Response {
         this.headers = headers;
     }
 
+    /**
+     * Check the response status and throws exception on errors
+     * @param requestName RequestName (used for exception construction)
+     * @throws com.xplenty.api.exceptions.AuthFailedException
+     * @throws com.xplenty.api.exceptions.RequestFailedException
+     */
+    public void validate(String requestName) {
+        switch (this.getStatus()) {
+            case HTTP_200: case HTTP_201: case HTTP_204 : return;
+            case HTTP_401: throw new AuthFailedException(this.getStatus(), this.getRawContent());
+            default: throw new RequestFailedException(requestName + " failed", this.getStatus(), this.getRawContent());
+        }
+    }
 
     public static Response forContentType(Http.MediaType type, String content, int status, Map<String, String> headers) {
         switch (type) {

@@ -34,13 +34,18 @@ public class XplentyAPITest extends TestCase {
 
     public void testBuilder() {
         HttpClientBuilder builder = new HttpClientBuilder().withAccount("testAcc").withApiKey("testKey").
-                withHost("www.example.com").withProtocol(Http.Protocol.Http).withVersion(Xplenty.Version.V1);
+                withHost("www.example.com").withProtocol(Http.Protocol.Http).withVersion(Xplenty.Version.V1).
+                withClientImpl(Http.HttpClientImpl.SyncNetty).withLogHttpCommunication(true).withTimeout(10);
         XplentyAPI api = new XplentyAPI(builder);
 
         assertNotNull(api);
         assertEquals("www.example.com", api.getHost());
         assertEquals(Http.Protocol.Http, api.getProtocol());
         assertEquals(Xplenty.Version.V1, api.getVersion());
+        assertEquals("testAcc", api.getAccountName());
+        assertEquals(10, api.getTimeout());
+
+
     }
 
     public void testListClusters() {
@@ -90,6 +95,12 @@ public class XplentyAPITest extends TestCase {
             public Xplenty.Version getVersion() {
                 return null;
             }
+
+            @Override
+            public int getTimeout() {
+                return 0;
+            }
+
         };
         XplentyAPI api = new XplentyAPI(client);
         Cluster res = api.listClusters().get(0);
@@ -138,6 +149,11 @@ public class XplentyAPITest extends TestCase {
             @Override
             public Xplenty.Version getVersion() {
                 return null;
+            }
+
+            @Override
+            public int getTimeout() {
+                return 0;
             }
         };
         XplentyAPI api = new XplentyAPI(client);

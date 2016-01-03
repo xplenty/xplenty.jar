@@ -17,7 +17,7 @@ import org.jboss.netty.handler.ssl.SslHandler;
 import org.jboss.netty.logging.InternalLogLevel;
 
 import javax.net.ssl.SSLEngine;
-import java.io.StringWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.URL;
@@ -36,8 +36,11 @@ import static org.jboss.netty.channel.Channels.pipeline;
  */
 public class SyncNettyClient extends SimpleChannelUpstreamHandler implements HttpClient {
     public static final String MUTEX_KEY = "mutex";
+    protected static final int MAX_CHANNEL_MEMORY_SIZE = 50 * 1024 * 1024; // 50 MB for channel
+    protected static final long MAX_TOTAL_MEMORY_SIZE = 1 * 1024 * 1024 * 1024; // 1 G
     private final ClientBootstrap client;
     private final NioClientSocketChannelFactory chanfac;
+    private final ThreadLocal<Channel> channel = new ThreadLocal<>();
 
     private final int timeout;
     private final String authHeader;
@@ -45,15 +48,18 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
     private final Http.Protocol protocol;
     private final String accountName;
     private final String apiKey;
+    private final Xplenty.Version version;
 
 
-
-    SyncNettyClient(String accountName, String apiKey, String host, Http.Protocol protocol, int timeout, boolean logHttpCommunication) throws XplentyAPIException {
+    SyncNettyClient(String accountName, String apiKey, String host, Http.Protocol protocol, Xplenty.Version version, int timeout, boolean logHttpCommunication) throws XplentyAPIException {
         this.timeout = timeout;
         this.accountName = accountName;
         this.host = host;
         this.protocol = protocol;
         this.apiKey = apiKey;
+        this.version = version;
+
+        // generate basic auth header
         try {
             this.authHeader = String.format("Basic %s", new String(Base64.encode(String.format("%s:", apiKey)), "ASCII"));
         } catch (UnsupportedEncodingException e) {
@@ -61,23 +67,21 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
         }
 
         chanfac = new NioClientSocketChannelFactory(
-                new OrderedMemoryAwareThreadPoolExecutor(1, 400000000, 2000000000, 120, TimeUnit.SECONDS),
-                new OrderedMemoryAwareThreadPoolExecutor(2, 400000000, 2000000000, 60, TimeUnit.SECONDS),
+                new OrderedMemoryAwareThreadPoolExecutor(1, MAX_CHANNEL_MEMORY_SIZE, MAX_TOTAL_MEMORY_SIZE, 120, TimeUnit.SECONDS),
+                new OrderedMemoryAwareThreadPoolExecutor(2, MAX_CHANNEL_MEMORY_SIZE, MAX_TOTAL_MEMORY_SIZE, 120, TimeUnit.SECONDS),
                 2);
         client = new ClientBootstrap(chanfac);
         client.setOption("child.tcpNoDelay", true);
         client.setOption("child.keepAlive", true);
         client.setOption("reuseAddress", true);
-        client.setOption("connectTimeoutMillis", 30000);
-//        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                if (eventLoop != null && !eventLoop.isShutdown() && !eventLoop.isTerminated()) {
-//                    eventLoop.shutdownGracefully();
-//                }
-//            }
-//        }));
-        client.setPipelineFactory(new PipelineFactory(this, protocol.equals(Http.Protocol.Https)));
+        client.setOption("connectTimeoutMillis", timeout * 1000);
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                client.releaseExternalResources();
+            }
+        }));
+        client.setPipelineFactory(new PipelineFactory(this, protocol.equals(Http.Protocol.Https), logHttpCommunication));
     }
 
     @Override
@@ -119,24 +123,24 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
     public <T> T execute(Request<T> xplentyRequest) throws XplentyAPIException {
         try {
             URL url = new URL(getMethodURL(xplentyRequest.getEndpoint()));
-            Channel channel = client.connect(new InetSocketAddress(url.getHost(), getPort(url))).awaitUninterruptibly().getChannel();
+            Channel channel = getChannel(url);
 
             HttpRequest request = new DefaultHttpRequest(HttpVersion.HTTP_1_1, convertRequestMethod(xplentyRequest.getHttpMethod()), url.toString());
             HttpHeaders headers = request.headers();
             headers.set(HttpHeaders.Names.HOST, url.getHost());
-            headers.set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.CLOSE);
+            headers.set(HttpHeaders.Names.CONNECTION, HttpHeaders.Values.KEEP_ALIVE);
             headers.set(HttpHeaders.Names.ACCEPT_ENCODING, HttpHeaders.Values.GZIP + ',' + HttpHeaders.Values.DEFLATE);
             headers.set(HttpHeaders.Names.ACCEPT_CHARSET, "utf-8;q=0.7,*;q=0.7");
-            headers.set(HttpHeaders.Names.USER_AGENT, "Xplenty Netty client by Xardas");
-            headers.set(HttpHeaders.Names.ACCEPT, xplentyRequest.getResponseType().value);
+            headers.set(HttpHeaders.Names.USER_AGENT, "Xplenty Netty client by Xardazz");
+            headers.set(HttpHeaders.Names.ACCEPT, getAcceptHeaderValue(xplentyRequest.getResponseType().value));
             headers.set(HttpHeaders.Names.AUTHORIZATION, authHeader);
 
             if (xplentyRequest.hasBody()) {
                 final ChannelBuffer cb = ChannelBuffers.dynamicBuffer(8000);
-                StringWriter sw = new StringWriter();
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
                 ObjectMapper objectMapper = JsonMapperFactory.getInstance();
-                objectMapper.writeValue(sw, xplentyRequest.getBody());
-                final byte[] contentBytes = sw.getBuffer().toString().getBytes(StandardCharsets.UTF_8);
+                objectMapper.writeValue(bos, xplentyRequest.getBody());
+                final byte[] contentBytes = bos.toByteArray();
                 cb.writeBytes(contentBytes);
                 request.headers().set(HttpHeaders.Names.CONTENT_LENGTH, contentBytes.length);
                 request.headers().set(HttpHeaders.Names.CONTENT_TYPE, Http.MediaType.JSON.value);
@@ -149,17 +153,49 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
             response.getMutex().await(timeout, TimeUnit.SECONDS);
 
             final HttpResponse httpBody = response.getResponse();
+            if (httpBody == null) {
+                throw new XplentyAPIException("Request timed out!");
+            }
             int httpStatus = parseStatus(httpBody.headers().get("Status"));
             Response processedResponse = Response.forContentType(xplentyRequest.getResponseType(), channelBuffer2String(httpBody.getContent()), httpStatus, convertNettyHeaders(httpBody.headers()));
+            processedResponse.validate(xplentyRequest.getName());
             return xplentyRequest.getResponse(processedResponse);
         } catch (Exception e) {
             throw new XplentyAPIException(e);
         }
     }
 
+    private Channel getChannel(URL url) throws XplentyAPIException {
+        Channel chan = channel.get();
+        // if channel is valid no need to reconnect
+        if (chan == null || !chan.isConnected() || !chan.isOpen()) {
+            try {
+                final ChannelFuture channelFuture = client.connect(new InetSocketAddress(url.getHost(), getPort(url)));
+                channelFuture.await(timeout, TimeUnit.SECONDS);
+                if (channelFuture.isDone() && channelFuture.isSuccess()) {
+                    chan = channelFuture.getChannel();
+                    channel.set(chan);
+                } else {
+                    throw new XplentyAPIException("Error connecting to Xplenty server:", channelFuture.getCause());
+                }
+            } catch (InterruptedException ex) {
+                throw new XplentyAPIException("Interrupted while getting channel!", ex);
+            }
+        }
+        return chan;
+    }
+
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, ExceptionEvent cause) throws Exception {
+        ctx.getChannel().close();
         throw new XplentyAPIException("Exception while communicating with remote Xplenty server", cause.getCause());
+    }
+
+    private String getAcceptHeaderValue(String baseValue) {
+        if (this.version == null) {
+            return baseValue;
+        }
+        return String.format("%s; %s", baseValue, this.version.format());
     }
 
     private Map<String, String> convertNettyHeaders(HttpHeaders headers) {
@@ -197,18 +233,21 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
 
     @Override
     public void shutdown() {
+        //client.shutdown();    // does the same
         client.releaseExternalResources();
     }
 
 
-    public class PipelineFactory implements ChannelPipelineFactory {
+    private static class PipelineFactory implements ChannelPipelineFactory {
 
         private final boolean ssl;
+        private final boolean logCommunication;
         private final ChannelUpstreamHandler handler;
 
-        public PipelineFactory(ChannelUpstreamHandler handler, boolean ssl) {
+        public PipelineFactory(ChannelUpstreamHandler handler, boolean ssl, boolean logCommunication) {
             this.handler = handler;
             this.ssl = ssl;
+            this.logCommunication = logCommunication;
         }
 
         public ChannelPipeline getPipeline() throws Exception {
@@ -217,14 +256,18 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
 
             // Enable HTTPS if necessary.
             if (ssl) {
-                SSLEngine engine =
-                        SSLUntruster.getWebUntruster().createSSLEngine();
+                // trust to any server certificate
+                // example implementation with comparison to keystore
+                // http://www.programcreek.com/java-api-examples/index.php?source_dir=search-guard-master/src/main/java/com/floragunn/searchguard/transport/SSLNettyTransport.java
+                SSLEngine engine = SSLEngineDefaultImpl.getSSLContext().createSSLEngine();
                 engine.setUseClientMode(true);
 
                 pipeline.addLast("ssl", new SslHandler(engine));
             }
 
-            pipeline.addLast("logger", new LoggingHandler("global", InternalLogLevel.DEBUG, true));
+            if (logCommunication) {
+                pipeline.addLast("logger", new LoggingHandler("nettyclient", InternalLogLevel.DEBUG, true));
+            }
 
             pipeline.addLast("codec", new HttpClientCodec());
 
@@ -257,6 +300,7 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
         }
     }
 
+    @Override
     public int getTimeout() {
         return timeout;
     }
@@ -273,7 +317,7 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
 
     @Override
     public Xplenty.Version getVersion() {
-        return null;
+        return version;
     }
 
     @Override

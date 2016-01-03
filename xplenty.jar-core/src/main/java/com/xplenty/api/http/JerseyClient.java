@@ -12,8 +12,6 @@ import com.sun.jersey.api.client.config.DefaultClientConfig;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.sun.jersey.api.client.filter.LoggingFilter;
 import com.xplenty.api.Xplenty.Version;
-import com.xplenty.api.exceptions.AuthFailedException;
-import com.xplenty.api.exceptions.RequestFailedException;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.request.Request;
 
@@ -34,9 +32,11 @@ public class JerseyClient implements HttpClient {
 	private final Http.Protocol protocol;
 	private final String accountName;
 	private final String apiKey;
+    private final Version version;
+    private final int timeout;
 
 	private final Client client;
-	private Version version = null;
+
 
     /**
      * Construct a new instance for given account and API key
@@ -47,13 +47,17 @@ public class JerseyClient implements HttpClient {
      * @param timeout timeout for response.
      * @param logHttpCommunication enables logging of requests and responses
      */
-	JerseyClient(String accountName, String apiKey, String host, Http.Protocol protocol, int timeout, boolean logHttpCommunication) {
+	JerseyClient(String accountName, String apiKey, String host, Http.Protocol protocol, Version version, int timeout, boolean logHttpCommunication) {
 		this.accountName = accountName;
 		this.apiKey = apiKey;
         this.host = host;
         this.protocol = protocol;
+        this.version = version;
+        this.timeout = timeout;
 
 		ClientConfig config = new DefaultClientConfig();
+        config.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, timeout);
+        config.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, timeout);
 		client = Client.create(config);
 		client.addFilter(new HTTPBasicAuthFilter(apiKey, ""));
         if (logHttpCommunication) {
@@ -75,9 +79,9 @@ public class JerseyClient implements HttpClient {
 			case PUT: 		response = builder.put(ClientResponse.class); break;
 			case DELETE: 	response = builder.delete(ClientResponse.class); break;
 		}
-		validate(request, response);
         Response processedResponse = Response.forContentType(request.getResponseType(), response.getEntity(String.class),
                 response.getStatus(), convertJerseyHeaders(response.getHeaders()));
+        processedResponse.validate(request.getName());
 		return request.getResponse(processedResponse);
 	}
 
@@ -122,33 +126,12 @@ public class JerseyClient implements HttpClient {
 		return protocol + "://" + host + "/" + accountName + "/" + API_PATH + "/" + methodEndpoint;
 	}
 
-	/**
-	 * Check the response status and throws exception on errors
-	 * @param request used request
-	 * @param response received response
-	 * @throws com.xplenty.api.exceptions.AuthFailedException
-	 * @throws com.xplenty.api.exceptions.RequestFailedException
-	 */
-	private <T> void validate(Request<T> request, ClientResponse response) {
-		if (response.getClientResponseStatus() != null)
-			switch (response.getClientResponseStatus()){
-	            case OK : case CREATED : case NO_CONTENT : return;
-	            case UNAUTHORIZED : throw new AuthFailedException(response.getStatus(), response.getEntity(String.class));
-	            default: break;
-	        }
-		throw new RequestFailedException(request.getName() + " failed", response.getStatus(), response.getEntity(String.class));
-	}
-
 	public String getAccountName() {
 		return accountName;
 	}
 
 	public String getApiKey() {
 		return apiKey;
-	}
-
-	public void setVersion(Version ver) {
-		version = ver;
 	}
 
 	public Http.Protocol getProtocol() {
@@ -162,6 +145,11 @@ public class JerseyClient implements HttpClient {
 	public Version getVersion() {
 		return version;
 	}
+
+    @Override
+    public int getTimeout() {
+        return timeout;
+    }
 
     @Override
     public void shutdown() {

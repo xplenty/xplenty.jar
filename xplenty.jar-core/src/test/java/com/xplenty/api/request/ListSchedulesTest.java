@@ -38,9 +38,12 @@ public class ListSchedulesTest extends TestCase {
 	public void testValidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
         ListSchedules ls = new ListSchedules(new Properties());
 		List<Schedule> list = new ArrayList<Schedule>();
-		list.add(ScheduleTest.createMockSchedule(new Date()));
+        final Schedule mockSchedule = ScheduleTest.createMockSchedule(new Date());
+        mockSchedule.getTask().getPackages().clear();
+        list.add(mockSchedule);
 		
 		String json = new ObjectMapper().writeValueAsString(list);
+        json = json.replace("\"packages\":{}", "\"packages\":[]"); // sent and recieved json for schedules slightly differ.
 		list = ls.getResponse(Response.forContentType(Http.MediaType.JSON,
                 json,
                 Status.OK.getStatusCode(),

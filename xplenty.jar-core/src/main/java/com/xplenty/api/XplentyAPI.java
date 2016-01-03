@@ -401,4 +401,8 @@ public class XplentyAPI {
 	public Version getVersion() {
 		return client.getVersion();
 	}
+
+    public int getTimeout() {
+        return client.getTimeout();
+    }
 }

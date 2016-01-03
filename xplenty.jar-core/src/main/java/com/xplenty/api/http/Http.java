@@ -31,6 +31,9 @@ public class Http {
 		GET, POST, PUT, DELETE
 	}
 
+    /**
+     * Protocol used by Xplenty API Server
+     */
 	public static enum Protocol {
 		Http("http"),
 		Https("https");
@@ -42,8 +45,11 @@ public class Http {
 		}
 	}
 
+    /**
+     * Http Client Implementation used to connect
+     */
     public static enum HttpClientImpl {
-        SyncNetty, AsyncNetty, Jersey;
+        SyncNetty, /* for future impl AsyncNetty, */ Jersey;
     }
     
     public static enum ResponseStatus {
