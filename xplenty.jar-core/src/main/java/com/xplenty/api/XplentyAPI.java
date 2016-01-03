@@ -15,6 +15,7 @@ import com.xplenty.api.request.watching.ListWatchers;
 import com.xplenty.api.request.watching.WatchingStop;
 import com.xplenty.api.util.Http;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -34,7 +35,7 @@ import java.util.Properties;
  * @author Yuriy Kovalek
  */
 public class XplentyAPI extends XplentyWebConnectivity {
-		
+	
 	/**
      * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
      * and internal configuration.
@@ -288,11 +289,28 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	 * Execute a job on a cluster
 	 * @param clusterId cluster to execute on, see {@link #listClusters()} to get a list of available clusters
 	 * @param packageId package id, obtained from account web page
-	 * @param variables map of variables to be passed to the job
+	 * @param variables map of static variables to be passed to the job
 	 * @return
 	 */
 	public Job runJob(long clusterId, long packageId, Map<String, String> variables) {
-		return this.execute(new RunJob(new Job().onCluster(clusterId).withPackage(packageId).withVariables(variables))).withParentApiInstance(this);
+		return runJob(clusterId, packageId, variables, false);
+	}
+	
+	/**
+	 * Execute a job on a cluster
+	 * @param clusterId cluster to execute on, see {@link #listClusters()} to get a list of available clusters
+	 * @param packageId package id, obtained from account web page
+	 * @param variables map of variables to be passed to the job
+	 * @param dynamicVariables indication whether the variables should be treated as dynamic
+	 * @return
+	 */
+	public Job runJob(long clusterId, long packageId, Map<String, String> variables, boolean dynamicVariables) {
+		Job job = new Job().onCluster(clusterId).withPackage(packageId);
+		if (dynamicVariables)
+			job = job.withDynamicVariables(variables);
+		else
+			job = job.withVariables(variables);
+		return this.execute(new RunJob(job)).withParentApiInstance(this);
 	}
 
 	/**

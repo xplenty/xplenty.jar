@@ -32,7 +32,9 @@ public class Job extends XplentyObject<Job> {
 	}
 	protected Long id;
 	protected JobStatus status;
-	protected Map<String, String> variables;
+	protected Map<String, String> variables;	//for backwords compatibility
+	@JsonProperty("dynamic_variables")
+	protected Map<String, String> dynamicVariables;
 	@JsonProperty("owner_id")
 	protected Long ownerId;
 	protected Double progress;
@@ -112,6 +114,11 @@ public class Job extends XplentyObject<Job> {
 	
 	public Job withVariables(Map<String, String> vars) {
 		this.variables = vars;
+		return this;
+	}
+	
+	public Job withDynamicVariables(Map<String, String> dynVars) {
+		this.dynamicVariables = dynVars;
 		return this;
 	}
 	
