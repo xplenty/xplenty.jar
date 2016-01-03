@@ -108,6 +108,63 @@ public class Xplenty {
 
 	}
 
+    public enum AccountRole {
+        admin("admin"),
+        member("member");
+
+        @SuppressWarnings("unused")
+        private final String role;
+
+        AccountRole(String role) {
+            this.role = role;
+        }
+    }
+
+    public enum ClusterInstanceStatus {
+        available("available"),
+        terminated("terminated");
+
+        @SuppressWarnings("unused")
+        private final String status;
+
+        ClusterInstanceStatus(String status) {
+            this.status = status;
+        }
+    }
+    
+    public enum ConnectionType {
+        s3("s3"),
+        swift("swift"),
+        gs("gs"),
+        rackspace("rackspace"),
+        softlayer("softlayer"),
+        hdfs("hdfs"),
+        adwords("adwords"),
+        postgres("postgres"),
+        redshift("redshift"),
+        mongo("mongo"),
+        mysql("mysql"),
+        hana("hana"),
+        sqlserver("sqlserver"),
+        herokupostgres("herokupostgres"),
+        googlecloudsql("googlecloudsql"),
+        bigquery("bigquery"),
+        segment("segment");
+
+        @SuppressWarnings("unused")
+        private final String type;
+
+        ConnectionType(String type) {
+            this.type = type;
+        }
+    }
+
+    public enum PackageValidationStatus {
+        running,
+        completed,
+        failed;
+    }
+
 	@JsonFormat(shape= JsonFormat.Shape.SCALAR)
 	public static enum ClusterStatus {
 		pending("pending"),
