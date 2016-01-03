@@ -41,22 +41,7 @@ public class ListSchedulesTest extends TestCase {
 	}
 	
 	@Test
-	public void testValidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
-        ListSchedules ls = new ListSchedules(new Properties());
-		List<Schedule> list = new ArrayList<Schedule>();
-		list.add(ScheduleTest.createMockSchedule(new Date()));
-		
-		String json = new ObjectMapper().writeValueAsString(list);
-		list = ls.getResponse(new ClientResponse(Status.OK.getStatusCode(),
-								new InBoundHeaders(), 
-								new ByteArrayInputStream(json.getBytes("UTF-8")),
-								Client.create().getMessageBodyWorkers()));
-		assertNotNull(list);
-		assertFalse(list.isEmpty());
-	}
-	
-	@Test
-	public void testInvalidResponcehandling() throws JsonProcessingException, UnsupportedEncodingException {
+	public void testInvalidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
         ListSchedules ls = new ListSchedules(new Properties());
         List<Schedule> list = new ArrayList<Schedule>();
         list.add(ScheduleTest.createMockSchedule(new Date()));

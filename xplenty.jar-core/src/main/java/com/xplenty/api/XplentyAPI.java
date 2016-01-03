@@ -3,22 +3,43 @@
  */
 package com.xplenty.api;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
 import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.exceptions.XplentyAPIException;
-import com.xplenty.api.model.*;
+import com.xplenty.api.model.Cluster;
+import com.xplenty.api.model.ClusterWatchingLogEntry;
+import com.xplenty.api.model.Job;
+import com.xplenty.api.model.JobWatchingLogEntry;
 import com.xplenty.api.model.Package;
-import com.xplenty.api.request.*;
+import com.xplenty.api.model.Schedule;
+import com.xplenty.api.model.Watcher;
+import com.xplenty.api.request.AbstractParametrizedRequest;
+import com.xplenty.api.request.CloneSchedule;
+import com.xplenty.api.request.ClusterInfo;
+import com.xplenty.api.request.CreateCluster;
+import com.xplenty.api.request.CreateSchedule;
+import com.xplenty.api.request.DeleteSchedule;
+import com.xplenty.api.request.JobInfo;
+import com.xplenty.api.request.ListClusters;
+import com.xplenty.api.request.ListJobs;
+import com.xplenty.api.request.ListPackages;
+import com.xplenty.api.request.ListSchedules;
+import com.xplenty.api.request.PackageInfo;
+import com.xplenty.api.request.RunJob;
+import com.xplenty.api.request.ScheduleInfo;
+import com.xplenty.api.request.StopJob;
+import com.xplenty.api.request.TerminateCluster;
+import com.xplenty.api.request.UpdateCluster;
+import com.xplenty.api.request.UpdateSchedule;
 import com.xplenty.api.request.watching.AddClusterWatcher;
 import com.xplenty.api.request.watching.AddJobWatcher;
 import com.xplenty.api.request.watching.ListWatchers;
 import com.xplenty.api.request.watching.WatchingStop;
 import com.xplenty.api.util.Http;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
 /**
  * A convenience class for making HTTP requests to the Xplenty API for a given user. An underlying {@link XplentyWebConnectivity} is created
  * for each instance of XplentyAPI.
