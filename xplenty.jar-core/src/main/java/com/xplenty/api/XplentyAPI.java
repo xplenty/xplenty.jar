@@ -379,6 +379,18 @@ public class XplentyAPI {
         return client.execute(new ScheduleInfo(scheduleId));
     }
 
+    public User getCurrentUserInfo() {
+        return getCurrentUserInfo(null);
+    }
+
+    public User getCurrentUserInfo(String currentPassword) {
+        return client.execute(new CurrentUserInfo(currentPassword));
+    }
+
+    public User updateCurrentUser(User user) {
+        return client.execute(new UpdateCurrentUser(user));
+    }
+
     /**
 	 * Account name this XplentyAPI instance is associated with
 	 * @return Account name

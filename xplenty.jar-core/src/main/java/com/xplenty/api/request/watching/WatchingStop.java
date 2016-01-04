@@ -4,13 +4,13 @@ import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.RequestFailedException;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.http.Response;
-import com.xplenty.api.request.Request;
+import com.xplenty.api.request.AbstractRequest;
 
 import static com.xplenty.api.Xplenty.Resource;
 import static com.xplenty.api.Xplenty.SubjectType;
 import static com.xplenty.api.http.Http.Method.DELETE;
 
-public class WatchingStop implements Request<Boolean> {
+public class WatchingStop extends AbstractRequest<Boolean> {
     private Long _subjectId;
     private SubjectType _kind;
 

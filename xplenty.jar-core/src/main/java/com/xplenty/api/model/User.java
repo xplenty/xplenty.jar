@@ -53,9 +53,15 @@ public class User extends XplentyObject<User> {
     @JsonProperty("new_password")
     private String newPassword;
 
-    protected User() {
+    public User() {
         super(User.class);
     }
+
+    public User(String currentPassword) {
+        super(User.class);
+        this.currentPassword = currentPassword;
+    }
+
 
     /**
      * @return the user's numeric identifier

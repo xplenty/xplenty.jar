@@ -5,12 +5,12 @@ import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.http.Response;
 import com.xplenty.api.model.ClusterWatchingLogEntry;
-import com.xplenty.api.request.Request;
+import com.xplenty.api.request.AbstractRequest;
 
 import static com.xplenty.api.Xplenty.Resource;
 import static com.xplenty.api.http.Http.Method.POST;
 
-public class AddClusterWatcher implements Request<ClusterWatchingLogEntry> {
+public class AddClusterWatcher extends AbstractRequest<ClusterWatchingLogEntry> {
     private Long _clusterId;
 
     public AddClusterWatcher(Long subjectId) {

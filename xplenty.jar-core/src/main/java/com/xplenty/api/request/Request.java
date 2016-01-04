@@ -11,7 +11,7 @@ import com.xplenty.api.http.Response;
  *
  */
 public interface Request<T> {
-	
+
 	String getName();
 	
 	/**
@@ -25,12 +25,12 @@ public interface Request<T> {
      * @return The path and query parameters as a String.
      */
 	Http.MediaType getResponseType();
-	
-	String getEndpoint();
-	
+
+	String getEndpoint(String apiHost, String accountName);
+
 	boolean hasBody();
-	
+
 	Object getBody();
-	
+
 	T getResponse(Response response);
 }

@@ -56,8 +56,8 @@ public class JerseyClient implements HttpClient {
         this.timeout = timeout;
 
 		ClientConfig config = new DefaultClientConfig();
-        config.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, timeout);
-        config.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, timeout);
+        config.getProperties().put(ClientConfig.PROPERTY_READ_TIMEOUT, timeout * 1000);
+        config.getProperties().put(ClientConfig.PROPERTY_CONNECT_TIMEOUT, timeout * 1000);
 		client = Client.create(config);
 		client.addFilter(new HTTPBasicAuthFilter(apiKey, ""));
         if (logHttpCommunication) {
@@ -99,7 +99,7 @@ public class JerseyClient implements HttpClient {
 	 * @return  builder
 	 */
 	private <T> WebResource.Builder getConfiguredResource(Request<T> request) {
-		WebResource.Builder b = client.resource(getMethodURL(request.getEndpoint()))
+		WebResource.Builder b = client.resource(getMethodURL(request.getEndpoint(host, accountName)))
 										.accept(request.getResponseType().value
 													+ (version == null ? "" : "; " + version.format())
 												);
@@ -123,7 +123,7 @@ public class JerseyClient implements HttpClient {
 	 * @return filly qualified URL
 	 */
 	private String getMethodURL(String methodEndpoint) {
-		return protocol + "://" + host + "/" + accountName + "/" + API_PATH + "/" + methodEndpoint;
+        return String.format("%s://%s", protocol, methodEndpoint);
 	}
 
 	public String getAccountName() {

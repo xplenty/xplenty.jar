@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
  * Date: 20.12.15
  * Time: 19:48
  */
-public abstract class AbstractInfoRequest<T> implements Request<T> {
+public abstract class AbstractInfoRequest<T> extends AbstractRequest<T> {
     protected final long entityId;
     private final Class<T> clazz;
 

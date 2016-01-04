@@ -68,7 +68,8 @@ public class Http {
 		HTTP_429(429, "Too Many Requests: The request exceeded the rate limitations."),
 		HTTP_500(500, "Internal Server Error: An internal error occurred in the request."),
 		HTTP_502(502, "Bad Gateway: Xplenty is down or being upgraded."),
-		HTTP_503(503, "Service Unavailable: The Xplenty servers are up, but overloaded with requests. Try again later.");
+		HTTP_503(503, "Service Unavailable: The Xplenty servers are up, but overloaded with requests. Try again later."),
+		HTTP_505(505, "Version not supported");
 
         private final int code;
         private final String description;

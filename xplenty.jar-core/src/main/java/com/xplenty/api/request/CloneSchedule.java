@@ -11,7 +11,7 @@ import com.xplenty.api.model.Schedule;
  * Date: 18.12.15
  * Time: 20:25
  */
-public class CloneSchedule implements Request<Schedule> {
+public class CloneSchedule extends AbstractRequest<Schedule> {
     private final Long entityId;
 
 

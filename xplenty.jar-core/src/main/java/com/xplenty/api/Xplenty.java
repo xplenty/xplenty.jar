@@ -242,7 +242,9 @@ public class Xplenty {
         CloneSchedule("schedules/%s/clone", "Clone schedule"),
         UpdateSchedule("schedules/%s", "Update schedule"),
         RemoveSchedule("schedules/%s", "Remove schedule"),
-        Schedule("schedules/%s", "Get schedule information")
+        Schedule("schedules/%s", "Get schedule information"),
+        User("user", "Get current user information"),
+        UpdateUser("user", "Update current user information")
         ;
 		
 		public final String value;

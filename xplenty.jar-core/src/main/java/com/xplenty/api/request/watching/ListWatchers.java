@@ -6,7 +6,7 @@ import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Watcher;
-import com.xplenty.api.request.Request;
+import com.xplenty.api.request.AbstractRequest;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import static com.xplenty.api.Xplenty.Resource;
 import static com.xplenty.api.Xplenty.SubjectType;
 import static com.xplenty.api.http.Http.Method.GET;
 
-public class ListWatchers implements Request<List<Watcher>> {
+public class ListWatchers extends AbstractRequest<List<Watcher>> {
     private SubjectType _kind = null;
     private Long _subjectId = null;
 

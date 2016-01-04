@@ -14,7 +14,6 @@ public interface HttpClient {
     static final int DEFAULT_TIMEOUT = 30;
     static final int DEFAULT_HTTPS_PORT = 443;
     static final int DEFAULT_HTTP_PORT = 80;
-    static final String API_PATH = "api";
 
     /**
      * Synchronously execute given request

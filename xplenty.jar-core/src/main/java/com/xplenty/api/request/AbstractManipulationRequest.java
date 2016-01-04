@@ -14,7 +14,7 @@ import java.util.Map;
  * Date: 18.12.15
  * Time: 18:49
  */
-public abstract class AbstractManipulationRequest<T> implements  Request<T> {
+public abstract class AbstractManipulationRequest<T> extends AbstractRequest<T> {
     protected final T entity;
     private final Class<T> clazz;
 
@@ -51,9 +51,13 @@ public abstract class AbstractManipulationRequest<T> implements  Request<T> {
 
     @Override
     public Object getBody() {
-        Map<String, Object> packedEntity = new HashMap<String, Object>();
-        packedEntity.put(getPackKey(), entity);
-        return packedEntity;
+        final String packKey = getPackKey();
+        if (packKey != null) {
+            Map<String, Object> packedEntity = new HashMap<String, Object>();
+            packedEntity.put(packKey, entity);
+            return packedEntity;
+        }
+        return entity;
     }
 
     protected abstract String getPackKey();

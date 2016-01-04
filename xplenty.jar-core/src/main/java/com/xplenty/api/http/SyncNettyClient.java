@@ -122,7 +122,7 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
     @Override
     public <T> T execute(Request<T> xplentyRequest) throws XplentyAPIException {
         try {
-            URL url = new URL(getMethodURL(xplentyRequest.getEndpoint()));
+            URL url = new URL(getMethodURL(xplentyRequest.getEndpoint(host, accountName)));
             Channel channel = getChannel(url);
 
             HttpRequest request = new DefaultHttpRequest(HttpVersion.HTTP_1_1, convertRequestMethod(xplentyRequest.getHttpMethod()), url.toString());
@@ -156,7 +156,7 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
             if (httpBody == null) {
                 throw new XplentyAPIException("Request timed out!");
             }
-            int httpStatus = parseStatus(httpBody.headers().get("Status"));
+            int httpStatus = httpBody.getStatus().getCode();
             Response processedResponse = Response.forContentType(xplentyRequest.getResponseType(), channelBuffer2String(httpBody.getContent()), httpStatus, convertNettyHeaders(httpBody.headers()));
             processedResponse.validate(xplentyRequest.getName());
             return xplentyRequest.getResponse(processedResponse);
@@ -206,17 +206,13 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
         return convertedHeaders;
     }
 
-    private int parseStatus(String status) {
-        return Integer.parseInt(status.substring(0, 3));
-    }
-
     /**
      * Constructs the actual URL
      * @param methodEndpoint - describes the action type
      * @return filly qualified URL
      */
     private String getMethodURL(String methodEndpoint) {
-        return String.format("%s://%s/%s/%s/%s", protocol, host, accountName, API_PATH, methodEndpoint);
+        return String.format("%s://%s", protocol, methodEndpoint);
     }
 
 
