@@ -7,7 +7,7 @@ import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.HttpClient;
-import com.xplenty.api.http.HttpClientBuilder;
+import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.model.*;
 import com.xplenty.api.model.Package;
 import com.xplenty.api.request.*;
@@ -45,7 +45,7 @@ public class XplentyAPI {
      * @param apiKey User's API key found at https://www.xplenty.com/settings/edit
      */
 	public XplentyAPI(String accountName, String apiKey) {
-        client = new HttpClientBuilder().withAccount(accountName).withApiKey(apiKey).build();
+        client = new ClientBuilder().withAccount(accountName).withApiKey(apiKey).build();
 	}
 
     /**
@@ -59,7 +59,7 @@ public class XplentyAPI {
      * Constructs a XplentyAPI with a {@link com.xplenty.api.http.HttpClient} based on the given http client  builder
      * @param clientBuilder configured Http client builder. At least account name and API Key must be set!
      */
-    public XplentyAPI(HttpClientBuilder clientBuilder) {
+    public XplentyAPI(ClientBuilder clientBuilder) {
         client = clientBuilder.build();
     }
 
