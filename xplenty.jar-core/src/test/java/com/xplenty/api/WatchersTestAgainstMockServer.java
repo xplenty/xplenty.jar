@@ -1,6 +1,6 @@
 package com.xplenty.api;
 
-import com.xplenty.api.http.HttpClientBuilder;
+import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.model.ClusterWatchingLogEntry;
 import com.xplenty.api.model.JobWatchingLogEntry;
 import com.xplenty.api.model.Watcher;
@@ -21,7 +21,7 @@ public class WatchersTestAgainstMockServer extends TestCase {
 
     @Override
     public void setUp(){
-        HttpClientBuilder builder = new HttpClientBuilder().withAccount(accountID).withApiKey(apiKey).withHost(host).
+        ClientBuilder builder = new ClientBuilder().withAccount(accountID).withApiKey(apiKey).withHost(host).
                 withProtocol(Http.Protocol.Http);
         api = new XplentyAPI(builder);
     }
