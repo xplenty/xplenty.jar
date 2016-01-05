@@ -7,7 +7,7 @@ import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.http.HttpClient;
-import com.xplenty.api.http.HttpClientBuilder;
+import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Cluster;
 import com.xplenty.api.model.Job;
@@ -33,7 +33,7 @@ public class XplentyAPITest extends TestCase {
     }
 
     public void testBuilder() {
-        HttpClientBuilder builder = new HttpClientBuilder().withAccount("testAcc").withApiKey("testKey").
+        ClientBuilder builder = new ClientBuilder().withAccount("testAcc").withApiKey("testKey").
                 withHost("www.example.com").withProtocol(Http.Protocol.Http).withVersion(Xplenty.Version.V1).
                 withClientImpl(Http.HttpClientImpl.SyncNetty).withLogHttpCommunication(true).withTimeout(10);
         XplentyAPI api = new XplentyAPI(builder);
