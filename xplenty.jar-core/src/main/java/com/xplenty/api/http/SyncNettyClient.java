@@ -259,11 +259,9 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
                 pipeline.addLast("ssl", new SslHandler(engine));
             }
 
-//            if (logCommunication) {
-//                pipeline.addLast("logger", new LoggingHandler("nettyclient", InternalLogLevel.DEBUG, true));
-//            }
-
-            pipeline.addLast("rawconsolelogger", new ConsoleNettyLogger(false));
+            if (logCommunication) {
+                pipeline.addLast("rawconsolelogger", new ConsoleNettyLogger(false));
+            }
 
             // unfortunately supports only response compression
             // pipeline.addLast("inflater", new HttpContentCompressor());
@@ -274,7 +272,9 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
 
             pipeline.addLast("aggregator", new HttpChunkAggregator(102467890));
 
-            pipeline.addLast("httpconsolelogger", new ConsoleNettyLogger(true));
+            if (logCommunication) {
+                pipeline.addLast("httpconsolelogger", new ConsoleNettyLogger(true));
+            }
 
             pipeline.addLast("handler", handler);
             return pipeline;
