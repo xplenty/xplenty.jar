@@ -14,39 +14,41 @@ import java.util.Date;
 public class User extends XplentyObject<User> {
 
     @JsonProperty
-    private Long id;
+    protected Long id;
     @JsonProperty
-    private String name;
+    protected String name;
     @JsonProperty
-    private String email;
+    protected String email;
     @JsonProperty("gravatar_email")
-    private String gravatarEmail;
+    protected String gravatarEmail;
     @JsonProperty("avatar_url")
-    private String avatarUrl;
+    protected String avatarUrl;
     @JsonProperty("time_zone")
-    private String timeZone;
+    protected String timeZone;
     @JsonProperty
-    private String location;
+    protected String location;
     @JsonProperty
-    private Boolean confirmed;
+    protected Boolean confirmed;
     @JsonProperty("confirmed_at")
-    private Date confirmedAt;
+    protected Date confirmedAt;
     @JsonProperty("notifications_count")
-    private Integer notificationsCount;
+    protected Integer notificationsCount;
     @JsonProperty("unread_notifications_count")
-    private Integer unreadNotificationsCount;
+    protected Integer unreadNotificationsCount;
     @JsonProperty("notification_settings")
-    private UserNotificationSettings notificationSettings;
+    protected UserNotificationSettings notificationSettings;
     @JsonProperty("receive_newsletter")
-    private Boolean receiveNewsLetter;
+    protected Boolean receiveNewsLetter;
     @JsonProperty("created_at")
-    private Date createdAt;
+    protected Date createdAt;
     @JsonProperty("updated_at")
-    private Date updatedAt;
+    protected Date updatedAt;
     @JsonProperty("api_key")
-    private String apiKey;
+    protected String apiKey;
     @JsonProperty
-    private String url;
+    protected String url;
+    @JsonProperty("last_login")
+    protected Date lastLogin;
 
     @JsonProperty("current_password")
     private String currentPassword;
@@ -115,7 +117,7 @@ public class User extends XplentyObject<User> {
     /**
      * @return indicates if the user is confirmed
      */
-    public Boolean getConfirmed() {
+    public Boolean isConfirmed() {
         return confirmed;
     }
 
@@ -150,7 +152,7 @@ public class User extends XplentyObject<User> {
     /**
      * @return indicates if user subscribed to recieve newsletter
      */
-    public Boolean getReceiveNewsLetter() {
+    public Boolean isReceiveNewsLetter() {
         return receiveNewsLetter;
     }
 
@@ -180,6 +182,14 @@ public class User extends XplentyObject<User> {
      */
     public String getUrl() {
         return url;
+    }
+
+    /**
+     *
+     * @return date and time of the last user login
+     */
+    public Date getLastLogin() {
+        return lastLogin;
     }
 
     /**
