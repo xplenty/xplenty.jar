@@ -21,15 +21,15 @@ import java.util.Date;
 @JsonSerialize(using = WebHookEvent.WebHookEventSerializer.class)
 public class WebHookEvent {
     @JsonProperty
-    private Long id;
+    protected Long id;
     @JsonProperty
-    private String name;
+    protected String name;
     @JsonIgnore
-    private String lastResponse;
+    protected String lastResponse;
     @JsonProperty("last_trigger_status")
-    private String lastTriggerStatus;
+    protected String lastTriggerStatus;
     @JsonProperty("last_trigger_time")
-    private Date lastTriggerTime;
+    protected Date lastTriggerTime;
 
     public WebHookEvent() {}
 

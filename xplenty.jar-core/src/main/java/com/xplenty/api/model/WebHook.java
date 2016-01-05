@@ -22,19 +22,19 @@ import java.util.List;
  */
 public class WebHook extends XplentyObject<WebHook> {
     @JsonProperty
-    private Long id;
+    protected Long id;
     @JsonProperty
-    private Boolean active;
+    protected Boolean active;
     @JsonProperty
-    private WebHookSettings settings;
+    protected WebHookSettings settings;
     @JsonProperty
-    private String salt;
+    protected String salt;
     @JsonProperty
-    private List<WebHookEvent> events;
+    protected List<WebHookEvent> events;
     @JsonProperty("add_events")
-    private List<String> addEvents;
+    protected List<String> addEvents;
     @JsonProperty("remove_events")
-    private List<String> removeEvents;
+    protected List<String> removeEvents;
 
     protected WebHook() {
         super(WebHook.class);

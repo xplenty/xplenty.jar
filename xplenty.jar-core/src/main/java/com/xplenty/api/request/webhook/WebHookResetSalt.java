@@ -14,15 +14,15 @@ import com.xplenty.api.request.AbstractRequest;
  * Time: 18:07
  */
 public class WebHookResetSalt extends AbstractRequest<String> {
-    private final Long webHookId;
+    private final long webHookId;
 
-    public WebHookResetSalt(Long webHookId) {
+    public WebHookResetSalt(long webHookId) {
         this.webHookId = webHookId;
     }
 
     @Override
     protected String getEndpoint() {
-        return Xplenty.Resource.WebHookResetSalt.format(webHookId.toString());
+        return Xplenty.Resource.WebHookResetSalt.format(String.valueOf(webHookId));
     }
 
     @Override

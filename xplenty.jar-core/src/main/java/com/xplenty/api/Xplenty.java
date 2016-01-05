@@ -251,7 +251,7 @@ public class Xplenty {
         DeleteWebHook("hooks/web/%s", "Delete Web hook"),
         PingWebHook("hooks/web/%s/ping", "Ping(fire test notification) for Web hook"),
         WebHookResetSalt("hooks/web/%s/reset_salt", "Reset Web hook's salt"),
-        WebHook("hooks/web/%s", "Update existing Web hook"),
+        WebHook("hooks/web/%s", "Get  Web hook information"),
         WebHooks("hooks/web", "List Web hooks")
         ;
 		
