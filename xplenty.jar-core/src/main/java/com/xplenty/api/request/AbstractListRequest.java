@@ -2,6 +2,7 @@ package com.xplenty.api.request;
 
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
+import com.xplenty.api.http.Http;
 
 import java.util.Properties;
 
@@ -10,7 +11,7 @@ import java.util.Properties;
  * Date: 17.12.15
  * Time: 20:46
  */
-public abstract class AbstractParametrizedRequest<T> extends AbstractRequest<T> {
+public abstract class AbstractListRequest<T> extends AbstractRequest<T> {
     public static final String PARAMETER_STATUS = "status";
     public static final String PARAMETER_SORT = "sort";
     public static final String PARAMETER_DIRECTION = "direction";
@@ -19,13 +20,16 @@ public abstract class AbstractParametrizedRequest<T> extends AbstractRequest<T> 
 
     protected Properties parameters;
 
-    protected AbstractParametrizedRequest(Properties parameters, boolean validateSort) {
+    protected AbstractListRequest(Properties parameters, boolean validateSort) {
         validateParameters(parameters, validateSort);
         this.parameters = parameters;
     }
 
     @SuppressWarnings("unchecked")
     private void validateParameters(Properties params, boolean validateSort) {
+        if (params == null) {
+            return;
+        }
 
         if (validateSort) {
             if (params.containsKey(PARAMETER_SORT)
@@ -77,6 +81,25 @@ public abstract class AbstractParametrizedRequest<T> extends AbstractRequest<T> 
         return params.insert(0, getEndpointRoot()).toString();
     }
 
+    @Override
+    public boolean hasBody() {
+        return false;
+    }
+
+    @Override
+    public T getBody() {
+        return null;
+    }
+
+    @Override
+    public Http.MediaType getResponseType() {
+        return Http.MediaType.JSON;
+    }
+
+    @Override
+    public Http.Method getHttpMethod() {
+        return Http.Method.GET;
+    }
 
     protected abstract String getEndpointRoot();
 

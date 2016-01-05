@@ -235,16 +235,24 @@ public class Xplenty {
 		Job("jobs/%s", "Get job info"),
 		RunJob("jobs", "Run job"),
 		StopJob("jobs/%s", "Stop job"),
-        ClusterWatcher("clusters/%s/watchers", "adding/removing a cluster watchers"),
-        JobWatcher("jobs/%s/watchers", "adding/removing a job watchers"),
-        Schedules("schedules", "list schedules"),
+        ClusterWatcher("clusters/%s/watchers", "Adding/removing a cluster watchers"),
+        JobWatcher("jobs/%s/watchers", "Adding/removing a job watchers"),
+        Schedules("schedules", "List schedules"),
         CreateSchedule("schedules", "Create schedule"),
         CloneSchedule("schedules/%s/clone", "Clone schedule"),
         UpdateSchedule("schedules/%s", "Update schedule"),
         RemoveSchedule("schedules/%s", "Remove schedule"),
         Schedule("schedules/%s", "Get schedule information"),
         User("user", "Get current user information"),
-        UpdateUser("user", "Update current user information")
+        UpdateUser("user", "Update current user information"),
+        HookEvents("hook_events", "List supported Hook Events"),
+        CreateWebHook("hooks/web", "Create new Web hook"),
+        UpdateWebHook("hooks/web/%s", "Update existing Web hook"),
+        DeleteWebHook("hooks/web/%s", "Delete Web hook"),
+        PingWebHook("hooks/web/%s/ping", "Ping(fire test notification) for Web hook"),
+        WebHookResetSalt("hooks/web/%s/reset_salt", "Reset Web hook's salt"),
+        WebHook("hooks/web/%s", "Update existing Web hook"),
+        WebHooks("hooks/web", "List Web hooks")
         ;
 		
 		public final String value;

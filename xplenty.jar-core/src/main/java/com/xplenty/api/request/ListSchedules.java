@@ -6,10 +6,7 @@ package com.xplenty.api.request;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
-import com.xplenty.api.http.Http.MediaType;
-import com.xplenty.api.http.Http.Method;
 import com.xplenty.api.http.Response;
-import com.xplenty.api.model.Cluster;
 import com.xplenty.api.model.Schedule;
 
 import java.util.List;
@@ -22,7 +19,7 @@ import java.util.Properties;
  * Date: 16.12.15
  * Time: 18:08
  */
-public class ListSchedules extends AbstractParametrizedRequest<List<Schedule>> {
+public class ListSchedules extends AbstractListRequest<List<Schedule>> {
 
 
 	public ListSchedules(Properties params) {
@@ -39,18 +36,6 @@ public class ListSchedules extends AbstractParametrizedRequest<List<Schedule>> {
 	}
 
 	@Override
-	public Method getHttpMethod() {
-		return Method.GET;
-	}
-
-	@Override
-	public MediaType getResponseType() {
-		return MediaType.JSON;
-	}
-
-
-
-	@Override
 	public List<Schedule> getResponse(Response response) {
         try {
             return response.getContent(new TypeReference<List<Schedule>>() {});
@@ -62,16 +47,6 @@ public class ListSchedules extends AbstractParametrizedRequest<List<Schedule>> {
 	@Override
 	public String getName() {
 		return Xplenty.Resource.Schedules.name;
-	}
-
-	@Override
-	public boolean hasBody() {
-		return false;
-	}
-
-	@Override
-	public List<Cluster> getBody() {
-		return null;
 	}
 
     @Override

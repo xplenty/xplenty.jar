@@ -15,7 +15,7 @@ public class Subscription extends XplentyObject<Subscription> {
     @JsonProperty("trial_period_days")
     private Integer trialPeriodDays;
     @JsonProperty("plan_id")
-    private Long planId;
+    private String planId;
     @JsonProperty("trial_start")
     private Date trialStart;
     @JsonProperty("trial_end")
@@ -41,7 +41,7 @@ public class Subscription extends XplentyObject<Subscription> {
      *
      * @return the numeric identifier of the current plan
      */
-    public Long getPlanId() {
+    public String getPlanId() {
         return planId;
     }
 

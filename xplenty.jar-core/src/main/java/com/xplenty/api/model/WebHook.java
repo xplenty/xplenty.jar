@@ -1,7 +1,6 @@
 package com.xplenty.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.xplenty.api.Xplenty;
 
 import java.util.List;
 
@@ -33,9 +32,9 @@ public class WebHook extends XplentyObject<WebHook> {
     @JsonProperty
     private List<WebHookEvent> events;
     @JsonProperty("add_events")
-    private List<Xplenty.WebHookEvent> addEvents;
+    private List<String> addEvents;
     @JsonProperty("remove_events")
-    private List<Xplenty.WebHookEvent> removeEvents;
+    private List<String> removeEvents;
 
     protected WebHook() {
         super(WebHook.class);
@@ -47,7 +46,7 @@ public class WebHook extends XplentyObject<WebHook> {
         this.events = events;
     }
 
-    public WebHook(Long id, WebHookSettings settings, List<Xplenty.WebHookEvent> addEvents, List<Xplenty.WebHookEvent> removeEvents) {
+    public WebHook(Long id, WebHookSettings settings, List<String> addEvents, List<String> removeEvents) {
         super(WebHook.class);
         this.addEvents = addEvents;
         this.removeEvents = removeEvents;

@@ -15,7 +15,7 @@ import java.util.Map;
  * Time: 18:49
  */
 public abstract class AbstractManipulationRequest<T> extends AbstractRequest<T> {
-    protected final T entity;
+    protected T entity;
     private final Class<T> clazz;
 
     @SuppressWarnings("unchecked")
@@ -26,6 +26,10 @@ public abstract class AbstractManipulationRequest<T> extends AbstractRequest<T> 
             throw new XplentyAPIException("Developer error, no actual type information passed!");
         }
         this.clazz = (Class<T>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
+    }
+
+    protected void setEntity(T entity) {
+        this.entity = entity;
     }
 
     @Override

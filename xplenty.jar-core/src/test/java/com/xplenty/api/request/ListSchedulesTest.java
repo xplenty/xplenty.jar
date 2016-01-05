@@ -73,8 +73,8 @@ public class ListSchedulesTest extends TestCase {
     @Test
     public void testPaging() throws Exception {
         final Properties params = new Properties();
-        params.put(AbstractParametrizedRequest.PARAMETER_LIMIT, 1);
-        params.put(AbstractParametrizedRequest.PARAMETER_OFFSET, 2);
+        params.put(AbstractListRequest.PARAMETER_LIMIT, 1);
+        params.put(AbstractListRequest.PARAMETER_OFFSET, 2);
 
         ListSchedules ls = new ListSchedules(params);
         assertEquals(ls.getEndpoint(), String.format("%s?limit=1&offset=2", ls.getEndpointRoot()));
@@ -85,8 +85,8 @@ public class ListSchedulesTest extends TestCase {
     @Test
     public void testInvalidPaging() throws Exception {
         final Properties params = new Properties();
-        params.put(AbstractParametrizedRequest.PARAMETER_LIMIT, -1);
-        params.put(AbstractParametrizedRequest.PARAMETER_OFFSET, -2);
+        params.put(AbstractListRequest.PARAMETER_LIMIT, -1);
+        params.put(AbstractListRequest.PARAMETER_OFFSET, -2);
 
         try {
             ListSchedules ls = new ListSchedules(params);
@@ -95,14 +95,14 @@ public class ListSchedulesTest extends TestCase {
         }
 
         try {
-            params.put(AbstractParametrizedRequest.PARAMETER_LIMIT, 101);
+            params.put(AbstractListRequest.PARAMETER_LIMIT, 101);
             ListSchedules ls = new ListSchedules(params);
         } catch (XplentyAPIException ex) {
             assertEquals(String.format("'limit' parameter should be less or equal to %s and greater than 0", Xplenty.MAX_LIMIT), ex.getMessage());
         }
 
         try {
-            params.put(AbstractParametrizedRequest.PARAMETER_LIMIT, 1);
+            params.put(AbstractListRequest.PARAMETER_LIMIT, 1);
             ListSchedules ls = new ListSchedules(params);
         } catch (XplentyAPIException ex) {
             assertEquals("'offset' parameter should be greater than 0", ex.getMessage());

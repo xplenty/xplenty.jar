@@ -16,6 +16,7 @@ import com.xplenty.api.request.watching.AddJobWatcher;
 import com.xplenty.api.request.watching.ListWatchers;
 import com.xplenty.api.request.watching.WatchingStop;
 import com.xplenty.api.http.Http;
+import com.xplenty.api.request.webhook.*;
 
 import java.util.List;
 import java.util.Map;
@@ -97,8 +98,8 @@ public class XplentyAPI {
      */
     public List<Package> listPackages(int offset, int limit) {
         final Properties props = new Properties();
-        props.put(AbstractParametrizedRequest.PARAMETER_LIMIT, limit);
-        props.put(AbstractParametrizedRequest.PARAMETER_OFFSET, offset);
+        props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
         return listPackages(props);
     }
 
@@ -118,8 +119,8 @@ public class XplentyAPI {
      */
     public List<Schedule> listSchedules(int offset, int limit) {
         final Properties props = new Properties();
-        props.put(AbstractParametrizedRequest.PARAMETER_LIMIT, limit);
-        props.put(AbstractParametrizedRequest.PARAMETER_OFFSET, offset);
+        props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
         return listSchedules(props);
     }
 
@@ -148,8 +149,8 @@ public class XplentyAPI {
      */
     public List<Cluster> listClusters(int offset, int limit) {
         final Properties props = new Properties();
-        props.put(AbstractParametrizedRequest.PARAMETER_LIMIT, limit);
-        props.put(AbstractParametrizedRequest.PARAMETER_OFFSET, offset);
+        props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
         return listClusters(props);
     }
 
@@ -234,8 +235,8 @@ public class XplentyAPI {
      */
     public List<Job> listJobs(int offset, int limit) {
         final Properties props = new Properties();
-        props.put(AbstractParametrizedRequest.PARAMETER_LIMIT, limit);
-        props.put(AbstractParametrizedRequest.PARAMETER_OFFSET, offset);
+        props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
         return listJobs(props);
     }
 	
@@ -337,9 +338,7 @@ public class XplentyAPI {
      * @return updated schedule object
      */
     public Schedule updateSchedule(Schedule schedule) {
-        if (schedule.getId() == null) {
-            throw new XplentyAPIException("No id specified!");
-        }
+        checkId(schedule.getId());
         return client.execute(new UpdateSchedule(schedule));
     }
 
@@ -349,9 +348,7 @@ public class XplentyAPI {
      * @return deleted schedule object
      */
     public Schedule deleteSchedule(long scheduleId) {
-        if (scheduleId == 0) {
-            throw new XplentyAPIException("No id specified!");
-        }
+        checkId(scheduleId);
         return client.execute(new DeleteSchedule(scheduleId));
     }
 
@@ -361,9 +358,7 @@ public class XplentyAPI {
      * @return cloned schedule object
      */
     public Schedule cloneSchedule(long scheduleId) {
-        if (scheduleId == 0) {
-            throw new XplentyAPIException("No id specified!");
-        }
+        checkId(scheduleId);
         return client.execute(new CloneSchedule(scheduleId));
     }
 
@@ -373,23 +368,167 @@ public class XplentyAPI {
      * @return schedule object
      */
     public Schedule getScheduleInfo(long scheduleId) {
-        if (scheduleId == 0) {
-            throw new XplentyAPIException("No id specified!");
-        }
+        checkId(scheduleId);
         return client.execute(new ScheduleInfo(scheduleId));
     }
 
+    /**
+     * Get current user information.
+     * @return user object
+     */
     public User getCurrentUserInfo() {
         return getCurrentUserInfo(null);
     }
 
+    /**
+     * Get current user information including API Key.
+     * @param currentPassword current user password. If you pass null, API KEy won't be retrieved
+     * @return user object
+     */
     public User getCurrentUserInfo(String currentPassword) {
         return client.execute(new CurrentUserInfo(currentPassword));
     }
 
+    /**
+     * Update current user information like notifications settings, timezone, etc
+     * @param user user object containing required changes
+     * @return updated user object
+     */
     public User updateCurrentUser(User user) {
         return client.execute(new UpdateCurrentUser(user));
     }
+
+    /**
+     * Get all supported hook events to use when creating/updating web hooks
+     * @return list of hook events
+     */
+    public List<HookEvent> getHookEvents() {
+        return client.execute(new ListHookEvents());
+    }
+
+    /**
+     * Create new Web hook to recieve notifications for events subscribed
+     * @param settings settings used to connect to your server
+     * @param events list of events, retrieved using {@link #getHookEvents() getHookEvents}, you want to subscribe to
+     * @return created web hook object
+     */
+    public WebHook createWebHook(WebHookSettings settings, List<String> events) {
+        return client.execute(new CreateWebHook(settings, events));
+    }
+
+    /**
+     * Create new Web hook to recieve notifications for events subscribed
+     * @param events list of predefined events you want to subscribe to
+     * @param settings settings used to connect to your server
+     * @return created web hook object
+     */
+    public WebHook createWebHook(List<Xplenty.WebHookEvent> events, WebHookSettings settings) {
+        return client.execute(new CreateWebHook(events, settings));
+    }
+
+    /**
+     * Update web hook
+     * @param webHookId id of the web hook
+     * @param settings settings used to connect to your server, pass null if no change required
+     * @param addEvents subscribe to these events. Leave null if no change required
+     * @param removeEvents unsubscribe from these events. Leave null if no change required.
+     * @return updated web hook object
+     */
+    public WebHook updateWebHook(long webHookId, WebHookSettings settings, List<String> addEvents, List<String> removeEvents) {
+        checkId(webHookId);
+        return client.execute(new UpdateWebHook(webHookId, settings, addEvents, removeEvents));
+    }
+
+    /**
+     * Update web hook
+     * @param webHookId id of the web hook
+     * @param addEvents subscribe to these events. Leave null if no change required
+     * @param removeEvents unsubscribe from these events. Leave null if no change required.
+     * @param settings settings used to connect to your server, pass null if no change required
+     * @return updated web hook object
+     */
+    public WebHook updateWebHook(long webHookId, List<Xplenty.WebHookEvent> addEvents, List<Xplenty.WebHookEvent> removeEvents, WebHookSettings settings) {
+        checkId(webHookId);
+        return client.execute(new UpdateWebHook(webHookId, addEvents, removeEvents, settings));
+    }
+
+    /**
+     * Enable/disable Web hook
+     * @param webHookId id of the web hook
+     * @param active true to enable web hook, false otherwise
+     * @return updated web hook object
+     */
+    public WebHook toggleWebHook(long webHookId, boolean active) {
+        checkId(webHookId);
+        return client.execute(new ToggleWebHook(webHookId, active));
+    }
+
+    /**
+     * List web hooks associated with the account
+     * @return list of web hooks
+     */
+    public List<WebHook> listWebHooks() {
+        return listWebHooks(new Properties());
+    }
+
+    /**
+     * List web hooks associated with the account
+     * @param offset number of record to  start results from
+     * @param limit number of results
+     * @return list of web hooks
+     */
+    public List<WebHook> listWebHooks(int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
+        return listWebHooks(props);
+    }
+
+    /**
+     * List web hooks associated with the account
+     * @param params map of request parameters, see {@link Xplenty.Sort}, {@link Xplenty.SortDirection}.
+     * @return list of web hooks
+     */
+    public List<WebHook> listWebHooks(Properties params) {
+        return client.execute(new ListWebHooks(params));
+    }
+
+    /**
+     * Delete webhook with specified id
+     * @param webHookId id of the webhook to delete
+     * @return deleted web hook object
+     */
+    public WebHook deleteWebHook(long webHookId) {
+        checkId(webHookId);
+        return client.execute(new DeleteWebHook(webHookId));
+    }
+
+    /**
+     * Reset salt for webhook with specified id
+     * @param webHookId id of the webhook to reset salt for
+     * @return newly generated salt
+     */
+    public String webHookResetSalt(long webHookId) {
+        checkId(webHookId);
+        return client.execute(new WebHookResetSalt(webHookId));
+    }
+
+    public WebHook pingWebHook(long webHookId) {
+        checkId(webHookId);
+        return client.execute(new PingWebHook(webHookId));
+    }
+
+    public WebHook getWebHookInfo(long webHookId) {
+        checkId(webHookId);
+        return client.execute(new WebHookInfo(webHookId));
+    }
+
+    private void checkId(long id) {
+        if (id == 0) {
+            throw new XplentyAPIException("No Id specified!");
+        }
+    }
+
 
     /**
 	 * Account name this XplentyAPI instance is associated with

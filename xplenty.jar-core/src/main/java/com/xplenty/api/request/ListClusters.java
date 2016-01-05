@@ -7,9 +7,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.Xplenty.ClusterStatus;
 import com.xplenty.api.exceptions.XplentyAPIException;
-import com.xplenty.api.http.Http;
-import com.xplenty.api.http.Http.MediaType;
-import com.xplenty.api.http.Http.Method;
 import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Cluster;
 
@@ -20,7 +17,7 @@ import java.util.Properties;
  * @author Yuriy Kovalek
  *
  */
-public class ListClusters extends AbstractParametrizedRequest<List<Cluster>> {
+public class ListClusters extends AbstractListRequest<List<Cluster>> {
 	
 	public ListClusters(Properties params) {
         super(params, true);
@@ -33,16 +30,6 @@ public class ListClusters extends AbstractParametrizedRequest<List<Cluster>> {
 				&& !(params.get(PARAMETER_STATUS) instanceof String && "all".equals(params.get(PARAMETER_STATUS)))
 			)
 			throw new XplentyAPIException("Invalid 'status' parameter");
-	}
-
-	@Override
-	public Method getHttpMethod() {
-		return Http.Method.GET;
-	}
-	
-	@Override
-	public MediaType getResponseType() {
-		return Http.MediaType.JSON;
 	}
 
     @Override
@@ -62,16 +49,6 @@ public class ListClusters extends AbstractParametrizedRequest<List<Cluster>> {
 	@Override
 	public String getName() {
 		return Xplenty.Resource.Clusters.name;
-	}
-
-	@Override
-	public boolean hasBody() {
-		return false;
-	}
-
-	@Override
-	public List<Cluster> getBody() {
-		return null;
 	}
 
 }

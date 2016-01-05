@@ -7,9 +7,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.Xplenty.ClusterStatus;
 import com.xplenty.api.exceptions.XplentyAPIException;
-import com.xplenty.api.http.Http;
-import com.xplenty.api.http.Http.MediaType;
-import com.xplenty.api.http.Http.Method;
 import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Job;
 
@@ -20,7 +17,7 @@ import java.util.Properties;
  * @author Yuriy Kovalek
  *
  */
-public class ListJobs extends AbstractParametrizedRequest<List<Job>> {
+public class ListJobs extends AbstractListRequest<List<Job>> {
 	
 	public ListJobs(Properties params) {
         super(params, true);
@@ -40,15 +37,6 @@ public class ListJobs extends AbstractParametrizedRequest<List<Job>> {
 		return Xplenty.Resource.Jobs.name;
 	}
 
-	@Override
-	public Method getHttpMethod() {
-		return Http.Method.GET;
-	}
-
-	@Override
-	public MediaType getResponseType() {
-		return Http.MediaType.JSON;
-	}
 
     @Override
     protected String getEndpointRoot() {
@@ -62,16 +50,6 @@ public class ListJobs extends AbstractParametrizedRequest<List<Job>> {
         } catch (Exception e) {
             throw new XplentyAPIException(getName() + ": error parsing response object", e);
         }
-	}
-
-	@Override
-	public boolean hasBody() {
-		return false;
-	}
-
-	@Override
-	public List<Job> getBody() {
-		return null;
 	}
 
 }

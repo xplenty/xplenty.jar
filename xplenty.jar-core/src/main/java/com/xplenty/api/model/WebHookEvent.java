@@ -2,8 +2,14 @@ package com.xplenty.api.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.xplenty.api.Xplenty;
 
+import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -12,11 +18,12 @@ import java.util.Date;
  * Date: 04.01.16
  * Time: 18:01
  */
+@JsonSerialize(using = WebHookEvent.WebHookEventSerializer.class)
 public class WebHookEvent {
     @JsonProperty
     private Long id;
     @JsonProperty
-    private Xplenty.WebHookEvent name;
+    private String name;
     @JsonIgnore
     private String lastResponse;
     @JsonProperty("last_trigger_status")
@@ -26,7 +33,7 @@ public class WebHookEvent {
 
     public WebHookEvent() {}
 
-    public WebHookEvent(Xplenty.WebHookEvent name) {
+    public WebHookEvent(String name) {
         this.name = name;
     }
 
@@ -42,8 +49,16 @@ public class WebHookEvent {
      *
      * @return name constant of the event
      */
-    public Xplenty.WebHookEvent getName() {
+    public String getName() {
         return name;
+    }
+
+    public Xplenty.WebHookEvent getEvent() {
+        try {
+            return Xplenty.WebHookEvent.valueOf(name);
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
     }
 
     /**
@@ -68,5 +83,13 @@ public class WebHookEvent {
      */
     public Date getLastTriggerTime() {
         return lastTriggerTime;
+    }
+
+    protected static class WebHookEventSerializer extends JsonSerializer<WebHookEvent> {
+
+        @Override
+        public void serialize(WebHookEvent webHookEvent, JsonGenerator jGen, SerializerProvider sp) throws IOException, JsonProcessingException {
+            jGen.writeString(webHookEvent.getName());
+        }
     }
 }
