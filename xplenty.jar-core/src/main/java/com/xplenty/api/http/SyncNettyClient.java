@@ -88,7 +88,7 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
     public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
         HttpResponse response = (HttpResponse) e.getMessage();
 
-        System.out.println(channelBuffer2String(response.getContent()));
+        //System.out.println(channelBuffer2String(response.getContent()));
 
         final Channel channel = ctx.getChannel();
         NettyResponse nettyResponse = (NettyResponse) channel.getAttachment();
