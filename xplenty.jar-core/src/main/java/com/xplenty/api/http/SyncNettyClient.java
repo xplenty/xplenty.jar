@@ -12,9 +12,7 @@ import org.jboss.netty.channel.*;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
 import org.jboss.netty.handler.codec.http.*;
 import org.jboss.netty.handler.execution.OrderedMemoryAwareThreadPoolExecutor;
-import org.jboss.netty.handler.logging.LoggingHandler;
 import org.jboss.netty.handler.ssl.SslHandler;
-import org.jboss.netty.logging.InternalLogLevel;
 
 import javax.net.ssl.SSLEngine;
 import java.io.ByteArrayOutputStream;
@@ -261,16 +259,22 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
                 pipeline.addLast("ssl", new SslHandler(engine));
             }
 
-            if (logCommunication) {
-                pipeline.addLast("logger", new LoggingHandler("nettyclient", InternalLogLevel.DEBUG, true));
-            }
+//            if (logCommunication) {
+//                pipeline.addLast("logger", new LoggingHandler("nettyclient", InternalLogLevel.DEBUG, true));
+//            }
+
+            pipeline.addLast("rawconsolelogger", new ConsoleNettyLogger(false));
+
+            // unfortunately supports only response compression
+            // pipeline.addLast("inflater", new HttpContentCompressor());
 
             pipeline.addLast("codec", new HttpClientCodec());
 
+            pipeline.addLast("deflater", new HttpContentDecompressor());
+
             pipeline.addLast("aggregator", new HttpChunkAggregator(102467890));
 
-            // Remove the following line if you don't want automatic content decompression.
-            pipeline.addLast("deflater", new HttpContentDecompressor());
+            pipeline.addLast("httpconsolelogger", new ConsoleNettyLogger(true));
 
             pipeline.addLast("handler", handler);
             return pipeline;
