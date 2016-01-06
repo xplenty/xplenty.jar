@@ -17,6 +17,8 @@ public class WebHookSettings {
     private Boolean basicAuth;
     @JsonProperty("basic_auth_data")
     private String basicAuthData;
+    @JsonProperty("encrypted_basic_auth_data")
+    protected String encryptedBasicAuthData;
 
     public WebHookSettings() {
     }
@@ -58,6 +60,14 @@ public class WebHookSettings {
      */
     public String getBasicAuthData() {
         return basicAuthData;
+    }
+
+    /**
+     *
+     * @return server encrypted data needed for basic authentication
+     */
+    public String getEncryptedBasicAuthData() {
+        return encryptedBasicAuthData;
     }
 
     /**

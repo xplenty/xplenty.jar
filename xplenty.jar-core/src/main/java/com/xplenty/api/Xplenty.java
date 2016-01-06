@@ -16,7 +16,12 @@ public class Xplenty {
 
 	public enum Sort {
 		updated("updated"),
-		created("created");
+		created("created"),
+        // todo include all entities that support name sort
+        /**
+         * Note that name sort is available only for {@link com.xplenty.api.model.PublicKey Public Key List}
+         */
+        name("name");
 		
 		public final String value;
 		
@@ -28,6 +33,7 @@ public class Xplenty {
 			return value;
 		}
 	}
+
 	
 	public enum SortDirection {
 		ascending("asc"),
@@ -252,7 +258,11 @@ public class Xplenty {
         PingWebHook("hooks/web/%s/ping", "Ping(fire test notification) for Web hook"),
         WebHookResetSalt("hooks/web/%s/reset_salt", "Reset Web hook's salt"),
         WebHook("hooks/web/%s", "Get  Web hook information"),
-        WebHooks("hooks/web", "List Web hooks")
+        WebHooks("hooks/web", "List Web hooks"),
+        CreatePublicKey("user/keys", "Create Public Key"),
+        PublicKey("user/keys/%s", "Get  Public Key information"),
+        PublicKeys("user/keys", "List Public Keys"),
+        DeletePublicKey("user/keys/%s", "Delete Public Key")
         ;
 		
 		public final String value;

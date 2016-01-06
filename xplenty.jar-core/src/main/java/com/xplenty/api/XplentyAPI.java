@@ -16,6 +16,10 @@ import com.xplenty.api.request.job.JobInfo;
 import com.xplenty.api.request.job.ListJobs;
 import com.xplenty.api.request.job.RunJob;
 import com.xplenty.api.request.job.StopJob;
+import com.xplenty.api.request.public_key.CreatePublicKey;
+import com.xplenty.api.request.public_key.DeletePublicKey;
+import com.xplenty.api.request.public_key.ListPublicKeys;
+import com.xplenty.api.request.public_key.PublicKeyInfo;
 import com.xplenty.api.request.schedule.*;
 import com.xplenty.api.request.user.CurrentUserInfo;
 import com.xplenty.api.request.user.UpdateCurrentUser;
@@ -523,15 +527,84 @@ public class XplentyAPI {
         return client.execute(new WebHookResetSalt(webHookId));
     }
 
+    /**
+     * Ping (fire test notification) to url configured in specified web hook
+     * @param webHookId id of the webhook to ping
+     * @return web hook object
+     */
     public WebHook pingWebHook(long webHookId) {
         checkId(webHookId);
         return client.execute(new PingWebHook(webHookId));
     }
 
+    /**
+     * Get web hook information
+     * @param webHookId id of the webhook to get info for
+     * @return web hook object
+     */
     public WebHook getWebHookInfo(long webHookId) {
         checkId(webHookId);
         return client.execute(new WebHookInfo(webHookId));
     }
+
+    /**
+     * Create (add) new public key
+     * @param name name to distinguish public keys from each other
+     * @param publicKey SSH Public key which contains information about type of encryption at the beginning of string, like: 'ssh-rsa'.
+     * @return newly created public key object
+     */
+    public PublicKey createPublicKey(String name, String publicKey) {
+        return client.execute(new CreatePublicKey(name, publicKey));
+    }
+
+    /**
+     * List public keys associated with the account
+     * @return list of public keys
+     */
+    public List<PublicKey> listPublicKeys() {
+        return listPublicKeys(new Properties());
+    }
+
+    /**
+     * List public keys associated with the account
+     * @param offset number of record to start results from
+     * @param limit number of results
+     * @return list of public keys
+     */
+    public List<PublicKey> listPublicKeys(int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
+        return listPublicKeys(props);
+    }
+
+    /**
+     * List public keys associated with the account
+     * @param params map of request parameters, see {@link Xplenty.Sort}, {@link Xplenty.SortDirection}.
+     * @return list of public keys
+     */
+    public List<PublicKey> listPublicKeys(Properties params) {
+        return client.execute(new ListPublicKeys(params));
+    }
+
+    /**
+     * Deletes public key with specified id
+     * @param publicKeyId id of public key to delete
+     * @return deleted public key object
+     */
+    public PublicKey deletePublicKey(long publicKeyId) {
+        return client.execute(new DeletePublicKey(publicKeyId));
+    }
+
+    /**
+     * Get public key information
+     * @param publicKeyId id of public key to get
+     * @return public key object
+     */
+    public PublicKey getPublicKeyInfo(long publicKeyId) {
+        return client.execute(new PublicKeyInfo(publicKeyId));
+    }
+
 
     private void checkId(long id) {
         if (id == 0) {

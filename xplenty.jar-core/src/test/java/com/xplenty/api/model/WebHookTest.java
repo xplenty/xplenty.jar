@@ -29,6 +29,7 @@ public class WebHookTest extends TestCase {
         webHook.active = true;
         webHook.salt = "000abcdead";
         WebHookSettings whs = new WebHookSettings("http://localhost/test", true, false, "somedata");
+        whs.encryptedBasicAuthData = "wtjnIcvVp1fLC2fy9rAsSQ==\\n";
         webHook.settings = whs;
         List<WebHookEvent> events = new ArrayList<>();
         WebHookEvent whe = new WebHookEvent();

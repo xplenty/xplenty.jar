@@ -14,22 +14,30 @@ import java.util.Date;
 public class PublicKey extends XplentyObject<PublicKey> {
 
     @JsonProperty
-    private Long id;
+    protected Long id;
     @JsonProperty
-    private String name;
+    protected String name;
     @JsonProperty
-    private String comment;
+    protected String comment;
     @JsonProperty
-    private String fingerprint;
+    protected String fingerprint;
     @JsonProperty("created_at")
-    private Date createdAt;
+    protected Date createdAt;
     @JsonProperty("updated_at")
-    private Date updatedAt;
+    protected Date updatedAt;
     @JsonProperty
-    private String url;
+    protected String url;
+    @JsonProperty("public_key")
+    private String publicKey;
 
     protected PublicKey() {
         super(PublicKey.class);
+    }
+
+    public PublicKey(String name, String publicKey) {
+        super(PublicKey.class);
+        this.publicKey = publicKey;
+        this.name = name;
     }
 
     /**

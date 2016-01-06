@@ -63,6 +63,7 @@ public class WebHookInfoTest extends TestCase {
         assertEquals("http://localhost/test", settings.getUrl());
         assertEquals(false, settings.getBasicAuth().booleanValue());
         assertEquals(true, settings.getInsecureSSL().booleanValue());
+        assertEquals("wtjnIcvVp1fLC2fy9rAsSQ==\\n", settings.getEncryptedBasicAuthData());
         final WebHookEvent event = c.getEvents().get(0);
         // we've got custom json serializer that removes everything except name
         assertNull(event.getId());
