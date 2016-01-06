@@ -11,12 +11,22 @@ import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.model.*;
 import com.xplenty.api.model.Package;
 import com.xplenty.api.request.*;
+import com.xplenty.api.request.cluster.*;
+import com.xplenty.api.request.job.JobInfo;
+import com.xplenty.api.request.job.ListJobs;
+import com.xplenty.api.request.job.RunJob;
+import com.xplenty.api.request.job.StopJob;
+import com.xplenty.api.request.schedule.*;
+import com.xplenty.api.request.user.CurrentUserInfo;
+import com.xplenty.api.request.user.UpdateCurrentUser;
 import com.xplenty.api.request.watching.AddClusterWatcher;
 import com.xplenty.api.request.watching.AddJobWatcher;
 import com.xplenty.api.request.watching.ListWatchers;
 import com.xplenty.api.request.watching.WatchingStop;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.request.webhook.*;
+import com.xplenty.api.request.xpackage.ListPackages;
+import com.xplenty.api.request.xpackage.PackageInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -126,7 +136,7 @@ public class XplentyAPI {
 
     /**
      * List of schedules associated with the account
-     * @param props map of request parameters, see {@link com.xplenty.api.Xplenty.ScheduleStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link com.xplenty.api.request.ListSchedules}
+     * @param props map of request parameters, see {@link com.xplenty.api.Xplenty.ScheduleStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link com.xplenty.api.request.schedule.ListSchedules}
      * @return list of schedules
      */
     public List<Schedule> listSchedules(Properties props) {
@@ -157,7 +167,7 @@ public class XplentyAPI {
 
     /**
 	 * List of clusters associated with the account
-	 * @param props map of request parameters, see {@link Xplenty.ClusterStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link ListClusters}
+	 * @param props map of request parameters, see {@link Xplenty.ClusterStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link com.xplenty.api.request.cluster.ListClusters}
 	 * @return list of clusters
 	 */
 	public List<Cluster> listClusters(Properties props) {
@@ -242,7 +252,7 @@ public class XplentyAPI {
 	
 	/**
 	 * List of jobs associated with the account
-	 * @param params map of request parameters, see {@link Xplenty.JobStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link ListJobs}
+	 * @param params map of request parameters, see {@link Xplenty.JobStatus}, {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, for keys see constants in {@link com.xplenty.api.request.job.ListJobs}
 	 * @return list of jobs
 	 */
 	public List<Job> listJobs(Properties params) {
