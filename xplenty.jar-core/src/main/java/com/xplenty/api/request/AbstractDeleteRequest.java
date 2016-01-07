@@ -17,7 +17,7 @@ public abstract class AbstractDeleteRequest<T> extends AbstractRequest<T> {
     private final Class<T> clazz;
 
     @SuppressWarnings("unchecked")
-    protected AbstractDeleteRequest(Long entityId) {
+    protected AbstractDeleteRequest(long entityId) {
         this.entityId = entityId;
         final Type superclass = this.getClass().getGenericSuperclass();
         if (superclass instanceof Class) {

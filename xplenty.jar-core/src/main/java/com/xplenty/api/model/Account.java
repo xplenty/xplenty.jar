@@ -1,5 +1,6 @@
 package com.xplenty.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xplenty.api.Xplenty;
 
@@ -14,51 +15,66 @@ import java.util.Date;
  */
 public class Account extends XplentyObject<Account> {
     @JsonProperty
-    private Long id;
+    public Long id;
     @JsonProperty("account_id")
-    private String accountId;
+    public String accountId;
     @JsonProperty
-    private String uname;
+    public String name;
     @JsonProperty
-    private String region;
+    public String uname;
     @JsonProperty
-    private String location;
+    public String region;
+    @JsonProperty
+    public String location;
     @JsonProperty("billing_email")
-    private String billingEmail;
+    public String billingEmail;
     @JsonProperty("gravatar_email")
-    private String gravatarEmail;
+    public String gravatarEmail;
     @JsonProperty("avatar_url")
-    private String avatarUrl;
+    public String avatarUrl;
     @JsonProperty("created_at")
-    private Date createdAt;
+    public Date createdAt;
     @JsonProperty("updated_at")
-    private Date updatedAt;
+    public Date updatedAt;
     @JsonProperty("schedules_count")
-    private Integer schedulesCount;
+    public Integer schedulesCount;
     @JsonProperty("connections_count")
-    private Integer connectionsCount;
+    public Integer connectionsCount;
     @JsonProperty
-    private Xplenty.AccountRole role;
+    public Xplenty.AccountRole role;
     @JsonProperty("owner_id")
-    private Long ownerId;
+    public Long ownerId;
     @JsonProperty("members_count")
-    private Integer membersCount;
+    public Integer membersCount;
     @JsonProperty("packages_count")
-    private Integer packagesCount;
+    public Integer packagesCount;
     @JsonProperty("jobs_count")
-    private Integer jobsCount;
+    public Integer jobsCount;
     @JsonProperty("running_jobs_count")
-    private Integer runningJobsCount;
+    public Integer runningJobsCount;
     @JsonProperty
-    private String url;
+    public String url;
     @JsonProperty("public_key")
-    private String publicKey;
+    public String publicKey;
+    @JsonIgnore
+    public String currentAccountId;
 
 
-    private Account() {
+    protected Account() {
         super(Account.class);
     }
 
+    public Account(String name, String region, String accountId) {
+        super(Account.class);
+        this.accountId = accountId;
+        this.name = name;
+        this.region = region;
+    }
+
+    public Account(String accountId) {
+        super(Account.class);
+        this.accountId = accountId;
+    }
 
     /**
      *
@@ -74,6 +90,14 @@ public class Account extends XplentyObject<Account> {
      */
     public String getAccountId() {
         return accountId;
+    }
+
+    /**
+     *
+     * @return the name given to the account upon creation
+     */
+    public String getName() {
+        return name;
     }
 
     /**
@@ -220,4 +244,59 @@ public class Account extends XplentyObject<Account> {
         return publicKey;
     }
 
+    /**
+     *
+     * @return account current unique string identifier
+     */
+    public String getCurrentAccountId() {
+        return currentAccountId != null ? currentAccountId : accountId;
+    }
+
+    /**
+     *
+     * @param accountId the account's unique identifier
+     */
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    /**
+     *
+     * @param name  the name given to the account
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     *
+     * @param region the account's region
+     */
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    /**
+     *
+     * @param location the account's location
+     */
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    /**
+     *
+     * @param billingEmail the account's billing email
+     */
+    public void setBillingEmail(String billingEmail) {
+        this.billingEmail = billingEmail;
+    }
+
+    /**
+     *
+     * @param gravatarEmail the account's gravatar email
+     */
+    public void setGravatarEmail(String gravatarEmail) {
+        this.gravatarEmail = gravatarEmail;
+    }
 }

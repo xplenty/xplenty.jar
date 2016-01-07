@@ -20,17 +20,18 @@ public class Xplenty {
         // todo include all entities that support name sort
         /**
          * Note that name sort is available only for {@link com.xplenty.api.model.PublicKey Public Key List},
-         * {@link com.xplenty.api.model.Member Member List}
+         * {@link com.xplenty.api.model.Member Member List}, {@link com.xplenty.api.model.Account Account List}
          */
         name("name"),
         /**
-         * Note that email sort is available only for {@link com.xplenty.api.model.Member Memeber List}
+         * Note that email sort is available only for {@link com.xplenty.api.model.Member Member List}
          */
         email("email"),
         /**
-         * used only for filtering meaning all the statuses above
+         * Note that id sort is available only for {@link com.xplenty.api.model.Account Account List}
          */
-        all("all");
+        id("id")
+        ;
 		
 		public final String value;
 		
@@ -129,7 +130,11 @@ public class Xplenty {
          */
         owner("owner"),
         admin("admin"),
-        member("member");
+        member("member"),
+        /**
+         * used only for filtering meaning all the roles above
+         */
+        all("all");
 
         @SuppressWarnings("unused")
         private final String role;
@@ -280,7 +285,13 @@ public class Xplenty {
         DeleteMember("members/%s", "Delete member"),
         Member("members/%s", "Get member information"),
         Members("members", "List account members"),
-        SetMemberRole("members/%s", "Change member role")
+        SetMemberRole("members/%s", "Change member role"),
+        Regions("regions", "List available account regions"),
+        CreateAccount("accounts", "Create new account"),
+        DeleteAccount("accounts/%s", "Delete account"),
+        Account("accounts/%s", "Get account information"),
+        Accounts("accounts", "List accounts"),
+        UpdateAccount("accounts/%s", "Update account information")
         ;
 		
 		public final String value;
