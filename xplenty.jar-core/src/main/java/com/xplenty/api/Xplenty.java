@@ -19,9 +19,18 @@ public class Xplenty {
 		created("created"),
         // todo include all entities that support name sort
         /**
-         * Note that name sort is available only for {@link com.xplenty.api.model.PublicKey Public Key List}
+         * Note that name sort is available only for {@link com.xplenty.api.model.PublicKey Public Key List},
+         * {@link com.xplenty.api.model.Member Member List}
          */
-        name("name");
+        name("name"),
+        /**
+         * Note that email sort is available only for {@link com.xplenty.api.model.Member Memeber List}
+         */
+        email("email"),
+        /**
+         * used only for filtering meaning all the statuses above
+         */
+        all("all");
 		
 		public final String value;
 		
@@ -115,6 +124,10 @@ public class Xplenty {
 	}
 
     public enum AccountRole {
+        /**
+         * only current owner can transfer ownership to another member
+         */
+        owner("owner"),
         admin("admin"),
         member("member");
 
@@ -262,7 +275,12 @@ public class Xplenty {
         CreatePublicKey("user/keys", "Create Public Key"),
         PublicKey("user/keys/%s", "Get  Public Key information"),
         PublicKeys("user/keys", "List Public Keys"),
-        DeletePublicKey("user/keys/%s", "Delete Public Key")
+        DeletePublicKey("user/keys/%s", "Delete Public Key"),
+        CreateMember("members", "Create new Member"),
+        DeleteMember("members/%s", "Delete member"),
+        Member("members/%s", "Get member information"),
+        Members("members", "List account members"),
+        SetMemberRole("members/%s", "Change member role")
         ;
 		
 		public final String value;

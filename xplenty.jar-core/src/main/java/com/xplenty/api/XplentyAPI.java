@@ -16,6 +16,7 @@ import com.xplenty.api.request.job.JobInfo;
 import com.xplenty.api.request.job.ListJobs;
 import com.xplenty.api.request.job.RunJob;
 import com.xplenty.api.request.job.StopJob;
+import com.xplenty.api.request.member.*;
 import com.xplenty.api.request.public_key.CreatePublicKey;
 import com.xplenty.api.request.public_key.DeletePublicKey;
 import com.xplenty.api.request.public_key.ListPublicKeys;
@@ -593,6 +594,7 @@ public class XplentyAPI {
      * @return deleted public key object
      */
     public PublicKey deletePublicKey(long publicKeyId) {
+        checkId(publicKeyId);
         return client.execute(new DeletePublicKey(publicKeyId));
     }
 
@@ -602,7 +604,83 @@ public class XplentyAPI {
      * @return public key object
      */
     public PublicKey getPublicKeyInfo(long publicKeyId) {
+        checkId(publicKeyId);
         return client.execute(new PublicKeyInfo(publicKeyId));
+    }
+
+    /**
+     * Creates a new member on an account. The call sends an invitation to join Xplenty in case the user is not yet a user of Xplenty.
+     * @param email email of the member to add
+     * @param role role of the member
+     * @return newly created member object
+     */
+    public Member createMember(String email, Xplenty.AccountRole role) {
+        return client.execute(new CreateMember(email, role));
+    }
+
+
+    /**
+     * List existing account members. Optionally, you can supply the input parameters to filter the member list so that
+     * it contains user with specific role or email only and to determine the order by which the list will be sorted.
+     * @return list of account members
+     */
+    public List<Member> listMembers() {
+        return listMembers(new Properties());
+    }
+
+    /**
+     * List existing account members. Optionally, you can supply the input parameters to filter the member list so that
+     * it contains user with specific role or email only and to determine the order by which the list will be sorted.
+     * @param offset number of record to start results from
+     * @param limit number of results
+     * @return list of account members
+     */
+    public List<Member> listMembers(int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
+        return listMembers(props);
+    }
+
+    /**
+     * List existing account members. Optionally, you can supply the input parameters to filter the member list so that
+     * it contains user with specific role or email only and to determine the order by which the list will be sorted.
+     * @param params map of request parameters, see {@link Xplenty.Sort}, {@link Xplenty.SortDirection}.
+     * @return list of account members
+     */
+    public List<Member> listMembers(Properties params) {
+        return client.execute(new ListMembers(params));
+    }
+
+    /**
+     * Set existing account member's role
+     * @param memberId id of member to set role for
+     * @param role new role for member
+     * @return updated member object
+     */
+    public Member setMemberRole(long memberId, Xplenty.AccountRole role) {
+        checkId(memberId);
+        return client.execute(new SetMemberRole(memberId, role));
+    }
+
+    /**
+     * Information about member of the account.
+     * @param memberId id of member to get
+     * @return member object
+     */
+    public Member getMemberInfo(long memberId) {
+        checkId(memberId);
+        return client.execute(new MemberInfo(memberId));
+    }
+
+    /**
+     * Delete an existing member from an account. This call does not delete the user, just the account membership.
+     * @param memberId id of member to delete
+     * @return Deleted member object
+     */
+    public Member deleteMember(long memberId) {
+        checkId(memberId);
+        return client.execute(new DeleteMember(memberId));
     }
 
 

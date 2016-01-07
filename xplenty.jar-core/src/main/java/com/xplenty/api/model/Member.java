@@ -14,36 +14,48 @@ import java.util.Date;
  */
 public class Member extends XplentyObject<Member> {
     @JsonProperty
-    private Long id;
+    protected Long id;
     @JsonProperty
-    private String name;
+    protected String name;
     @JsonProperty
-    private String email;
+    protected String email;
     @JsonProperty("gravatar_email")
-    private String gravatarEmail;
+    protected String gravatarEmail;
     @JsonProperty("avatar_url")
-    private String avatarUrl;
+    protected String avatarUrl;
     @JsonProperty("created_at")
-    private Date createdAt;
+    protected Date createdAt;
     @JsonProperty("updated_at")
-    private Date updatedAt;
+    protected Date updatedAt;
     @JsonProperty
-    private String location;
+    protected String location;
     @JsonProperty
-    private Boolean confirmed;
+    protected Boolean confirmed;
     @JsonProperty("confirmed_at")
-    private Date confirmedAt;
+    protected Date confirmedAt;
     @JsonProperty
-    private Xplenty.AccountRole role;
+    protected Xplenty.AccountRole role;
     @JsonProperty
-    private Boolean owner;
+    protected Boolean owner;
     @JsonProperty
-    private String url;
+    protected String url;
     @JsonProperty("html_url")
-    private String htmlUrl;
+    protected String htmlUrl;
 
     protected Member() {
         super(Member.class);
+    }
+
+    public Member(String email, Xplenty.AccountRole role) {
+        super(Member.class);
+        this.email = email;
+        this.role = role;
+    }
+
+    public Member(Long id, Xplenty.AccountRole role) {
+        super(Member.class);
+        this.id = id;
+        this.role = role;
     }
 
     /**
