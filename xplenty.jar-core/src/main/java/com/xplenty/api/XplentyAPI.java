@@ -18,10 +18,7 @@ import com.xplenty.api.request.connection.ConnectionInfo;
 import com.xplenty.api.request.connection.DeleteConnection;
 import com.xplenty.api.request.connection.ListConnectionTypes;
 import com.xplenty.api.request.connection.ListConnections;
-import com.xplenty.api.request.job.JobInfo;
-import com.xplenty.api.request.job.ListJobs;
-import com.xplenty.api.request.job.RunJob;
-import com.xplenty.api.request.job.StopJob;
+import com.xplenty.api.request.job.*;
 import com.xplenty.api.request.member.*;
 import com.xplenty.api.request.public_key.CreatePublicKey;
 import com.xplenty.api.request.public_key.DeletePublicKey;
@@ -268,6 +265,24 @@ public class XplentyAPI {
 	public List<Job> listJobs(Properties params) {
 		return client.execute(new ListJobs(params));
 	}
+
+    /**
+     * List all job variables that were used during job runtime.
+     * @param jobId id of the job
+     * @return map var_name => var_value
+     */
+    public Map<String, String> getJobExecutionVariables(long jobId) {
+        return client.execute(new JobExecutionVariables(jobId));
+    }
+
+    /**
+     * Log summary for the job.
+     * @param jobId id of the job
+     * @return job log object
+     */
+    public JobLog getJobLog(long jobId) {
+        return client.execute(new JobLogs(jobId));
+    }
 	
 	/**
 	 * Information about a particular job

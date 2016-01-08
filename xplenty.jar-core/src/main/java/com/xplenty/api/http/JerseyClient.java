@@ -123,6 +123,9 @@ public class JerseyClient implements HttpClient {
 	 * @return filly qualified URL
 	 */
 	private String getMethodURL(String methodEndpoint) {
+        if (methodEndpoint.startsWith("http")) {
+            return methodEndpoint;
+        }
         return String.format("%s://%s", protocol, methodEndpoint);
 	}
 

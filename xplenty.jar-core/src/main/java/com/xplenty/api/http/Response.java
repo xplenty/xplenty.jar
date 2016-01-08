@@ -82,7 +82,7 @@ public abstract class Response {
             }
         } else if (Map.class.isAssignableFrom(rawType)) {
             cls = (Class) actualTypeArguments[1];
-            if (XplentyObject.class.isAssignableFrom(cls)) {
+            if (XplentyObject.class.isAssignableFrom(cls) || String.class.isAssignableFrom(cls)) {
                 return;
             }
         }

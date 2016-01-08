@@ -66,15 +66,40 @@ public class Xplenty {
 		}
 	}
 	
-	public enum JobStatus {		
+	public enum JobStatus {
+        /**
+         * the user sent a request to run the job
+         */
 		idle("idle"),
-		stopped("stopped"),
-		completed("completed"),
-		pending("pending"),
-		failed("failed"),
-		running("running"),
-		pending_stoppage("pending_stoppage"),
-		stopping("stopping");
+        /**
+         *  the job is initializing
+         */
+        pending("pending"),
+        /**
+         * the job is running
+         */
+        running("running"),
+        /**
+         * the job completed successfully
+         */
+        completed("completed"),
+        /**
+         * the job failed to complete
+         */
+        failed("failed"),
+        /**
+         *  the user sent a request to stop the job
+         */
+        pending_stoppage("pending_stoppage"),
+        /**
+         *  the job is stopping
+         */
+        stopping("stopping"),
+        /**
+         * the job has stopped
+         */
+		stopped("stopped")
+		;
 		
 		@SuppressWarnings("unused")
 		private final String status;
@@ -270,6 +295,8 @@ public class Xplenty {
 		Job("jobs/%s", "Get job info"),
 		RunJob("jobs", "Run job"),
 		StopJob("jobs/%s", "Stop job"),
+		JobExecVars("jobs/%s/variables", "List job execution variables"),
+		JobLog("jobs/%s/log", "Get job output log"),
         ClusterWatcher("clusters/%s/watchers", "Adding/removing a cluster watchers"),
         JobWatcher("jobs/%s/watchers", "Adding/removing a job watchers"),
         Schedules("schedules", "List schedules"),

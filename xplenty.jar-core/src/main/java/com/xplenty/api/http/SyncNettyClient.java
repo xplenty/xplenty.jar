@@ -210,6 +210,9 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
      * @return filly qualified URL
      */
     private String getMethodURL(String methodEndpoint) {
+        if (methodEndpoint.startsWith("http")) {
+            return methodEndpoint;
+        }
         return String.format("%s://%s", protocol, methodEndpoint);
     }
 
