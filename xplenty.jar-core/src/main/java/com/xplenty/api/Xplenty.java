@@ -20,7 +20,8 @@ public class Xplenty {
         // todo include all entities that support name sort
         /**
          * Note that name sort is available only for {@link com.xplenty.api.model.PublicKey Public Key List},
-         * {@link com.xplenty.api.model.Member Member List}, {@link com.xplenty.api.model.Account Account List}
+         * {@link com.xplenty.api.model.Member Member List}, {@link com.xplenty.api.model.Account Account List},
+         * {@link com.xplenty.api.model.Connection Connection List}
          */
         name("name"),
         /**
@@ -28,9 +29,14 @@ public class Xplenty {
          */
         email("email"),
         /**
-         * Note that id sort is available only for {@link com.xplenty.api.model.Account Account List}
+         * Note that id sort is available only for {@link com.xplenty.api.model.Account Account List},
+         * {@link com.xplenty.api.model.Connection Connection List}
          */
-        id("id")
+        id("id"),
+        /**
+         * Note that type sort is available only for {@link com.xplenty.api.model.Connection Connection List}
+         */
+        type("type")
         ;
 		
 		public final String value;
@@ -173,7 +179,12 @@ public class Xplenty {
         herokupostgres("herokupostgres"),
         googlecloudsql("googlecloudsql"),
         bigquery("bigquery"),
-        segment("segment");
+        segment("segment"),
+        salesforce("salesforce"),
+        /**
+         * used only for filtering meaning all the types above
+         */
+        all("all");
 
         @SuppressWarnings("unused")
         private final String type;
@@ -291,7 +302,11 @@ public class Xplenty {
         DeleteAccount("accounts/%s", "Delete account"),
         Account("accounts/%s", "Get account information"),
         Accounts("accounts", "List accounts"),
-        UpdateAccount("accounts/%s", "Update account information")
+        UpdateAccount("accounts/%s", "Update account information"),
+        Connections("connections", "List Connections"),
+        ConnectionTypes("connections/types", "List Connection Types"),
+        DeleteConnection("connections/%s/%s", "Delete Connection"),
+        Connection("connections/%s/%s", "Get Connection information")
         ;
 		
 		public final String value;

@@ -6,13 +6,18 @@ package com.xplenty.api;
 import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.exceptions.XplentyAPIException;
-import com.xplenty.api.http.HttpClient;
 import com.xplenty.api.http.ClientBuilder;
+import com.xplenty.api.http.Http;
+import com.xplenty.api.http.HttpClient;
 import com.xplenty.api.model.*;
 import com.xplenty.api.model.Package;
-import com.xplenty.api.request.*;
+import com.xplenty.api.request.AbstractListRequest;
 import com.xplenty.api.request.account.*;
 import com.xplenty.api.request.cluster.*;
+import com.xplenty.api.request.connection.ConnectionInfo;
+import com.xplenty.api.request.connection.DeleteConnection;
+import com.xplenty.api.request.connection.ListConnectionTypes;
+import com.xplenty.api.request.connection.ListConnections;
 import com.xplenty.api.request.job.JobInfo;
 import com.xplenty.api.request.job.ListJobs;
 import com.xplenty.api.request.job.RunJob;
@@ -29,7 +34,6 @@ import com.xplenty.api.request.watching.AddClusterWatcher;
 import com.xplenty.api.request.watching.AddJobWatcher;
 import com.xplenty.api.request.watching.ListWatchers;
 import com.xplenty.api.request.watching.WatchingStop;
-import com.xplenty.api.http.Http;
 import com.xplenty.api.request.webhook.*;
 import com.xplenty.api.request.xpackage.ListPackages;
 import com.xplenty.api.request.xpackage.PackageInfo;
@@ -768,6 +772,72 @@ public class XplentyAPI {
     public Account getAccountInfo(String accountId) {
         checkStringId(accountId);
         return client.execute(new AccountInfo(accountId));
+    }
+
+    /**
+     * List connections that are accessible by the authenticated user.
+     * Optionally, you can supply the input parameters to filter the connection list so that it contains only connections
+     * with specific types and to determine the order by which the list will be sorted.
+     * @return list of connections
+     */
+    public List<Connection> listConnections() {
+        return listConnections(new Properties());
+    }
+
+    /**
+     * List connections that are accessible by the authenticated user.
+     * Optionally, you can supply the input parameters to filter the connection list so that it contains only connections
+     * with specific types and to determine the order by which the list will be sorted.
+     * @param offset number of record to start results from
+     * @param limit number of results
+     * @return list of connections
+     */
+    public List<Connection> listConnections(int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
+        return listConnections(props);
+    }
+
+    /**
+     * List connections that are accessible by the authenticated user.
+     * Optionally, you can supply the input parameters to filter the connection list so that it contains only connections
+     * with specific types and to determine the order by which the list will be sorted.
+     * @param params map of request parameters, see {@link Xplenty.Sort}, {@link Xplenty.SortDirection}, {@link com.xplenty.api.request.connection.ListConnections}.
+     * @return list of connections
+     */
+    public List<Connection> listConnections(Properties params) {
+        return client.execute(new ListConnections(params));
+    }
+
+
+    /**
+     * List all connection types that are available with related groups.
+     * @return list of connection types
+     */
+    public List<ConnectionType> listConnectionTypes() {
+        return client.execute(new ListConnectionTypes());
+    }
+
+    /**
+     * Delete an existing connection.
+     * Please note that deleting the connection will invalidate all items referencing it.
+     * @param connectionId id of the connection to delete
+     * @param conType type of the connection to delete
+     * @return deleted connection object
+     */
+    public Connection deleteConnection(long connectionId, Xplenty.ConnectionType conType) {
+        return client.execute(new DeleteConnection(connectionId, conType));
+    }
+
+    /**
+     * Get connection information
+     * @param connectionId id of the connection to get
+     * @param conType type of the connection to get
+     * @return connection object
+     */
+    public Connection getConnectionInfo(long connectionId, Xplenty.ConnectionType conType) {
+        return client.execute(new ConnectionInfo(connectionId, conType));
     }
 
 

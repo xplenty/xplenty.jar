@@ -15,19 +15,19 @@ import java.util.Date;
  */
 public class Connection extends XplentyObject<Connection> {
     @JsonProperty
-    private Long id;
+    protected Long id;
     @JsonProperty
-    private String name;
+    protected String name;
     @JsonProperty("created_at")
-    private Date createdAt;
+    protected Date createdAt;
     @JsonProperty("updated_at")
-    private Date updatedAt;
+    protected Date updatedAt;
     @JsonProperty
-    private Xplenty.ConnectionType type;
+    protected Xplenty.ConnectionType type;
     @JsonProperty
-    private String url;
+    protected String url;
 
-    private Connection() {
+    protected Connection() {
         super(Connection.class);
     }
 
