@@ -262,13 +262,38 @@ public class Xplenty {
 
 	@JsonFormat(shape= JsonFormat.Shape.SCALAR)
 	public static enum ClusterStatus {
+        /**
+         * the cluster is pending creation
+         */
 		pending("pending"),
+        /**
+         * the cluster is in erroneous state
+         */
 		error("error"),
+        /**
+         * the cluster is being created
+         */
 		creating("creating"),
+        /**
+         * the cluster is available
+         */
 		available("available"),
+        /**
+         * the cluster is idle
+         */
+        idle("idle"),
 		scaling("scaling"),
+        /**
+         * the cluster is pending termination
+         */
 		pending_terminate("pending_terminate"),
+        /**
+         * the cluster is being terminated
+         */
 		terminating("terminating"),
+        /**
+         * the cluster is terminated
+         */
 		terminated("terminated");
 		
 		@SuppressWarnings("unused")
@@ -286,7 +311,8 @@ public class Xplenty {
         Package("packages/%s", "Get package info"),
         Packages("packages", "List packages"),
 		ClusterPlans("cluster_plans", "List cluster plans"),
-		Clusters("clusters", "List clusters"), 
+		Clusters("clusters", "List clusters"),
+        ClusterInstances("clusters/%s/instances", "List cluster instances"),
 		Cluster("clusters/%s", "Get cluster information"),
 		CreateCluster("clusters", "Create cluster"),
 		UpdateCluster("clusters/%s", "Update cluster"),

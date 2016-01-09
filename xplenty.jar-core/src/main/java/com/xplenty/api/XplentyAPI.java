@@ -186,6 +186,18 @@ public class XplentyAPI {
 	public List<Cluster> listClusters(Properties props) {
 		return client.execute(new ListClusters(props));
 	}
+
+    /**
+     * List existing cluster instances.
+     * Note: This endpoint is only available for selected plans.
+     * @param clusterId id of the cluster
+     * @return list of instances
+     */
+    public List<ClusterInstance> listClusterInstances(long clusterId) {
+        checkId(clusterId);
+        return client.execute(new ListClusterInstances(clusterId));
+    }
+
 	/**
 	 * Information about a particular cluster
 	 * @param clusterId id of the cluster, see {@link #listClusters()} to get a list of clusters with id's
@@ -203,8 +215,9 @@ public class XplentyAPI {
 	 * @param description cluster description
 	 * @param terminateOnIdle should the cluster terminate on idle status
 	 * @param timeToIdle time in seconds before cluster is considered idle
-	 * @return
+	 * @return newly created cluster object
 	 */
+    @Deprecated
 	public Cluster createCluster(int nodes, ClusterType type, String name, String description, Boolean terminateOnIdle, Long timeToIdle) {
 		return client.execute(new CreateCluster(
                 new Cluster().withNodes(nodes)
@@ -215,6 +228,18 @@ public class XplentyAPI {
                         .withTimeToIdle(timeToIdle)
         )).withParentApiInstance(this);
 	}
+
+    /**
+     * Create new cluster with specified properties. Note that nodes paramter MUST be specified in case you are creating
+     * production cluster. If you create sandbox - cluster type must be specified. All other parameters are optional and
+     * will be assigned with default/generated values
+     * @param cluster Filled cluster object
+     * @return newly created cluster object
+     */
+    public Cluster createCluster(Cluster cluster) {
+        cluster.withId(null);
+        return client.execute(new CreateCluster(cluster));
+    }
 	
 	/**
 	 * Update cluster with specified properties

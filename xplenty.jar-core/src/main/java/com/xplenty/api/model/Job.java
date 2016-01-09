@@ -64,7 +64,7 @@ public class Job extends XplentyObject<Job> {
     @JsonProperty("log_url")
     protected String logUrl;
     @JsonProperty
-    protected JobCreator creator;
+    protected Creator creator;
 
     public Job() {
         super(Job.class);
@@ -311,7 +311,7 @@ public class Job extends XplentyObject<Job> {
      *
      * @return information about resource which created the job
      */
-    public JobCreator getCreator() {
+    public Creator getCreator() {
         return creator;
     }
 

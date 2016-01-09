@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Date: 08.01.16
  * Time: 18:41
  */
-public class JobCreator {
+public class Creator {
     @JsonProperty
     protected String type;
     @JsonProperty
@@ -20,7 +20,7 @@ public class JobCreator {
     @JsonProperty("html_url")
     protected String htmlUrl;
 
-    protected JobCreator() {
+    protected Creator() {
     }
 
     /**
