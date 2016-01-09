@@ -20,12 +20,18 @@ import com.xplenty.api.request.connection.ListConnectionTypes;
 import com.xplenty.api.request.connection.ListConnections;
 import com.xplenty.api.request.job.*;
 import com.xplenty.api.request.member.*;
+import com.xplenty.api.request.misc.ListRegions;
+import com.xplenty.api.request.misc.ListStacks;
+import com.xplenty.api.request.misc.ListSystemVariables;
+import com.xplenty.api.request.misc.ListTimezones;
 import com.xplenty.api.request.public_key.CreatePublicKey;
 import com.xplenty.api.request.public_key.DeletePublicKey;
 import com.xplenty.api.request.public_key.ListPublicKeys;
 import com.xplenty.api.request.public_key.PublicKeyInfo;
 import com.xplenty.api.request.schedule.*;
 import com.xplenty.api.request.user.CurrentUserInfo;
+import com.xplenty.api.request.user.ListNotifications;
+import com.xplenty.api.request.user.MarkNotificationsRead;
 import com.xplenty.api.request.user.UpdateCurrentUser;
 import com.xplenty.api.request.watching.AddClusterWatcher;
 import com.xplenty.api.request.watching.AddJobWatcher;
@@ -706,7 +712,7 @@ public class XplentyAPI {
     /**
      * This call returns information for the list of regions that are available for your account.
      * You can use this information to verify the regions in which you can create a cluster
-     * @return list of available regions
+     * @return list of regions, available for account
      */
     public List<Region> listAvailableRegions() {
         return client.execute(new ListAccountRegions(new Properties()));
@@ -853,6 +859,78 @@ public class XplentyAPI {
      */
     public Connection getConnectionInfo(long connectionId, Xplenty.ConnectionType conType) {
         return client.execute(new ConnectionInfo(connectionId, conType));
+    }
+
+    /**
+     * This call returns information for the list of supported Stacks.
+     * @return list of stacks
+     */
+    public List<Stack> listStacks() {
+        return client.execute(new ListStacks());
+    }
+
+    /**
+     * This call returns list of supported Time Zones.
+     * @return list of timezones
+     */
+    public List<Timezone> listTimezones() {
+        return client.execute(new ListTimezones());
+    }
+
+    /**
+     * List public system variables
+     * @return map var_name => var_value
+     */
+    public Map<String, String> listSystemVariables() {
+        return client.execute(new ListSystemVariables());
+    }
+
+    /**
+     * This call returns information for the list of regions supported by Xplenty.
+     * You can also select regions for particular Brand. You can use this information to verify the regions in which you can create a cluster.
+     * @return list of regions
+     */
+    public List<Region> listRegions() {
+        return listRegions(new Properties());
+    }
+
+    /**
+     * This call returns information for the list of regions supported by Xplenty.
+     * You can also select regions for particular Brand. You can use this information to verify the regions in which you can create a cluster.
+     * @param params map of request parameters, see {@link com.xplenty.api.request.misc.ListRegions}.
+     * @return list of regions
+     */
+    public List<Region> listRegions(Properties params) {
+        return client.execute(new ListRegions(params));
+    }
+
+    /**
+     * This call returns a list of notifications of the authenticated user.
+     * Optionally, you can supply the input parameters to filter the list so that it contains only unread notifications
+     * or all notifications, and to determine the order by which the list will be sorted.
+     * @return list of user notifications
+     */
+    public List<Notification> listUserNotifications() {
+        return listUserNotifications(new Properties());
+    }
+
+    /**
+     * This call returns a list of notifications of the authenticated user.
+     * Optionally, you can supply the input parameters to filter the list so that it contains only unread notifications
+     * or all notifications, and to determine the order by which the list will be sorted.
+     * @param params map of request parameters, see {@link com.xplenty.api.request.user.ListNotifications}.
+     * @return list of user notifications
+     */
+    public List<Notification> listUserNotifications(Properties params) {
+        return client.execute(new ListNotifications(params));
+    }
+
+    /**
+     * Marks the authenticated user's notifications as read. This call returns empty response.
+     * @return null
+     */
+    public Void markNotificationAsRead() {
+        return client.execute(new MarkNotificationsRead());
     }
 
 

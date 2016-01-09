@@ -13,13 +13,17 @@ import java.util.Date;
  */
 public class Notification extends XplentyObject<Notification> {
     @JsonProperty
-    private Long id;
+    protected Long id;
     @JsonProperty
-    private String title;
+    protected String title;
     @JsonProperty
-    private String message;
+    protected String message;
     @JsonProperty("last_read_at")
-    private Date lastReadAt;
+    protected Date lastReadAt;
+    @JsonProperty("created_at")
+    protected Date createdAt;
+    @JsonProperty("updated_at")
+    protected Date updatedAt;
 
     protected Notification() {
         super(Notification.class);
@@ -55,5 +59,21 @@ public class Notification extends XplentyObject<Notification> {
      */
     public Date getLastReadAt() {
         return lastReadAt;
+    }
+
+    /**
+     *
+     * @return the date and time the notification was created
+     */
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    /**
+     *
+     * @return the date and time the notification was last updated
+     */
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 }

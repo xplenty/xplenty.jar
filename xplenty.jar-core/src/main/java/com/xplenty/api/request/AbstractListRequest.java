@@ -77,7 +77,7 @@ public abstract class AbstractListRequest<T> extends AbstractRequest<T> {
 
     @Override
     public String getEndpoint() {
-        if (parameters.isEmpty()) {
+        if (parameters == null || parameters.isEmpty()) {
             return getEndpointRoot();
         }
         StringBuilder params = new StringBuilder("?");

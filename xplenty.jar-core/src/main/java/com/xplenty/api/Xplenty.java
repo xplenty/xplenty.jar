@@ -307,6 +307,8 @@ public class Xplenty {
         Schedule("schedules/%s", "Get schedule information"),
         User("user", "Get current user information"),
         UpdateUser("user", "Update current user information"),
+        UserNotifications("user/notifications", "List user notifications"),
+        MarkUserNotificationRead("user/notifications/mark", "Mark user notification as read"),
         HookEvents("hook_events", "List supported Hook Events"),
         CreateWebHook("hooks/web", "Create new Web hook"),
         UpdateWebHook("hooks/web/%s", "Update existing Web hook"),
@@ -333,7 +335,10 @@ public class Xplenty {
         Connections("connections", "List Connections"),
         ConnectionTypes("connections/types", "List Connection Types"),
         DeleteConnection("connections/%s/%s", "Delete Connection"),
-        Connection("connections/%s/%s", "Get Connection information")
+        Connection("connections/%s/%s", "Get Connection information"),
+        Stacks("stacks", "List all supported stacks"),
+        SystemVariables("variables", "List public system variables"),
+        Timezones("timezones", "List supported Time Zones")
         ;
 		
 		public final String value;
