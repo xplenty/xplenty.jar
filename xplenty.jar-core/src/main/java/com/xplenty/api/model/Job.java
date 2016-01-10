@@ -3,6 +3,7 @@
  */
 package com.xplenty.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xplenty.api.Xplenty.JobStatus;
 import com.xplenty.api.exceptions.XplentyAPIException;
@@ -109,6 +110,7 @@ public class Job extends XplentyObject<Job> {
      * Be aware that this method doesn't store call result anywhere.
      * @return log contents
      */
+    @JsonIgnore
     public JobLog getJobLog() {
         return getParentApiInstance().getJobLog(id);
     }

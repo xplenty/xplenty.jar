@@ -13,8 +13,9 @@ import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Cluster;
+import com.xplenty.api.model.ClusterBootstrapAction;
 import com.xplenty.api.model.ClusterTest;
-import com.xplenty.api.request.cluster.ClusterInfo;
+import com.xplenty.api.model.Creator;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Yuriy Kovalek
@@ -70,7 +72,40 @@ public class ClusterInfoTest extends TestCase {
 		assertTrue(Math.abs(now.getTime() - c.getUpdatedAt().getTime()) < 1000);
 		assertTrue(Math.abs(now.getTime() - c.getAvailableSince().getTime()) < 1000);
 		assertTrue(Math.abs(now.getTime() - c.getTerminatedAt().getTime()) < 1000);
+		assertTrue(Math.abs(now.getTime() - c.getIdleSince().getTime()) < 1000);
 		assertEquals("https://www.xplenty.com/api/" + Xplenty.Resource.Cluster.format(Long.toString(3)), c.getUrl());
+        assertTrue(c.getAllowFallback());
+        assertEquals("eu-west1", c.getZone());
+        assertEquals("https://www.xplenty.com/clusters/3", c.getHtmlUrl());
+        assertEquals("sometype", c.getMasterInstanceType());
+        assertEquals("sometype1", c.getSlaveInstanceType());
+        assertEquals("eu-west1-amazon:1", c.getRegion());
+        assertEquals("month-10", c.getPlanId());
+        assertEquals("pinky-everest", c.getStack());
+        assertEquals(0.3, c.getMasterSpotPercentage());
+        assertEquals(42.42, c.getMasterSpotPrice());
+        assertEquals(0.4, c.getSlaveSpotPercentage());
+        assertEquals(12.12, c.getSlaveSpotPrice());
+
+        List<ClusterBootstrapAction> cbas = c.getBootstrapActions();
+        assertNotNull(cbas);
+        assertTrue(cbas.size() > 0);
+        ClusterBootstrapAction act = cbas.get(0);
+        assertNotNull(act);
+        assertEquals("http://xplenty.s3.amazonaws.com/bootstrap-actions/script_path", act.getScriptPath());
+        assertNotNull(act.getArgs());
+        List<String> argList = act.getArgs();
+        assertTrue(argList.size() > 0);
+        assertEquals("arg1", argList.get(0));
+        assertEquals("some more", argList.get(1));
+
+        Creator cr = c.getCreator();
+        assertNotNull(cr);
+        assertEquals("xardazz", cr.getDisplayName());
+        assertEquals("https://www.xplenty.com/user/3", cr.getHtmlUrl());
+        assertEquals("https://www.xplenty.com/api/user/3", cr.getUrl());
+        assertEquals("User", cr.getType());
+        assertEquals(666, cr.getId().longValue());
 	}
 	
 	@Test

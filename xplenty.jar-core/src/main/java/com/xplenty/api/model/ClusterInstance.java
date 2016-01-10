@@ -12,25 +12,27 @@ import com.xplenty.api.Xplenty;
  */
 public class ClusterInstance extends XplentyObject<ClusterInstance> {
     @JsonProperty("instance_id")
-    private String instanceId;
+    protected String instanceId;
     @JsonProperty("private_dns")
-    private String privateDns;
+    protected String privateDns;
     @JsonProperty("public_dns")
-    private String publicDns;
+    protected String publicDns;
     @JsonProperty
-    private Xplenty.ClusterInstanceStatus status;
+    protected Xplenty.ClusterInstanceStatus status;
     @JsonProperty
-    private Boolean master;
+    protected Boolean master;
     @JsonProperty
-    private Boolean spot;
+    protected Boolean spot;
     @JsonProperty
-    private Boolean vpc;
+    protected Boolean vpc;
     @JsonProperty
-    private String zone;
+    protected String zone;
     @JsonProperty("instance_type")
-    private String instanceType;
+    protected String instanceType;
+    @JsonProperty
+    protected String url;
 
-    private ClusterInstance() {
+    protected ClusterInstance() {
         super(ClusterInstance.class);
     }
 
@@ -52,7 +54,7 @@ public class ClusterInstance extends XplentyObject<ClusterInstance> {
     /**
      * @return the public fully qualified DNS of the instance
      */
-    public String getpublicDns() {
+    public String getPublicDns() {
         return publicDns;
     }
 
@@ -98,5 +100,13 @@ public class ClusterInstance extends XplentyObject<ClusterInstance> {
      */
     public String getInstanceType() {
         return instanceType;
+    }
+
+    /**
+     *
+     * @return API resource url
+     */
+    public String getUrl() {
+        return url;
     }
 }
