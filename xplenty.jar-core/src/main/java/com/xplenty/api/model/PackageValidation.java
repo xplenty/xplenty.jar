@@ -29,7 +29,7 @@ public class PackageValidation extends XplentyObject<PackageValidation> {
     @JsonProperty("account_id")
     private Long accountId;
     @JsonProperty
-    private List<String> errors;
+    private List<PackageValidationError> errors;
     @JsonProperty("created_at")
     private Date createdAt;
     @JsonProperty("updated_at")
@@ -93,7 +93,7 @@ public class PackageValidation extends XplentyObject<PackageValidation> {
     /**
      * @return the list of the errors which were detected in the validation process
      */
-    public List<String> getErrors() {
+    public List<PackageValidationError> getErrors() {
         return errors;
     }
 

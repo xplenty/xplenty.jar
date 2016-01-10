@@ -42,8 +42,7 @@ import com.xplenty.api.request.watching.AddJobWatcher;
 import com.xplenty.api.request.watching.ListWatchers;
 import com.xplenty.api.request.watching.WatchingStop;
 import com.xplenty.api.request.webhook.*;
-import com.xplenty.api.request.xpackage.ListPackages;
-import com.xplenty.api.request.xpackage.PackageInfo;
+import com.xplenty.api.request.xpackage.*;
 
 import java.util.List;
 import java.util.Map;
@@ -110,6 +109,14 @@ public class XplentyAPI {
 
     /**
      * List of packages associated with the account
+     * @return list of packages
+     */
+    public List<Package> listPackages() {
+        return listPackages(new Properties());
+    }
+
+    /**
+     * List of packages associated with the account
      * @param props map of request parameters
      * @return list of packages
      */
@@ -118,16 +125,117 @@ public class XplentyAPI {
     }
 
     /**
-     * List of schedules associated with the account
+     * List of packages associated with the account
      * @param offset number of record to  start results from
      * @param limit number of results
-     * @return list of schedules
+     * @return list of packages
      */
     public List<Package> listPackages(int offset, int limit) {
         final Properties props = new Properties();
         props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
         props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
         return listPackages(props);
+    }
+
+    /**
+     * List package templates that are available for the authenticated user.
+     * You can use template to create new package with predefined settings.
+     * @return list of package templates
+     */
+    public List<PackageTemplate> listPackageTemplates() {
+        return client.execute(new ListPackageTemplates());
+    }
+
+    /**
+     * List validations for specific package.
+     * Optionally, you can supply the input parameters to filter the validation list so that it contains only validations
+     * with a specific status, and to determine the order by which the list will be sorted.
+     * @param packageId id of package to get validation list for
+     * @return list of package validations
+     */
+    public List<PackageValidation> listPackageValidations(long packageId) {
+        return listPackageValidations(packageId, new Properties());
+    }
+
+    /**
+     * List validations for specific package.
+     * Optionally, you can supply the input parameters to filter the validation list so that it contains only validations
+     * with a specific status, and to determine the order by which the list will be sorted.
+     * @param packageId id of package to get validation list for
+     * @param props map of request parameters
+     * @return list of package validations
+     */
+    public List<PackageValidation> listPackageValidations(long packageId, Properties props) {
+        checkId(packageId);
+        return client.execute(new ListPackageValidations(props, packageId));
+    }
+
+    /**
+     * List validations for specific package.
+     * Optionally, you can supply the input parameters to filter the validation list so that it contains only validations
+     * with a specific status, and to determine the order by which the list will be sorted.
+     * @param packageId id of package to get validation list for
+     * @param offset number of record to  start results from
+     * @param limit number of results
+     * @return list of package validations
+     */
+    public List<PackageValidation> listPackageValidations(long packageId, int offset, int limit) {
+        final Properties props = new Properties();
+        props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
+        props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
+        return listPackageValidations(packageId, props);
+    }
+
+    /**
+     * Create a new package.
+     * @param xpackage package object with properties properly set
+     * @return newly created package object
+     */
+    public Package createPackage(Package xpackage) {
+        xpackage.withId(null);
+        return client.execute(new CreatePackage(xpackage));
+    }
+
+    /**
+     * Update an existing package.
+     * @param xpackage package object with properties properly set
+     * @return updated package object
+     */
+    public Package updatePackage(Package xpackage) {
+        checkId(xpackage.getId());
+        return client.execute(new UpdatePackage(xpackage));
+    }
+
+    /**
+     * Delete an existing package.
+     * @param packageId id of package to delete
+     * @return deleted package object
+     */
+    public Package deletePackage(long packageId) {
+        checkId(packageId);
+        return client.execute(new DeletePackage(packageId));
+    }
+
+    /**
+     * Runs new validation process for the package and returns information about status and tracking url.
+     * @param packageId id of package to validate
+     * @return package validation object
+     */
+    public PackageValidation runPackageValidation(long packageId) {
+        checkId(packageId);
+        return client.execute(new RunPackageValidation(packageId));
+    }
+
+    /**
+     * Returns information about progress of the package validation process.
+     * @param packageId id of package
+     * @param validationId id of validation for that package
+     * @return package validation object
+     */
+    public PackageValidation getPackageValidationInfo(long packageId, long validationId) {
+        checkId(packageId);
+        checkId(validationId);
+        return client.execute(new PackageValidationInfo(validationId, packageId));
     }
 
     /**

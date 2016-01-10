@@ -21,10 +21,19 @@ import java.util.Properties;
  * Time: 18:08
  */
 public class ListPackages extends AbstractListRequest<List<Package>> {
+    public static String PARAMETER_FLOW_TYPE = "flow_type";
 
 	public ListPackages(Properties params) {
-		super(params, false);
+		super(params, true);
+        validateParameters(params);
 	}
+
+    private void validateParameters(Properties params) {
+        if (params.containsKey(PARAMETER_FLOW_TYPE)
+                && !(params.get(PARAMETER_FLOW_TYPE) instanceof Xplenty.PackageFlowType)) {
+            throw new XplentyAPIException(String.format("Invalid %s parameter, should be one of PackageFlowType values", PARAMETER_FLOW_TYPE));
+        }
+    }
 
     @Override
     protected String getEndpointRoot() {

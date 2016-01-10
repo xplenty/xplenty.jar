@@ -17,11 +17,10 @@ public class Xplenty {
 	public enum Sort {
 		updated("updated"),
 		created("created"),
-        // todo include all entities that support name sort
         /**
          * Note that name sort is available only for {@link com.xplenty.api.model.PublicKey Public Key List},
          * {@link com.xplenty.api.model.Member Member List}, {@link com.xplenty.api.model.Account Account List},
-         * {@link com.xplenty.api.model.Connection Connection List}
+         * {@link com.xplenty.api.model.Connection Connection List}, {@link com.xplenty.api.model.Package Package list}
          */
         name("name"),
         /**
@@ -222,7 +221,11 @@ public class Xplenty {
     public enum PackageValidationStatus {
         running,
         completed,
-        failed;
+        failed,
+        /**
+         * used only for filtering meaning all the statuses above
+         */
+        all;
     }
 
     public enum PriceUnit {
@@ -259,8 +262,22 @@ public class Xplenty {
         }
     }
 
+    public enum PackageStatus {
+        active,
+        archived;
+    }
 
-	@JsonFormat(shape= JsonFormat.Shape.SCALAR)
+    public enum PackageFlowType {
+        dataflow,
+        workflow,
+        /**
+         * used only for filtering meaning all the types above
+         */
+        all;
+    }
+
+
+	@JsonFormat(shape = JsonFormat.Shape.SCALAR)
 	public static enum ClusterStatus {
         /**
          * the cluster is pending creation
@@ -310,6 +327,13 @@ public class Xplenty {
 	public static enum Resource {
         Package("packages/%s", "Get package info"),
         Packages("packages", "List packages"),
+        CreatePackage("packages", "Create new package"),
+        UpdatePackage("packages/%s", "Update package"),
+        DeletePackage("packages/%s", "Delete package"),
+        PackageTemplates("packages/templates", "List package Templates"),
+        RunPackageValidation("packages/%s/validations", "Run new package validation process"),
+        PackageValidation("packages/%s/validations/%s", "Get package validation information"),
+        PackageValidations("packages/%s/validations", "List package validations"),
 		ClusterPlans("cluster_plans", "List cluster plans"),
 		Clusters("clusters", "List clusters"),
         ClusterInstances("clusters/%s/instances", "List cluster instances"),
