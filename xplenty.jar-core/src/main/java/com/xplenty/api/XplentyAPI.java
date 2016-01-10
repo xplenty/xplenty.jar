@@ -29,6 +29,10 @@ import com.xplenty.api.request.public_key.DeletePublicKey;
 import com.xplenty.api.request.public_key.ListPublicKeys;
 import com.xplenty.api.request.public_key.PublicKeyInfo;
 import com.xplenty.api.request.schedule.*;
+import com.xplenty.api.request.subscription.ListPlans;
+import com.xplenty.api.request.subscription.PaymentMehodInfo;
+import com.xplenty.api.request.subscription.SubscriptionInfo;
+import com.xplenty.api.request.subscription.UpdatePaymentAndPlan;
 import com.xplenty.api.request.user.CurrentUserInfo;
 import com.xplenty.api.request.user.ListNotifications;
 import com.xplenty.api.request.user.MarkNotificationsRead;
@@ -956,6 +960,40 @@ public class XplentyAPI {
      */
     public Void markNotificationAsRead() {
         return client.execute(new MarkNotificationsRead());
+    }
+
+    /**
+     * List plans that are available for an account.
+     * @return list of plans
+     */
+    public List<Plan> listPlans() {
+        return client.execute(new ListPlans());
+    }
+
+    /**
+     * Information about current account subscription.
+     * @return subscription object
+     */
+    public Subscription getSubscriptionInfo() {
+        return client.execute(new SubscriptionInfo());
+    }
+
+    /**
+     * This call updates the payment method or plan or both.
+     * @param billingPaymentToken The valid payment token created through the billing provider (Paymill).
+     * @param planId ID of the plan.
+     * @return credit card object
+     */
+    public CreditCardInfo updatePaymentAndPlan(String billingPaymentToken, String planId) {
+        return client.execute(new UpdatePaymentAndPlan(billingPaymentToken, planId));
+    }
+
+    /**
+     * Get payment method on file, for an existing account. If there is no payment method on file, returns Resource not found (404).
+     * @return credit card object
+     */
+    public CreditCardInfo getPaymentMethodInfo() {
+       return client.execute(new PaymentMehodInfo());
     }
 
 

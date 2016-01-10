@@ -14,47 +14,47 @@ import java.util.Date;
  */
 public class Plan extends XplentyObject<Plan> {
     @JsonProperty
-    private String id;
+    protected String id;
     @JsonProperty
-    private String name;
+    protected String name;
     @JsonProperty
-    private String description;
+    protected String description;
     @JsonProperty("price_cents")
-    private Long priceCents;
+    protected Long priceCents;
     @JsonProperty("price_currency")
-    private String priceCurrency;
+    protected String priceCurrency;
     @JsonProperty("price_unit")
-    private Xplenty.PriceUnit priceUnit;
+    protected Xplenty.PriceUnit priceUnit;
     @JsonProperty("cluster_node_hours_included")
-    private Integer clusterNodeHoursIncluded;
+    protected Integer clusterNodeHoursIncluded;
     @JsonProperty("cluster_node_hours_limit")
-    private Integer clusterNodeHoursLimit;
+    protected Integer clusterNodeHoursLimit;
     @JsonProperty("cluster_node_price_cents")
-    private Long clusterNodePriceCents;
+    protected Long clusterNodePriceCents;
     @JsonProperty("cluster_node_price_currency")
-    private String clusterNodePriceCurrency;
+    protected String clusterNodePriceCurrency;
     @JsonProperty("cluster_node_price_unit")
-    private Xplenty.PriceUnit clusterNodePriceUnit;
+    protected Xplenty.PriceUnit clusterNodePriceUnit;
     @JsonProperty("cluster_nodes_limit")
-    private Integer clusterNodesLimit;
+    protected Integer clusterNodesLimit;
     @JsonProperty("cluster_size_limit")
-    private Integer clusterSizeLimit;
+    protected Integer clusterSizeLimit;
     @JsonProperty("clusters_limit")
-    private Integer clustersLimit;
+    protected Integer clustersLimit;
     @JsonProperty("sandbox_clusters_limit")
-    private Integer sandboxClustersLimit;
+    protected Integer sandboxClustersLimit;
     @JsonProperty("sandbox_node_hours_included")
-    private Integer sandboxNodeHoursIncluded;
+    protected Integer sandboxNodeHoursIncluded;
     @JsonProperty("sandbox_node_hours_limit")
-    private Integer sandboxNodeHoursLimit;
+    protected Integer sandboxNodeHoursLimit;
     @JsonProperty("members_limit")
-    private Integer membersLimit;
+    protected Integer membersLimit;
     @JsonProperty
-    private Integer position;
+    protected Integer position;
     @JsonProperty("created_at")
-    private Date createdAt;
+    protected Date createdAt;
     @JsonProperty("updated_at")
-    private Date updatedAt;
+    protected Date updatedAt;
 
     protected Plan() {
         super(Plan.class);

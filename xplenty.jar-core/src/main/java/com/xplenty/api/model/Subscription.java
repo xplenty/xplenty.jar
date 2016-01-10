@@ -13,17 +13,17 @@ import java.util.Date;
  */
 public class Subscription extends XplentyObject<Subscription> {
     @JsonProperty("trial_period_days")
-    private Integer trialPeriodDays;
+    protected Integer trialPeriodDays;
     @JsonProperty("plan_id")
-    private String planId;
+    protected String planId;
     @JsonProperty("trial_start")
-    private Date trialStart;
+    protected Date trialStart;
     @JsonProperty("trial_end")
-    private Date trialEnd;
+    protected Date trialEnd;
     @JsonProperty("trialling")
-    private Boolean isTrial;
+    protected Boolean isTrial;
     @JsonProperty
-    private String url;
+    protected String url;
 
     protected Subscription() {
         super(Subscription.class);

@@ -364,7 +364,11 @@ public class Xplenty {
         Connection("connections/%s/%s", "Get Connection information"),
         Stacks("stacks", "List all supported stacks"),
         SystemVariables("variables", "List public system variables"),
-        Timezones("timezones", "List supported Time Zones")
+        Timezones("timezones", "List supported Time Zones"),
+        Plans("plans", "List payment plans for account"),
+        Subscription("subscription", "Get information about current account subscription"),
+        UpdatePaymentMethodAndPlan("payment_method", "Update payment method and/or plan"),
+        PaymentMethod("payment_method", "Get payment method information")
         ;
 		
 		public final String value;
