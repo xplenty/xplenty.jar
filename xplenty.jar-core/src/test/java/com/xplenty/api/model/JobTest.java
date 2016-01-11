@@ -80,4 +80,11 @@ public class JobTest extends TestCase {
         vars.put("_ACCOUNT_ID2", "777");
         return vars;
     }
+
+    public static JobOutputPreview createMockJobOutputPreview() {
+        JobOutputPreview jop = new JobOutputPreview();
+        jop.preview = "out1\tout2\tout3";
+        jop.url = "https://testapi.xplenty.com/api/jobs/1/outputs/1/preview";
+        return jop;
+    }
 }

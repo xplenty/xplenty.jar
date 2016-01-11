@@ -27,6 +27,10 @@ public class MiscTest extends TestCase {
         Map<String, String> systemVars = createMockSystemVars();
         assertNotNull(systemVars);
         assertTrue(systemVars.size() > 0);
+
+        ProductUpdate pu = createMockProductUpdate(now);
+        assertNotNull(pu);
+        assertEquals(now.getTime(), pu.getCreatedAt().getTime());
     }
 
     public static Timezone createMockTimeZone() {
@@ -48,5 +52,18 @@ public class MiscTest extends TestCase {
         systemVars.put("_MAX_COMBINED_SPLIT_SIZE", "777777");
         systemVars.put("_BYTES_PER_REDUCER", "666666");
         return systemVars;
+    }
+
+    public static ProductUpdate createMockProductUpdate(Date now) {
+        ProductUpdate pu = new ProductUpdate();
+        pu.id = 666L;
+        pu.title = "Breaking news";
+        pu.body = "Now you can cross-join!";
+        pu.bodyHtml = "<b>Now you can cross-join</b>";
+        pu.bodyText = "now you can cross-join\n";
+        pu.createdAt = now;
+        pu.likes = 15L;
+        pu.liked = true;
+        return pu;
     }
 }

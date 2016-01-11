@@ -20,10 +20,7 @@ import com.xplenty.api.request.connection.ListConnectionTypes;
 import com.xplenty.api.request.connection.ListConnections;
 import com.xplenty.api.request.job.*;
 import com.xplenty.api.request.member.*;
-import com.xplenty.api.request.misc.ListRegions;
-import com.xplenty.api.request.misc.ListStacks;
-import com.xplenty.api.request.misc.ListSystemVariables;
-import com.xplenty.api.request.misc.ListTimezones;
+import com.xplenty.api.request.misc.*;
 import com.xplenty.api.request.public_key.CreatePublicKey;
 import com.xplenty.api.request.public_key.DeletePublicKey;
 import com.xplenty.api.request.public_key.ListPublicKeys;
@@ -33,10 +30,7 @@ import com.xplenty.api.request.subscription.ListPlans;
 import com.xplenty.api.request.subscription.PaymentMehodInfo;
 import com.xplenty.api.request.subscription.SubscriptionInfo;
 import com.xplenty.api.request.subscription.UpdatePaymentAndPlan;
-import com.xplenty.api.request.user.CurrentUserInfo;
-import com.xplenty.api.request.user.ListNotifications;
-import com.xplenty.api.request.user.MarkNotificationsRead;
-import com.xplenty.api.request.user.UpdateCurrentUser;
+import com.xplenty.api.request.user.*;
 import com.xplenty.api.request.watching.AddClusterWatcher;
 import com.xplenty.api.request.watching.AddJobWatcher;
 import com.xplenty.api.request.watching.ListWatchers;
@@ -425,6 +419,18 @@ public class XplentyAPI {
      */
     public JobLog getJobLog(long jobId) {
         return client.execute(new JobLogs(jobId));
+    }
+
+    /**
+     * The calls returns up to 100 lines raw preview of a job output.
+     * @param jobId job id
+     * @param outputId output id
+     * @return job output preview object
+     */
+    public JobOutputPreview previewJobOutput(long jobId, long outputId) {
+        checkId(jobId);
+        checkId(outputId);
+        return client.execute(new JobPreviewOutput(jobId, outputId));
     }
 	
 	/**
@@ -1104,6 +1110,23 @@ public class XplentyAPI {
        return client.execute(new PaymentMehodInfo());
     }
 
+    /**
+     * This call returns list of latest product announcements.
+     * @return list of product updates
+     */
+    public List<ProductUpdate> listProductUpdates() {
+        return client.execute(new ListProductUpdates());
+    }
+
+    /**
+     * This action allows to like product update by authenticated user.
+     * @param productUpdateId id of product update to like
+     * @return liked product update
+     */
+    public ProductUpdate likeProductUpdate(long productUpdateId) {
+        checkId(productUpdateId);
+        return client.execute(new LikeProductUpdate(productUpdateId));
+    }
 
     private void checkId(long id) {
         if (id == 0) {

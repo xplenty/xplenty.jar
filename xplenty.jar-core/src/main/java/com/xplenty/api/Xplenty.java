@@ -347,6 +347,7 @@ public class Xplenty {
 		StopJob("jobs/%s", "Stop job"),
 		JobExecVars("jobs/%s/variables", "List job execution variables"),
 		JobLog("jobs/%s/log", "Get job output log"),
+        JobPreviewOutput("jobs/%s/outputs/%s/preview", "Preview job output"),
         ClusterWatcher("clusters/%s/watchers", "Adding/removing a cluster watchers"),
         JobWatcher("jobs/%s/watchers", "Adding/removing a job watchers"),
         Schedules("schedules", "List schedules"),
@@ -392,7 +393,9 @@ public class Xplenty {
         Plans("plans", "List payment plans for account"),
         Subscription("subscription", "Get information about current account subscription"),
         UpdatePaymentMethodAndPlan("payment_method", "Update payment method and/or plan"),
-        PaymentMethod("payment_method", "Get payment method information")
+        PaymentMethod("payment_method", "Get payment method information"),
+        ProductUpdates("product_updates", "List latest product announcements"),
+        LikeProductUpdate("product_updates/%s/like", "List latest product announcements")
         ;
 		
 		public final String value;
