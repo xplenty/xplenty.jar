@@ -167,7 +167,7 @@ public class XplentyAPI {
      */
     public List<PackageValidation> listPackageValidations(long packageId, Properties props) {
         checkId(packageId);
-        return client.execute(new ListPackageValidations(props, packageId));
+        return client.execute(new ListPackageValidations(packageId, props));
     }
 
     /**

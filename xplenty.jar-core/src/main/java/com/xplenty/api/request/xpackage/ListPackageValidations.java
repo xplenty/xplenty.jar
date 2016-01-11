@@ -21,7 +21,7 @@ import java.util.Properties;
 public class ListPackageValidations extends AbstractListRequest<List<PackageValidation>> {
     private final long packageId;
 
-    public ListPackageValidations(Properties parameters, long packageId) {
+    public ListPackageValidations(long packageId, Properties parameters) {
         super(parameters, true);
         this.packageId = packageId;
     }

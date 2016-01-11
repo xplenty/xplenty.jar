@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PackageTemplateAuthor {
     @JsonProperty
-    private Long id;
+    protected Long id;
     @JsonProperty
-    private String name;
+    protected String name;
     @JsonProperty("avatar_url")
-    private String avatarUrl;
+    protected String avatarUrl;
 
     protected PackageTemplateAuthor() {
     }

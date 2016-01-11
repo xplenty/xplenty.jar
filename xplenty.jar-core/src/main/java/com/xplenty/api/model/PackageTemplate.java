@@ -13,15 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PackageTemplate extends XplentyObject<PackageTemplate> {
     @JsonProperty
-    private Long id;
+    protected Long id;
     @JsonProperty
-    private String name;
+    protected String name;
     @JsonProperty
-    private String description;
+    protected String description;
     @JsonProperty
-    private Integer position;
+    protected Integer position;
     @JsonProperty
-    private PackageTemplateAuthor author;
+    protected PackageTemplateAuthor author;
 
     protected PackageTemplate() {
         super(PackageTemplate.class);

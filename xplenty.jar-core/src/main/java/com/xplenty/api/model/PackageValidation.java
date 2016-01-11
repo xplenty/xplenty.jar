@@ -15,27 +15,27 @@ import java.util.List;
  */
 public class PackageValidation extends XplentyObject<PackageValidation> {
     @JsonProperty
-    private Long id;
+    protected Long id;
     @JsonProperty
-    private Xplenty.PackageValidationStatus status;
+    protected Xplenty.PackageValidationStatus status;
     @JsonProperty("status_message")
-    private String statusMessage;
+    protected String statusMessage;
     @JsonProperty
-    private Long runtime;
+    protected Long runtime;
     @JsonProperty("package_id")
-    private Long packageId;
+    protected Long packageId;
     @JsonProperty("owner_id")
-    private Long ownerId;
+    protected Long ownerId;
     @JsonProperty("account_id")
-    private Long accountId;
+    protected Long accountId;
     @JsonProperty
-    private List<PackageValidationError> errors;
+    protected List<PackageValidationError> errors;
     @JsonProperty("created_at")
-    private Date createdAt;
+    protected Date createdAt;
     @JsonProperty("updated_at")
-    private Date updatedAt;
+    protected Date updatedAt;
     @JsonProperty
-    private String url;
+    protected String url;
 
     protected PackageValidation() {
         super(PackageValidation.class);
