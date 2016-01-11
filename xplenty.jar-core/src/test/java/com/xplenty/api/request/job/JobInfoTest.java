@@ -13,7 +13,6 @@ import com.xplenty.api.http.Http;
 import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Job;
 import com.xplenty.api.model.JobTest;
-import com.xplenty.api.request.job.JobInfo;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -29,7 +28,7 @@ public class JobInfoTest extends TestCase {
 
 	@Test
 	public void testIntegrity() {
-		JobInfo ji = new JobInfo(111L);
+		JobInfo ji = new JobInfo(111L, false, false);
 		
 		assertEquals(Xplenty.Resource.Job.format(Long.toString(111)), ji.getEndpoint());
 		assertEquals(Xplenty.Resource.Job.name, ji.getName());
@@ -37,12 +36,19 @@ public class JobInfoTest extends TestCase {
 		assertEquals(Http.MediaType.JSON, ji.getResponseType());
 		assertFalse(ji.hasBody());
 		assertNull(ji.getBody());
+
+        ji = new JobInfo(111L, true, false);
+        assertEquals(Xplenty.Resource.Job.format(Long.toString(111)) + "?include=cluster", ji.getEndpoint());
+        ji = new JobInfo(111L, false, true);
+        assertEquals(Xplenty.Resource.Job.format(Long.toString(111)) + "?include=package", ji.getEndpoint());
+        ji = new JobInfo(111L, true, true);
+        assertEquals(Xplenty.Resource.Job.format(Long.toString(111)) + "?include=cluster,package", ji.getEndpoint());
 	}
 	
 	@Test
 	public void testValidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		Date now = new Date();
-		JobInfo ji = new JobInfo(111L);
+		JobInfo ji = new JobInfo(111L, false, false);
 		Job j = JobTest.createMockJob(now);
 		String json = new ObjectMapper().writeValueAsString(j);
 		
@@ -73,7 +79,7 @@ public class JobInfoTest extends TestCase {
 	@Test
 	public void testInvalidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		Date now = new Date();
-		JobInfo ji = new JobInfo(111L);
+		JobInfo ji = new JobInfo(111L, false, false);
 		Job j = JobTest.createMockJob(now);
 		String json = new ObjectMapper().writeValueAsString(j).replace("running", "success");
 		

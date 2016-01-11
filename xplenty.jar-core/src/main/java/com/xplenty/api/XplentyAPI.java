@@ -432,14 +432,25 @@ public class XplentyAPI {
         checkId(outputId);
         return client.execute(new JobPreviewOutput(jobId, outputId));
     }
-	
-	/**
-	 * Information about a particular job
-	 * @param jobId id of the job, see {@link #listJobs()} to get a list of jobs with id's
-	 * @return
-	 */
-	public Job jobInformation(long jobId) {
-		return client.execute(new JobInfo(jobId)).withParentApiInstance(this);
+
+    /**
+     * Information about a particular job
+     * @param jobId id of the job, see {@link #listJobs()} to get a list of jobs with id's
+     * @return job object
+     */
+    public Job jobInformation(long jobId) {
+        return jobInformation(jobId, false, false);
+    }
+
+    /**
+     * Information about a particular job
+     * @param jobId id of the job, see {@link #listJobs()} to get a list of jobs with id's
+     * @param includeCluster include cluster object
+     * @param includePackage include package object
+     * @return job object
+     */
+	public Job jobInformation(long jobId, boolean includeCluster, boolean includePackage) {
+		return client.execute(new JobInfo(jobId, includeCluster, includePackage)).withParentApiInstance(this);
 	}
 	
 	/**

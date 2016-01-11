@@ -12,9 +12,13 @@ import com.xplenty.api.request.AbstractInfoRequest;
  *
  */
 public class JobInfo extends AbstractInfoRequest<Job> {
+    private final boolean includeCluster;
+    private final boolean includePackage;
 
-    public JobInfo(long entityId) {
+    public JobInfo(long entityId, boolean includeCluster, boolean includePackage) {
         super(entityId);
+        this.includeCluster = includeCluster;
+        this.includePackage = includePackage;
     }
 
     @Override
@@ -24,7 +28,15 @@ public class JobInfo extends AbstractInfoRequest<Job> {
 
 	@Override
 	public String getEndpoint() {
-		return Xplenty.Resource.Job.format(Long.toString(entityId));
+        final String include;
+        if (!includeCluster && !includePackage) {
+            include = "";
+        } else if (includeCluster && includePackage) {
+            include = "?include=cluster,package";
+        } else {
+            include = String.format("?include=%s", includePackage ? "package" : "cluster");
+        }
+		return Xplenty.Resource.Job.format(Long.toString(entityId)) + include;
 	}
 
 }
