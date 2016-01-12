@@ -34,7 +34,7 @@ public class CreateMemberTest extends TestCase {
 	@Test
 	public void testIntegrity() {
 
-        CreateMember cc = new CreateMember("xardazz@github.com", Xplenty.AccountRole.admin);
+        CreateMember cc = new CreateMember("xardazz@github.com", Xplenty.AccountRole.admin, "testuser");
 		assertEquals(Xplenty.Resource.CreateMember.value, cc.getEndpoint());
 		assertEquals(Xplenty.Resource.CreateMember.name, cc.getName());
 		assertEquals(Http.Method.POST, cc.getHttpMethod());
@@ -53,7 +53,7 @@ public class CreateMemberTest extends TestCase {
 
 		json = JsonMapperFactory.getInstance().writeValueAsString(c);
 
-        CreateMember cc = new CreateMember("xardazz@github.com", Xplenty.AccountRole.admin);
+        CreateMember cc = new CreateMember("xardazz@github.com", Xplenty.AccountRole.admin, "testuser");
 		c = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
                 json,
                 Status.CREATED.getStatusCode(),
@@ -82,7 +82,7 @@ public class CreateMemberTest extends TestCase {
         String json = JsonMapperFactory.getInstance().writeValueAsString(c).replace("{", "[");
 
 		try {
-            CreateMember cc = new CreateMember("xardazz@github.com", Xplenty.AccountRole.admin);
+            CreateMember cc = new CreateMember("xardazz@github.com", Xplenty.AccountRole.admin, "testuser");
             c = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
                     json,
                     Status.CREATED.getStatusCode(),

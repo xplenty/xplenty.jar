@@ -15,8 +15,9 @@ public class Http {
 	 * Media types supported by Xplenty API
 	 */
 	public static enum MediaType {
-		JSON("application/vnd.xplenty+json");
-		
+		JSON("application/vnd.xplenty+json"),
+		PURE_JSON("application/json");
+
 		public final String value;
 		
 		MediaType(String type) {

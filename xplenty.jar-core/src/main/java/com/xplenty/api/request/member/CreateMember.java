@@ -14,8 +14,8 @@ import com.xplenty.api.request.AbstractManipulationRequest;
 public class CreateMember extends AbstractManipulationRequest<Member> {
 
 
-    public CreateMember(String email, Xplenty.AccountRole role) {
-        super(new Member(email, role));
+    public CreateMember(String email, Xplenty.AccountRole role, String name) {
+        super(new Member(email, role, name));
     }
 
     @Override

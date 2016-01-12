@@ -803,10 +803,11 @@ public class XplentyAPI {
      * Creates a new member on an account. The call sends an invitation to join Xplenty in case the user is not yet a user of Xplenty.
      * @param email email of the member to add
      * @param role role of the member
+     * @param name name of the member
      * @return newly created member object
      */
-    public Member createMember(String email, Xplenty.AccountRole role) {
-        return client.execute(new CreateMember(email, role));
+    public Member createMember(String email, Xplenty.AccountRole role, String name) {
+        return client.execute(new CreateMember(email, role, name));
     }
 
 

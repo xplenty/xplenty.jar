@@ -111,7 +111,7 @@ public class JerseyClient implements HttpClient {
 			} catch (Exception e) {
 				throw new XplentyAPIException(e);
 			}
-			b.entity(sw.toString()).type(Http.MediaType.JSON.value);
+			b.entity(sw.toString()).type(Http.MediaType.PURE_JSON.value);
 		}
 
 		return b;

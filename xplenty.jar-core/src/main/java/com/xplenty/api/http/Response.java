@@ -45,6 +45,7 @@ public abstract class Response {
     public static Response forContentType(Http.MediaType type, String content, int status, Map<String, String> headers) {
         switch (type) {
             case JSON:
+            case PURE_JSON:
                 return new JsonResponse(content, status, headers);
             default:
                 throw new UnsupportedOperationException(String.format("This media type [%s] not supported!", type));

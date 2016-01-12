@@ -46,10 +46,11 @@ public class Member extends XplentyObject<Member> {
         super(Member.class);
     }
 
-    public Member(String email, Xplenty.AccountRole role) {
+    public Member(String email, Xplenty.AccountRole role, String name) {
         super(Member.class);
         this.email = email;
         this.role = role;
+        this.name = name;
     }
 
     public Member(Long id, Xplenty.AccountRole role) {

@@ -141,7 +141,7 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
                 final byte[] contentBytes = bos.toByteArray();
                 cb.writeBytes(contentBytes);
                 request.headers().set(HttpHeaders.Names.CONTENT_LENGTH, contentBytes.length);
-                request.headers().set(HttpHeaders.Names.CONTENT_TYPE, Http.MediaType.JSON.value);
+                request.headers().set(HttpHeaders.Names.CONTENT_TYPE, Http.MediaType.PURE_JSON.value);
                 request.setContent(cb);
             }
 

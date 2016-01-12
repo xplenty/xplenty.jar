@@ -23,7 +23,7 @@ public class MemberTest extends TestCase {
     }
 
     public static Member createMockMemberForCreation() {
-        Member mem = new Member("xardazz@github.com", Xplenty.AccountRole.admin);
+        Member mem = new Member("xardazz@github.com", Xplenty.AccountRole.admin, "testuser");
         return mem;
     }
 
