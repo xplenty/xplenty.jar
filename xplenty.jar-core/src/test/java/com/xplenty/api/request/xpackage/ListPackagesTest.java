@@ -48,8 +48,10 @@ public class ListPackagesTest extends TestCase {
         params.put(AbstractListRequest.PARAMETER_SORT, Xplenty.Sort.name);
         params.put(AbstractListRequest.PARAMETER_DIRECTION, Xplenty.SortDirection.descending);
         params.put(ListPackages.PARAMETER_FLOW_TYPE, Xplenty.PackageFlowType.dataflow);
+        params.put(ListPackages.PARAMETER_INCLUDE_DATA_FLOW, true);
         cc = new ListPackages(params);
         assertEquals(Xplenty.Resource.Packages.value + "?" +
+                ListPackages.PARAMETER_INCLUDE_DATA_FLOW + "=flow&" +
                 ListPackages.PARAMETER_FLOW_TYPE + "=dataflow&" +
                 AbstractListRequest.PARAMETER_SORT + "=name&" +
                 AbstractListRequest.PARAMETER_DIRECTION + "=desc", cc.getEndpoint());

@@ -37,13 +37,16 @@ public class PackageInfoTest extends TestCase {
 	public void testIntegrity() {
 
         final Date now = new Date();
-        PackageInfo cc = new PackageInfo(666);
+        PackageInfo cc = new PackageInfo(666, false);
 		assertEquals(Xplenty.Resource.Package.format(String.valueOf(666)), cc.getEndpoint());
 		assertEquals(Xplenty.Resource.Package.name, cc.getName());
 		assertEquals(Http.Method.GET, cc.getHttpMethod());
 		assertEquals(Http.MediaType.JSON, cc.getResponseType());
 		assertFalse(cc.hasBody());
 		assertNull(cc.getBody());
+
+        cc = new PackageInfo(666, true);
+        assertEquals(Xplenty.Resource.Package.format(String.valueOf(666)) + "?include=flow", cc.getEndpoint());
 	}
 	
 	@Test
@@ -56,7 +59,7 @@ public class PackageInfoTest extends TestCase {
 
 		json = JsonMapperFactory.getInstance().writeValueAsString(c);
 
-        PackageInfo cc = new PackageInfo(666);
+        PackageInfo cc = new PackageInfo(666, false);
 		c = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
                 json,
                 Status.OK.getStatusCode(),
@@ -87,7 +90,7 @@ public class PackageInfoTest extends TestCase {
         String json = JsonMapperFactory.getInstance().writeValueAsString(c).replace("{", "[");
 
 		try {
-            PackageInfo cc = new PackageInfo(666);
+            PackageInfo cc = new PackageInfo(666, false);
             c = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
                     json,
                     Status.OK.getStatusCode(),

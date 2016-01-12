@@ -21,7 +21,9 @@ import java.util.Properties;
  * Time: 18:08
  */
 public class ListPackages extends AbstractListRequest<List<Package>> {
+    protected static final String ACTUAL_INCLUDE_VALUE = "flow";
     public static String PARAMETER_FLOW_TYPE = "flow_type";
+    public static final String PARAMETER_INCLUDE_DATA_FLOW = "include";
 
 	public ListPackages(Properties params) {
 		super(params, true);
@@ -32,6 +34,12 @@ public class ListPackages extends AbstractListRequest<List<Package>> {
         if (params.containsKey(PARAMETER_FLOW_TYPE)
                 && !(params.get(PARAMETER_FLOW_TYPE) instanceof Xplenty.PackageFlowType)) {
             throw new XplentyAPIException(String.format("Invalid %s parameter, should be one of PackageFlowType values", PARAMETER_FLOW_TYPE));
+        }
+        if (params.containsKey(PARAMETER_INCLUDE_DATA_FLOW)
+                && !(params.get(PARAMETER_INCLUDE_DATA_FLOW) instanceof Boolean)) {
+            throw new XplentyAPIException(String.format("Invalid %s parameter, should be Boolean", PARAMETER_INCLUDE_DATA_FLOW));
+        } else if (params.containsKey(PARAMETER_INCLUDE_DATA_FLOW)) {
+            params.put(PARAMETER_INCLUDE_DATA_FLOW, ACTUAL_INCLUDE_VALUE);
         }
     }
 

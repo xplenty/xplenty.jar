@@ -98,7 +98,18 @@ public class XplentyAPI {
      * @return package object
      */
     public Package getPackageInfo(long packageId) {
-        return client.execute(new PackageInfo(packageId));
+        return getPackageInfo(packageId, false);
+    }
+
+
+    /**
+     * Get package information
+     * @param packageId of the package to get
+     * @param includeDataFlow if set to true, package object will contain data flow json
+     * @return package object
+     */
+    public Package getPackageInfo(long packageId, boolean includeDataFlow) {
+        return client.execute(new PackageInfo(packageId, includeDataFlow));
     }
 
     /**
