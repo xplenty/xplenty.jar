@@ -12,7 +12,7 @@ import com.xplenty.api.http.Http;
 import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Job;
 import com.xplenty.api.model.JobTest;
-import com.xplenty.api.request.job.ListJobs;
+import com.xplenty.api.request.AbstractListRequest;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -26,7 +26,8 @@ import java.util.*;
 public class ListJobsTest extends TestCase {
 	@Test
 	public void testIntegrity() {
-		ListJobs lj = new ListJobs(new Properties());
+        final Properties props = new Properties();
+        ListJobs lj = new ListJobs(props);
 		
 		assertEquals(Xplenty.Resource.Jobs.value, lj.getEndpoint());
 		assertEquals(Xplenty.Resource.Jobs.name, lj.getName());
@@ -34,6 +35,15 @@ public class ListJobsTest extends TestCase {
 		assertEquals(Http.MediaType.JSON, lj.getResponseType());
 		assertFalse(lj.hasBody());
 		assertNull(lj.getBody());
+
+        props.put(AbstractListRequest.PARAMETER_SORT, Xplenty.Sort.name);
+        props.put(AbstractListRequest.PARAMETER_DIRECTION, Xplenty.SortDirection.descending);
+        props.put(ListJobs.PARAMETER_INCLUDE, Xplenty.ListJobInclude.xpackage_and_cluster);
+        lj = new ListJobs(props);
+        assertEquals(Xplenty.Resource.Jobs.value + "?" +
+                ListJobs.PARAMETER_INCLUDE + "=cluster,package&" +
+                AbstractListRequest.PARAMETER_SORT + "=name&" +
+                AbstractListRequest.PARAMETER_DIRECTION + "=desc", lj.getEndpoint());
 	}
 	
 	@Test

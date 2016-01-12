@@ -97,7 +97,11 @@ public class Xplenty {
         /**
          * the job has stopped
          */
-		stopped("stopped")
+		stopped("stopped"),
+        /**
+         * used only for filtering meaning all the statuses above
+         */
+        all("all")
 		;
 		
 		@SuppressWarnings("unused")
@@ -320,6 +324,27 @@ public class Xplenty {
 			this.status = status;
 		}
 	}
+
+    public enum ListJobInclude {
+        cluster("cluster"),
+        xpackage("package"),
+        xpackage_and_cluster("cluster,package");
+
+        private final String entity;
+
+        ListJobInclude(String entity) {
+            this.entity = entity;
+        }
+
+        public String getEntity() {
+            return entity;
+        }
+
+        @Override
+        public String toString() {
+            return entity;
+        }
+    }
 
 	/**
 	 * Endpoints and short descriptions for REST resources

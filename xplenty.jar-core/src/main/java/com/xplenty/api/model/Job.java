@@ -52,7 +52,7 @@ public class Job extends XplentyObject<Job> {
     protected Cluster cluster;
 	@JsonProperty("package_id")
 	protected Long packageId;
-    @JsonProperty
+    @JsonProperty("package")
     protected Package xpackage;
     @JsonProperty
 	protected String errors;

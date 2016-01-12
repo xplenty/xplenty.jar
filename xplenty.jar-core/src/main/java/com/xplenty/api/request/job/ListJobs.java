@@ -5,7 +5,6 @@ package com.xplenty.api.request.job;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.xplenty.api.Xplenty;
-import com.xplenty.api.Xplenty.ClusterStatus;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Job;
@@ -19,6 +18,7 @@ import java.util.Properties;
  *
  */
 public class ListJobs extends AbstractListRequest<List<Job>> {
+    public static final String PARAMETER_INCLUDE = "include";
 	
 	public ListJobs(Properties params) {
         super(params, true);
@@ -26,11 +26,16 @@ public class ListJobs extends AbstractListRequest<List<Job>> {
 	}
 
 	private void validateParameters(Properties params) {
-		if (	params.containsKey(PARAMETER_STATUS)
-				&& !(params.get(PARAMETER_STATUS) instanceof ClusterStatus) 
-				&& !(params.get(PARAMETER_STATUS) instanceof String && "all".equals(params.get(PARAMETER_STATUS)))
-			)
-			throw new XplentyAPIException("Invalid 'status' parameter");
+		if (params.containsKey(PARAMETER_STATUS)
+				&& !(params.get(PARAMETER_STATUS) instanceof Xplenty.JobStatus)
+			) {
+            throw new XplentyAPIException(String.format("Invalid %s parameter, should be JobStatus", PARAMETER_STATUS));
+        }
+        if (params.containsKey(PARAMETER_INCLUDE)
+                && !(params.get(PARAMETER_INCLUDE) instanceof Xplenty.ListJobInclude)
+                ) {
+            throw new XplentyAPIException(String.format("Invalid %s parameter, should be ListJobInclude", PARAMETER_INCLUDE));
+        }
 	}
 
 	@Override
