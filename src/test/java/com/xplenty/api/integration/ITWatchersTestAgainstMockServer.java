@@ -18,7 +18,7 @@ public class ITWatchersTestAgainstMockServer extends TestCase {
     private final DateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     private XplentyAPI api;
-    private String host = "localhost:8080/mock";
+    private String host = "localhost:8080/mock/watchers";
     private String apiKey = "dsfgsdfh";
     private String accountID = "testerAccount";
 
