@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app
+        xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+        version="2.5">
+    <servlet>
+        <servlet-name>Watchers</servlet-name>
+        <servlet-class>com.xplenty.api.router.WatchersRouter</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Members</servlet-name>
+        <servlet-class>com.xplenty.api.router.MemberRouter</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PK</servlet-name>
+        <servlet-class>com.xplenty.api.router.PublicKeyRouter</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Watchers</servlet-name>
+        <url-pattern>/mock/watchers/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Members</servlet-name>
+        <url-pattern>/mock/members/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PK</servlet-name>
+        <url-pattern>/mock/pk/*</url-pattern>
+    </servlet-mapping>
+</web-app>
