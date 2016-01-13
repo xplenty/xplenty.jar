@@ -16,6 +16,10 @@
         <servlet-name>PK</servlet-name>
         <servlet-class>com.xplenty.api.router.PublicKeyRouter</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Account</servlet-name>
+        <servlet-class>com.xplenty.api.router.AccountRouter</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Watchers</servlet-name>
@@ -28,5 +32,9 @@
     <servlet-mapping>
         <servlet-name>PK</servlet-name>
         <url-pattern>/mock/pk/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Account</servlet-name>
+        <url-pattern>/mock/account/*</url-pattern>
     </servlet-mapping>
 </web-app>

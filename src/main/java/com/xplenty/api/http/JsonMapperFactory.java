@@ -16,7 +16,7 @@ public class JsonMapperFactory {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         //mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
         mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.PROTECTED_AND_PUBLIC);
-        mapper.enable(SerializationFeature.INDENT_OUTPUT); // for pretty print
+        mapper.disable(SerializationFeature.INDENT_OUTPUT); // for pretty print
         mapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"));

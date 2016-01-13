@@ -55,7 +55,7 @@ public class ITPublicKeyTestAgainstMockServer extends TestCase {
 
     private void checkEntity(PublicKey c) throws ParseException {
         assertNotNull(c);
-        assertEquals(new Long(33), c.getId());
+        assertEquals(new Long(entityId), c.getId());
         assertEquals("xardazz@github.com", c.getComment());
         assertEquals("ff:ff:ff:aa:aa:aa:aa:aa:aa:aa:aa:aa:aa:ff:ff:ff", c.getFingerprint());
         assertEquals("Test", c.getName());
