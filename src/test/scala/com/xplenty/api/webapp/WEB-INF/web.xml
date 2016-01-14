@@ -20,6 +20,10 @@
         <servlet-name>Account</servlet-name>
         <servlet-class>com.xplenty.api.router.AccountRouter</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Package</servlet-name>
+        <servlet-class>com.xplenty.api.router.PackageRouter</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Watchers</servlet-name>
@@ -36,5 +40,9 @@
     <servlet-mapping>
         <servlet-name>Account</servlet-name>
         <url-pattern>/mock/account/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Package</servlet-name>
+        <url-pattern>/mock/package/*</url-pattern>
     </servlet-mapping>
 </web-app>
