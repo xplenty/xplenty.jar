@@ -24,6 +24,10 @@
         <servlet-name>Package</servlet-name>
         <servlet-class>com.xplenty.api.router.PackageRouter</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>User</servlet-name>
+        <servlet-class>com.xplenty.api.router.UserRouter</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Watchers</servlet-name>
@@ -44,5 +48,9 @@
     <servlet-mapping>
         <servlet-name>Package</servlet-name>
         <url-pattern>/mock/package/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>User</servlet-name>
+        <url-pattern>/mock/user/*</url-pattern>
     </servlet-mapping>
 </web-app>

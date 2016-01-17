@@ -14,7 +14,7 @@ public class UserTest extends TestCase {
     @Test
     public void testBuilder() {
         final Date now = new Date();
-        User user = createMockUser(now, false);
+        User user = createMockUser(now, true);
         assertNotNull(user);
         assertEquals(now.getTime(), user.getConfirmedAt().getTime());
 
