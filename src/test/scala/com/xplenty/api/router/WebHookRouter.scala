@@ -10,36 +10,36 @@ class WebHookRouter extends ScalatraServlet {
 
   post("/:accountId/api/hooks/web") {
     val accountId = params("accountId")
-    s"""{"id":666,"active":true,"settings":{"url":"http://localhost/test","insecure_ssl":true,"basic_auth":false,"basic_auth_data":"somedata","encrypted_basic_auth_data":"wtjnIcvVp1fLC2fy9rAsSQ==\\n"},"salt":"000abcdead","events":["job","cluster"]}"""
+    s"""{"id":666,"active":true,"settings":{"url":"http://localhost/test","insecure_ssl":true,"basic_auth":false,"basic_auth_data":"somedata","encrypted_basic_auth_data":"wtjnIcvVp1fLC2fy9rAsSQ==\\n"},"salt":"000abcdead","events":[{"id" : 333, "name" : "job", "last_response" : {"code": "200", "body" : "nice event"}, "last_trigger_status" : "success", "last_trigger_time" : "2016-01-18T11:19:20Z"}]}"""
   }
 
   put("/:accountId/api/hooks/web/:hookId") {
     val accountId = params("accountId")
     val hookId = params("hookId")
-    s"""{"id":$hookId,"active":true,"settings":{"url":"http://localhost/test","insecure_ssl":true,"basic_auth":false,"basic_auth_data":"somedata","encrypted_basic_auth_data":"wtjnIcvVp1fLC2fy9rAsSQ==\\n"},"salt":"000abcdead","events":["job","cluster"]}"""
+    s"""{"id":$hookId,"active":true,"settings":{"url":"http://localhost/test","insecure_ssl":true,"basic_auth":false,"basic_auth_data":"somedata","encrypted_basic_auth_data":"wtjnIcvVp1fLC2fy9rAsSQ==\\n"},"salt":"000abcdead","events":[{"id" : 333, "name" : "job", "last_response" : {"code": "200", "body" : "nice event"}, "last_trigger_status" : "success", "last_trigger_time" : "2016-01-18T11:19:20Z"}]}"""
   }
 
   delete("/:accountId/api/hooks/web/:hookId") {
     val accountId = params("accountId")
     val hookId = params("hookId")
-    s"""{"id":$hookId,"active":true,"settings":{"url":"http://localhost/test","insecure_ssl":true,"basic_auth":false,"basic_auth_data":"somedata","encrypted_basic_auth_data":"wtjnIcvVp1fLC2fy9rAsSQ==\\n"},"salt":"000abcdead","events":["job","cluster"]}"""
+    s"""{"id":$hookId,"active":true,"settings":{"url":"http://localhost/test","insecure_ssl":true,"basic_auth":false,"basic_auth_data":"somedata","encrypted_basic_auth_data":"wtjnIcvVp1fLC2fy9rAsSQ==\\n"},"salt":"000abcdead","events":[{"id" : 333, "name" : "job", "last_response" : {"code": "200", "body" : "nice event"}, "last_trigger_status" : "success", "last_trigger_time" : "2016-01-18T11:19:20Z"}]}"""
   }
 
   get("/:accountId/api/hooks/web/:hookId") {
     val accountId = params("accountId")
     val hookId = params("hookId")
-    s"""{"id":$hookId,"active":true,"settings":{"url":"http://localhost/test","insecure_ssl":true,"basic_auth":false,"basic_auth_data":"somedata","encrypted_basic_auth_data":"wtjnIcvVp1fLC2fy9rAsSQ==\\n"},"salt":"000abcdead","events":["job","cluster"]}"""
+    s"""{"id":$hookId,"active":true,"settings":{"url":"http://localhost/test","insecure_ssl":true,"basic_auth":false,"basic_auth_data":"somedata","encrypted_basic_auth_data":"wtjnIcvVp1fLC2fy9rAsSQ==\\n"},"salt":"000abcdead","events":[{"id" : 333, "name" : "job", "last_response" : {"code": "200", "body" : "nice event"}, "last_trigger_status" : "success", "last_trigger_time" : "2016-01-18T11:19:20Z"}]}"""
   }
 
   get("/:accountId/api/hooks/web") {
     val accountId = params("accountId")
-    s"""[{"id":666,"active":true,"settings":{"url":"http://localhost/test","insecure_ssl":true,"basic_auth":false,"basic_auth_data":"somedata","encrypted_basic_auth_data":"wtjnIcvVp1fLC2fy9rAsSQ==\\n"},"salt":"000abcdead","events":["job","cluster"]}]"""
+    s"""[{"id":666,"active":true,"settings":{"url":"http://localhost/test","insecure_ssl":true,"basic_auth":false,"basic_auth_data":"somedata","encrypted_basic_auth_data":"wtjnIcvVp1fLC2fy9rAsSQ==\\n"},"salt":"000abcdead","events":[{"id" : 333, "name" : "job", "last_response" : {"code": "200", "body" : "nice event"}, "last_trigger_status" : "success", "last_trigger_time" : "2016-01-18T11:19:20Z"}]}]"""
   }
 
   get("/:accountId/api/hooks/web/:hookId/ping") {
     val accountId = params("accountId")
     val hookId = params("hookId")
-    s"""{"id":$hookId,"active":true,"settings":{"url":"http://localhost/test","insecure_ssl":true,"basic_auth":false,"basic_auth_data":"somedata","encrypted_basic_auth_data":"wtjnIcvVp1fLC2fy9rAsSQ==\\n"},"salt":"000abcdead","events":["job","cluster"]}"""
+    s"""{"id":$hookId,"active":true,"settings":{"url":"http://localhost/test","insecure_ssl":true,"basic_auth":false,"basic_auth_data":"somedata","encrypted_basic_auth_data":"wtjnIcvVp1fLC2fy9rAsSQ==\\n"},"salt":"000abcdead","events":[{"id" : 333, "name" : "job", "last_response" : {"code": "200", "body" : "nice event"}, "last_trigger_status" : "success", "last_trigger_time" : "2016-01-18T11:19:20Z"}]}"""
   }
 
   put("/:accountId/api/hooks/web/:hookId/reset_salt") {

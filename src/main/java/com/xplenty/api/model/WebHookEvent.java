@@ -54,7 +54,7 @@ public class WebHookEvent {
 
     public Xplenty.WebHookEvent getEvent() {
         try {
-            return Xplenty.WebHookEvent.valueOf(name);
+            return Xplenty.WebHookEvent.fromString(name);
         } catch (IllegalArgumentException ex) {
             return null;
         }

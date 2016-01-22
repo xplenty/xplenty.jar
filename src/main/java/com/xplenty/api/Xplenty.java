@@ -260,6 +260,19 @@ public class Xplenty {
             this.event = event;
         }
 
+        public static WebHookEvent fromString(String name) {
+            for (WebHookEvent event : WebHookEvent.values()) {
+                if (event.getEvent().equals(name)) {
+                    return event;
+                }
+            }
+            throw new IllegalArgumentException(String.format("No enum value found for string %s", name));
+        }
+
+        public String getEvent() {
+            return event;
+        }
+
         @Override
         public String toString() {
             return event;

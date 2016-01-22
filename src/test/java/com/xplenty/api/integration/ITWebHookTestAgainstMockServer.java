@@ -6,6 +6,7 @@ import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.model.WebHook;
 import com.xplenty.api.model.WebHookEvent;
+import com.xplenty.api.model.WebHookEventResponse;
 import com.xplenty.api.model.WebHookSettings;
 import junit.framework.TestCase;
 
@@ -103,11 +104,14 @@ public class ITWebHookTestAgainstMockServer extends TestCase {
         assertEquals(true, settings.getInsecureSSL().booleanValue());
         final WebHookEvent event = c.getEvents().get(0);
         // we've got custom json serializer that removes everything except name
-        assertNull(event.getId());
-        assertNull(event.getLastTriggerStatus());
-        assertNull(event.getLastResponse());
-        assertNull(event.getLastTriggerTime());
-        assertNull(event.getEvent());
+        assertEquals(333, event.getId().longValue());
+        assertEquals("success", event.getLastTriggerStatus());
+        assertNotNull(event.getLastResponse());
+        WebHookEventResponse wher = event.getLastResponse();
+        assertEquals("200", wher.getCode());
+        assertEquals("nice event", wher.getBody());
+        assertEquals(dFormat.parse("2016-01-18T11:19:20Z"), event.getLastTriggerTime());
+        assertEquals(Xplenty.WebHookEvent.job_all, event.getEvent());
         assertEquals("job", event.getName());
     }
 }
