@@ -41,6 +41,8 @@ public class Cluster extends XplentyObject<Cluster>{
 	protected Date availableSince;
 	@JsonProperty("terminated_at")
 	protected Date terminatedAt;
+    @JsonProperty("launched_at")
+    protected Date launchedAt;
 	@JsonProperty("running_jobs_count")
 	protected Long runningJobsCount;
     @JsonProperty
@@ -296,6 +298,14 @@ public class Cluster extends XplentyObject<Cluster>{
      */
     public Date getTerminatedAt() {
         return terminatedAt;
+    }
+
+    /**
+     *
+     * @return the date and time the cluster was launched at
+     */
+    public Date getLaunchedAt() {
+        return launchedAt;
     }
 
     /**

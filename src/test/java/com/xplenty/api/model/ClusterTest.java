@@ -29,6 +29,8 @@ public class ClusterTest extends TestCase {
 		assertEquals("my cluster", c.getName());
 		assertEquals(new Integer(2), c.getNodes());
         assertTrue(c.getAllowFallback());
+        ClusterInstance ci = createMockClusterInstance();
+        assertNotNull(ci);
 	}
 	
 	public static Cluster createMockCluster(Date now) {
