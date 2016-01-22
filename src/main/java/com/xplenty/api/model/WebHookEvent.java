@@ -1,6 +1,5 @@
 package com.xplenty.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,8 +23,8 @@ public class WebHookEvent {
     protected Long id;
     @JsonProperty
     protected String name;
-    @JsonIgnore
-    protected String lastResponse;
+    @JsonProperty("last_response")
+    protected WebHookEventResponse lastResponse;
     @JsonProperty("last_trigger_status")
     protected String lastTriggerStatus;
     @JsonProperty("last_trigger_time")
@@ -65,7 +64,7 @@ public class WebHookEvent {
      *
      * @return last response
      */
-    public String getLastResponse() {
+    public WebHookEventResponse getLastResponse() {
         return lastResponse;
     }
 
