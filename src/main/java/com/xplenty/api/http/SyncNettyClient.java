@@ -103,7 +103,7 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
         return channelBuffer.toString(StandardCharsets.UTF_8);
     }
 
-    private HttpMethod convertRequestMethod(Http.Method method) {
+    protected HttpMethod convertRequestMethod(Http.Method method) {
         switch (method) {
             case POST:
                 return HttpMethod.POST;
@@ -189,14 +189,14 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
         throw new XplentyAPIException("Exception while communicating with remote Xplenty server", cause.getCause());
     }
 
-    private String getAcceptHeaderValue(String baseValue) {
+    protected String getAcceptHeaderValue(String baseValue) {
         if (this.version == null) {
             return baseValue;
         }
         return String.format("%s; %s", baseValue, this.version.format());
     }
 
-    private Map<String, String> convertNettyHeaders(HttpHeaders headers) {
+    protected Map<String, String> convertNettyHeaders(HttpHeaders headers) {
         final Map<String, String> convertedHeaders = new HashMap<>();
         for (Map.Entry<String, String> header : headers.entries()) {
             convertedHeaders.put(header.getKey(), header.getValue());
@@ -209,7 +209,7 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
      * @param methodEndpoint - describes the action type
      * @return filly qualified URL
      */
-    private String getMethodURL(String methodEndpoint) {
+    protected String getMethodURL(String methodEndpoint) {
         if (methodEndpoint.startsWith("http")) {
             return methodEndpoint;
         }
@@ -217,7 +217,7 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
     }
 
 
-    private int getPort(URL url) {
+    protected int getPort(URL url) {
         if (url.getPort() > 0) {
             return url.getPort();
         }
@@ -235,7 +235,7 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
     }
 
 
-    private static class PipelineFactory implements ChannelPipelineFactory {
+    protected static class PipelineFactory implements ChannelPipelineFactory {
 
         private final boolean ssl;
         private final boolean logCommunication;
@@ -253,7 +253,6 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
 
             // Enable HTTPS if necessary.
             if (ssl) {
-                // trust to any server certificate
                 // example implementation with comparison to keystore
                 // http://www.programcreek.com/java-api-examples/index.php?source_dir=search-guard-master/src/main/java/com/floragunn/searchguard/transport/SSLNettyTransport.java
                 SSLEngine engine = SSLEngineDefaultImpl.getSSLContext().createSSLEngine();
@@ -286,7 +285,7 @@ public class SyncNettyClient extends SimpleChannelUpstreamHandler implements Htt
 
 
 
-    private static class NettyResponse {
+    protected static class NettyResponse {
         private final CountDownLatch mutex = new CountDownLatch(1);
         private volatile HttpResponse response;
 

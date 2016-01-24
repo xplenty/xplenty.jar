@@ -26,16 +26,20 @@ public class ConsoleNettyLogger implements ChannelUpstreamHandler, ChannelDownst
     @Override
     public void handleDownstream(ChannelHandlerContext ctx, ChannelEvent channelEvent) throws Exception {
         log(channelEvent, false);
-        ctx.sendDownstream(channelEvent);
+        if (ctx != null) {
+            ctx.sendDownstream(channelEvent);
+        }
     }
 
     @Override
     public void handleUpstream(ChannelHandlerContext ctx, ChannelEvent channelEvent) throws Exception {
         log(channelEvent, true);
-        ctx.sendUpstream(channelEvent);
+        if (ctx != null) {
+            ctx.sendUpstream(channelEvent);
+        }
     }
 
-    private void log(ChannelEvent event, boolean isIncoming) {
+    protected void log(ChannelEvent event, boolean isIncoming) {
         if (event instanceof MessageEvent) {
             MessageEvent me = (MessageEvent) event;
             if (me.getMessage() instanceof ChannelBuffer) {
@@ -50,23 +54,23 @@ public class ConsoleNettyLogger implements ChannelUpstreamHandler, ChannelDownst
         }
     }
 
-    private void logStateMessage(String str) {
+    protected void logStateMessage(String str) {
         System.err.println(String.format("%s %s", getDateFormat().format(System.currentTimeMillis()), str));
     }
 
-    private void logMessage(ChannelBuffer buf, boolean isIncoming) {
+    protected void logMessage(ChannelBuffer buf, boolean isIncoming) {
         System.err.println(String.format("%s %s", getDateFormat().format(System.currentTimeMillis()), isIncoming ? "<<<" : ">>>"));
         System.err.println(buf.toString(StandardCharsets.UTF_8));
         System.err.println(isIncoming ? "<<<" : ">>>");
     }
 
-    private void logHttpMessage(ChannelBuffer buf, boolean isIncoming) {
+    protected void logHttpMessage(ChannelBuffer buf, boolean isIncoming) {
         System.err.println(String.format("%s [DECODED]%s", getDateFormat().format(System.currentTimeMillis()), isIncoming ? "<<<" : ">>>"));
         System.err.println(buf.toString(StandardCharsets.UTF_8));
         System.err.println(isIncoming ? "[DECODED]<<<" : "[DECODED]>>>");
     }
 
-    private void logException(Throwable ex) {
+    protected void logException(Throwable ex) {
         System.err.println(ex.getMessage());
     }
 

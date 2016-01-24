@@ -44,7 +44,12 @@ public class Http {
 		Protocol(String value) {
 			this.value = value;
 		}
-	}
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
 
     /**
      * Http Client Implementation used to connect

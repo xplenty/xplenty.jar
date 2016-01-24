@@ -76,12 +76,13 @@ public abstract class Response {
             throw new XplentyAPIException(INVALID_TYPE_INFORMATION);
         }
         Class cls;
-        if (List.class.isAssignableFrom(rawType)) {
+        if (List.class.isAssignableFrom(rawType) && (actualTypeArguments[0] instanceof Class)) {
+
             cls = (Class) actualTypeArguments[0];
             if (XplentyObject.class.isAssignableFrom(cls)) {
                 return;
             }
-        } else if (Map.class.isAssignableFrom(rawType)) {
+        } else if (Map.class.isAssignableFrom(rawType) && (actualTypeArguments[1] instanceof Class)) {
             cls = (Class) actualTypeArguments[1];
             if (XplentyObject.class.isAssignableFrom(cls) || String.class.isAssignableFrom(cls)) {
                 return;

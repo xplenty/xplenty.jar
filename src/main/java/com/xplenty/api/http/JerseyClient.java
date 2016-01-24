@@ -87,7 +87,7 @@ public class JerseyClient implements HttpClient {
 		return request.getResponse(processedResponse);
 	}
 
-    private Map<String, String> convertJerseyHeaders(MultivaluedMap<String, String> headers) {
+    protected Map<String, String> convertJerseyHeaders(MultivaluedMap<String, String> headers) {
         final Map<String, String> convertedHeaders = new HashMap<>();
         for (String header : headers.keySet()) {
             convertedHeaders.put(header, headers.getFirst(header));
@@ -100,7 +100,7 @@ public class JerseyClient implements HttpClient {
 	 * @param request that would be submitted to the XPlenty Server
 	 * @return  builder
 	 */
-	private <T> WebResource.Builder getConfiguredResource(Request<T> request) {
+    protected <T> WebResource.Builder getConfiguredResource(Request<T> request) {
 		WebResource.Builder b = client.resource(getMethodURL(request.getEndpoint(host, accountName)))
 										.accept(request.getResponseType().value
 													+ (version == null ? "" : "; " + version.format())
@@ -124,7 +124,7 @@ public class JerseyClient implements HttpClient {
 	 * @param methodEndpoint - describes the action type
 	 * @return filly qualified URL
 	 */
-	private String getMethodURL(String methodEndpoint) {
+    protected String getMethodURL(String methodEndpoint) {
         if (methodEndpoint.startsWith("http")) {
             return methodEndpoint;
         }
