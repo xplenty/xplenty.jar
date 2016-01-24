@@ -533,7 +533,7 @@ public class XplentyAPI {
      */
     public Schedule createSchedule(Schedule schedule) {
         if (schedule.getId() != null) {
-            schedule.setId(null);
+            schedule.withId(null);
         }
         return client.execute(new CreateSchedule(schedule));
     }

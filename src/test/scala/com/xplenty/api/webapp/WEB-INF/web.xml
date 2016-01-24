@@ -36,6 +36,10 @@
         <servlet-name>Cluster</servlet-name>
         <servlet-class>com.xplenty.api.router.ClusterRouter</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Schedule</servlet-name>
+        <servlet-class>com.xplenty.api.router.ScheduleRouter</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Watchers</servlet-name>
@@ -68,5 +72,9 @@
     <servlet-mapping>
         <servlet-name>Cluster</servlet-name>
         <url-pattern>/mock/cluster/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Schedule</servlet-name>
+        <url-pattern>/mock/schedule/*</url-pattern>
     </servlet-mapping>
 </web-app>

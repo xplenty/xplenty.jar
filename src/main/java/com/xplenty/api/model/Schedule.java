@@ -50,8 +50,14 @@ public class Schedule extends XplentyObject<Schedule> {
     protected Date updatedAt;
     @JsonProperty
     protected String url;
+    @JsonProperty("html_url")
+    protected String htmlUrl;
     @JsonProperty
     protected ScheduleTask task;
+    @JsonProperty
+    protected Boolean overlap;
+    @JsonProperty("reuse_cluster_strategy")
+    protected Xplenty.ReuseClusterStrategy reuseClusterStrategy;
 
     /**
      *
@@ -167,10 +173,18 @@ public class Schedule extends XplentyObject<Schedule> {
 
     /**
      *
-     * @return the schedule resource ID
+     * @return the schedule resource URL (API)
      */
     public String getUrl() {
         return url;
+    }
+
+    /**
+     *
+     * @return the schedule resource URL (Web UI)
+     */
+    public String getHtmlUrl() {
+        return htmlUrl;
     }
 
     /**
@@ -181,84 +195,75 @@ public class Schedule extends XplentyObject<Schedule> {
         return task;
     }
 
+    /**
+     *
+     * @return if execution overlapping is allowed
+     */
+    public Boolean getOverlap() {
+        return overlap;
+    }
 
-	@SuppressWarnings("unused")
-    public void setId(Long id) {
+    /**
+     *
+     * @return the strategy of re-using cluster
+     */
+    public Xplenty.ReuseClusterStrategy getReuseClusterStrategy() {
+        return reuseClusterStrategy;
+    }
+    
+    public Schedule withId(Long id) {
         this.id = id;
+        return this;
     }
-
-	@SuppressWarnings("unused")
-    public void setName(String name) {
+    
+    public Schedule withName(String name) {
         this.name = name;
+        return this;
     }
 
-	@SuppressWarnings("unused")
-    public void setDescription(String description) {
+
+    public Schedule withDescription(String description) {
         this.description = description;
+        return this;
     }
 
-	@SuppressWarnings("unused")
-    private void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
-    }
 
-	@SuppressWarnings("unused")
-    public void setStatus(Xplenty.ScheduleStatus status) {
+    public Schedule withStatus(Xplenty.ScheduleStatus status) {
         this.status = status;
+        return this;
     }
 
-	@SuppressWarnings("unused")
-    public void setStartAt(Date startAt) {
+
+    public Schedule withStartAt(Date startAt) {
         this.startAt = startAt;
+        return this;
     }
 
-	@SuppressWarnings("unused")
-    private void setNextRunAt(Date nextRunAt) {
-        this.nextRunAt = nextRunAt;
-    }
 
-	@SuppressWarnings("unused")
-    public void setIntervalAmount(Long intervalAmount) {
+    public Schedule withIntervalAmount(Long intervalAmount) {
         this.intervalAmount = intervalAmount;
+        return this;
     }
 
-	@SuppressWarnings("unused")
-    public void setIntervalUnit(Xplenty.ScheduleIntervalUnit intervalUnit) {
+
+    public Schedule withIntervalUnit(Xplenty.ScheduleIntervalUnit intervalUnit) {
         this.intervalUnit = intervalUnit;
+        return this;
     }
 
-	@SuppressWarnings("unused")
-    private void setLastRunAt(Date lastRunAt) {
-        this.lastRunAt = lastRunAt;
-    }
 
-	@SuppressWarnings("unused")
-    private void setLastRunStatus(String lastRunStatus) {
-        this.lastRunStatus = lastRunStatus;
-    }
-
-	@SuppressWarnings("unused")
-    private void setExecutionCount(Long executionCount) {
-        this.executionCount = executionCount;
-    }
-
-	@SuppressWarnings("unused")
-    private void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-	@SuppressWarnings("unused")
-    private void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-	@SuppressWarnings("unused")
-    private void setUrl(String url) {
-        this.url = url;
-    }
-
-	@SuppressWarnings("unused")
-    public void setTask(ScheduleTask task) {
+    public Schedule withTask(ScheduleTask task) {
         this.task = task;
+        return this;
+    }
+
+    public Schedule withOverlap(Boolean overlap) {
+        this.overlap = overlap;
+        return this;
+    }
+
+    public Schedule withReuseClusterStrategy(Xplenty.ReuseClusterStrategy reuseClusterStrategy) {
+        this.reuseClusterStrategy = reuseClusterStrategy;
+        return this;
     }
 }

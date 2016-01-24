@@ -1,13 +1,13 @@
 package com.xplenty.api.model;
 
 import com.xplenty.api.Xplenty;
+import com.xplenty.api.http.JsonMapperFactory;
 import junit.framework.TestCase;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Author: Xardas
@@ -18,9 +18,28 @@ public class ScheduleTest extends TestCase {
 
 
     @Test
-    public void testBuilder() {
-        Schedule sched = new Schedule();
+    public void testBuilder() throws Exception {
+        Date now = new Date();
+        Schedule sched = createMockSchedule(now);
         assertNotNull(sched);
+
+        DateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+        sched = new Schedule();
+        sched.withId(189L).withName("1111SUPER SCHEDULE LAUNCH IT NOW MEGA TEST").withDescription("1111LAUNCH YOUR SCHEDULE NO SMS NO PAYMENT");
+        sched.withIntervalAmount(100L).withIntervalUnit(Xplenty.ScheduleIntervalUnit.hours).withStartAt(now);
+        sched.withStatus(Xplenty.ScheduleStatus.disabled);
+        ScheduleTask task = new ScheduleTask().withNodes(10).withTerminateOnIdle(true).withTimeToIdle(1000);
+        List<ScheduleTaskPackage> packages = new ArrayList<>();
+        ScheduleTaskPackage pack = new ScheduleTaskPackage().withPackageId(4991L);
+        Map<String, String> vars = new HashMap<>();
+        vars.put("testvar", "testval");
+        pack.withVariables(vars);
+        packages.add(pack);
+        task.withPackages(packages);
+        sched.withTask(task);
+        assertEquals(String.format("{\"id\":189,\"name\":\"1111SUPER SCHEDULE LAUNCH IT NOW MEGA TEST\",\"description\":\"1111LAUNCH YOUR SCHEDULE NO SMS NO PAYMENT\",\"status\":\"disabled\",\"task\":{\"nodes\":10,\"packages\":{\"0\":{\"variables\":{\"testvar\":\"testval\"},\"package_id\":4991}},\"terminate_on_idle\":true,\"time_to_idle\":1000},\"start_at\":\"%s\",\"interval_amount\":100,\"interval_unit\":\"hours\"}", dFormat.format(now)), JsonMapperFactory.getInstance().writeValueAsString(sched));
+
     }
 
     public static Schedule createMockSchedule(Date now) {
@@ -54,6 +73,8 @@ public class ScheduleTest extends TestCase {
         packages.add(taskPackage);
         task.packages = packages;
         sched.task = task;
+        sched.overlap = true;
+        sched.reuseClusterStrategy = Xplenty.ReuseClusterStrategy.self;
 
         return sched;
     }

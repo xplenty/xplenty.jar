@@ -1,7 +1,5 @@
 package com.xplenty.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
@@ -12,8 +10,6 @@ import java.util.Map;
  * Date: 16.12.15
  * Time: 20:21
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ScheduleTaskPackage {
     @JsonProperty("package_id")
     protected Long packageId;
@@ -28,14 +24,13 @@ public class ScheduleTaskPackage {
         return variables;
     }
 
-
-    @SuppressWarnings("unused")
-    public void setPackageId(Long packageId) {
+    public ScheduleTaskPackage withPackageId(Long packageId) {
         this.packageId = packageId;
+        return this;
     }
 
-    @SuppressWarnings("unused")
-    public void setVariables(Map<String, String> variables) {
+    public ScheduleTaskPackage withVariables(Map<String, String> variables) {
         this.variables = variables;
+        return this;
     }
 }

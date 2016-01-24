@@ -293,6 +293,21 @@ public class Xplenty {
         all;
     }
 
+    public enum ReuseClusterStrategy {
+        /**
+         * do not re-use. It means a new cluster will always be created
+         */
+        none,
+        /**
+         * re-use cluster created by this schedule or create a new one if none was found
+         */
+        self,
+        /**
+         * re-use any cluster with minimal size settings defined in task[nodes] attribute
+         */
+        any;
+    }
+
 
 	@JsonFormat(shape = JsonFormat.Shape.SCALAR)
 	public static enum ClusterStatus {

@@ -1,12 +1,13 @@
 package com.xplenty.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -19,8 +20,6 @@ import java.util.List;
  * Date: 16.12.15
  * Time: 19:56
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ScheduleTask {
 
     @JsonProperty
@@ -50,25 +49,24 @@ public class ScheduleTask {
         return packages;
     }
 
-
-    @SuppressWarnings("unused")
-    public void setNodes(Integer nodes) {
+    public ScheduleTask withNodes(Integer nodes) {
         this.nodes = nodes;
+        return this;
     }
 
-    @SuppressWarnings("unused")
-    public void setTerminateOnIdle(Boolean terminateOnIdle) {
+    public ScheduleTask withTerminateOnIdle(Boolean terminateOnIdle) {
         this.terminateOnIdle = terminateOnIdle;
+        return this;
     }
 
-    @SuppressWarnings("unused")
-    public void setTimeToIdle(Integer timeToIdle) {
+    public ScheduleTask withTimeToIdle(Integer timeToIdle) {
         this.timeToIdle = timeToIdle;
+        return this;
     }
 
-    @SuppressWarnings("unused")
-    public void setPackages(List<ScheduleTaskPackage> packages) {
+    public ScheduleTask withPackages(List<ScheduleTaskPackage> packages) {
         this.packages = packages;
+        return this;
     }
 
     protected static class Number2BooleanJsonConverter extends JsonDeserializer<Boolean> {
