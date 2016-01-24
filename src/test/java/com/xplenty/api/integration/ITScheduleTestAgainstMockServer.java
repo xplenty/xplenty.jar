@@ -100,6 +100,7 @@ public class ITScheduleTestAgainstMockServer extends TestCase {
         assertEquals("Successfully stored zillion records", c.getLastRunStatus());
         assertEquals(Xplenty.ScheduleStatus.enabled, c.getStatus());
         assertEquals(String.format("https://localhost/%s/api/schedules/%s", accountID, entityId), c.getUrl());
+        assertEquals(String.format("https://localhost/%s/schedules/%s", accountID, entityId), c.getHtmlUrl());
         assertEquals(1, c.getExecutionCount().longValue());
         assertEquals(10, c.getIntervalAmount().longValue());
         assertEquals(1, c.getOwnerId().longValue());
