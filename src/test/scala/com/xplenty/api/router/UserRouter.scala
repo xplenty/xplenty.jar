@@ -25,4 +25,8 @@ class UserRouter extends ScalatraServlet {
   post("/user/notifications/mark") {
     """"""
   }
+
+  post("/user_password") {
+    halt(201)
+  }
 }

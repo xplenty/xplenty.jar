@@ -605,6 +605,15 @@ public class XplentyAPI {
     }
 
     /**
+     * Sends user password reset instructions
+     * @param email email of the user
+     */
+    public void resetUserPassword(String email) {
+        checkStringId(email);
+        client.execute(new ResetUserPassword(email));
+    }
+
+    /**
      * Get all supported hook events to use when creating/updating web hooks
      * @return list of hook events
      */
@@ -1097,8 +1106,8 @@ public class XplentyAPI {
      * Marks the authenticated user's notifications as read. This call returns empty response.
      * @return null
      */
-    public Void markNotificationAsRead() {
-        return client.execute(new MarkNotificationsRead());
+    public void markNotificationAsRead() {
+        client.execute(new MarkNotificationsRead());
     }
 
     /**

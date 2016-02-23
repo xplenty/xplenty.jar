@@ -62,8 +62,11 @@ public class ITUserTestAgainstMockServer extends TestCase {
     }
 
     public void testMarkNotificationsRead() throws Exception {
-        Void c = api.markNotificationAsRead();
-        assertNull(c);
+        api.markNotificationAsRead();
+    }
+
+    public void testResetUserPassword() throws Exception {
+        api.resetUserPassword("test@test.com");
     }
 
     private void checkUser(User c, boolean withApiKey) throws ParseException {

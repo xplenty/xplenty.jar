@@ -419,6 +419,7 @@ public class Xplenty {
         Schedule("schedules/%s", "Get schedule information"),
         User("user", "Get current user information"),
         UpdateUser("user", "Update current user information"),
+        ResetUserPassword("user_password", "Send user password reset instructions"),
         UserNotifications("user/notifications", "List user notifications"),
         MarkUserNotificationRead("user/notifications/mark", "Mark user notification as read"),
         HookEvents("hook_events", "List supported Hook Events"),
