@@ -1,7 +1,7 @@
-package com.xplenty.api.request.webhook;
+package com.xplenty.api.request.hook;
 
 import com.xplenty.api.Xplenty;
-import com.xplenty.api.model.WebHook;
+import com.xplenty.api.model.Hook;
 import com.xplenty.api.request.AbstractInfoRequest;
 
 /**
@@ -10,19 +10,19 @@ import com.xplenty.api.request.AbstractInfoRequest;
  * Date: 05.01.16
  * Time: 18:26
  */
-public class WebHookInfo extends AbstractInfoRequest<WebHook> {
+public class HookInfo extends AbstractInfoRequest<Hook> {
 
-    public WebHookInfo(long entityId) {
+    public HookInfo(long entityId) {
         super(entityId);
     }
 
     @Override
     protected String getEndpoint() {
-        return Xplenty.Resource.WebHook.format(String.valueOf(entityId));
+        return Xplenty.Resource.Hook.format(String.valueOf(entityId));
     }
 
     @Override
     public String getName() {
-        return Xplenty.Resource.WebHook.name;
+        return Xplenty.Resource.Hook.name;
     }
 }

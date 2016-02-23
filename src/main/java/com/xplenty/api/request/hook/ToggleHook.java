@@ -1,8 +1,8 @@
-package com.xplenty.api.request.webhook;
+package com.xplenty.api.request.hook;
 
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.http.Http;
-import com.xplenty.api.model.WebHook;
+import com.xplenty.api.model.Hook;
 import com.xplenty.api.request.AbstractManipulationRequest;
 
 /**
@@ -11,10 +11,10 @@ import com.xplenty.api.request.AbstractManipulationRequest;
  * Date: 05.01.16
  * Time: 17:28
  */
-public class ToggleWebHook extends AbstractManipulationRequest<WebHook> {
+public class ToggleHook extends AbstractManipulationRequest<Hook> {
 
-    public ToggleWebHook(Long id, Boolean active) {
-        super(new WebHook(id, active));
+    public ToggleHook(Long id, Boolean active) {
+        super(new Hook(id, active));
     }
 
     @Override
@@ -24,12 +24,12 @@ public class ToggleWebHook extends AbstractManipulationRequest<WebHook> {
 
     @Override
     protected String getEndpoint() {
-        return Xplenty.Resource.UpdateWebHook.format(entity.getId().toString());
+        return Xplenty.Resource.UpdateHook.format(entity.getId().toString());
     }
 
     @Override
     public String getName() {
-        return Xplenty.Resource.UpdateWebHook.name;
+        return Xplenty.Resource.UpdateHook.name;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.xplenty.api.request.webhook;
+package com.xplenty.api.request.hook;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.jersey.api.client.ClientResponse;
@@ -7,10 +7,10 @@ import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.http.JsonMapperFactory;
 import com.xplenty.api.http.Response;
-import com.xplenty.api.model.WebHook;
-import com.xplenty.api.model.WebHookEvent;
+import com.xplenty.api.model.Hook;
+import com.xplenty.api.model.HookEvent;
 import com.xplenty.api.model.WebHookSettings;
-import com.xplenty.api.model.WebHookTest;
+import com.xplenty.api.model.HookTest;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,7 +24,7 @@ import java.util.HashMap;
  * Date: 05.01.16
  * Time: 19:43
  */
-public class DeleteWebHookTest extends TestCase {
+public class HookInfoTest extends TestCase {
     @Before
     public void setUp() {
 
@@ -33,10 +33,10 @@ public class DeleteWebHookTest extends TestCase {
     @Test
     public void testIntegrity() {
 
-        DeleteWebHook cc = new DeleteWebHook(1L);
-        assertEquals(Xplenty.Resource.DeleteWebHook.format("1"), cc.getEndpoint());
-        assertEquals(Xplenty.Resource.DeleteWebHook.name, cc.getName());
-        assertEquals(Http.Method.DELETE, cc.getHttpMethod());
+        HookInfo cc = new HookInfo(1L);
+        assertEquals(Xplenty.Resource.Hook.format("1"), cc.getEndpoint());
+        assertEquals(Xplenty.Resource.Hook.name, cc.getName());
+        assertEquals(Http.Method.GET, cc.getHttpMethod());
         assertEquals(Http.MediaType.JSON, cc.getResponseType());
         assertFalse(cc.hasBody());
         assertNull(cc.getBody());
@@ -45,11 +45,11 @@ public class DeleteWebHookTest extends TestCase {
     @Test
     public void testValidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
         Date now = new Date();
-        WebHook c = WebHookTest.createMockWebHook(now);
+        Hook c = HookTest.createMockHook(now);
 
         String json = JsonMapperFactory.getInstance().writeValueAsString(c);
 
-        DeleteWebHook cc = new DeleteWebHook(666);
+        HookInfo cc = new HookInfo(666);
         c = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
                 json,
                 ClientResponse.Status.OK.getStatusCode(),
@@ -59,11 +59,12 @@ public class DeleteWebHookTest extends TestCase {
         assertEquals(new Long(666), c.getId());
         assertEquals(true, c.getActive().booleanValue());
         assertEquals("000abcdead", c.getSalt());
-        final WebHookSettings settings = c.getSettings();
+        final WebHookSettings settings = (WebHookSettings) c.getSettings();
         assertEquals("http://localhost/test", settings.getUrl());
         assertEquals(false, settings.getBasicAuth().booleanValue());
         assertEquals(true, settings.getInsecureSSL().booleanValue());
-        final WebHookEvent event = c.getEvents().get(0);
+        assertEquals("wtjnIcvVp1fLC2fy9rAsSQ==\\n", settings.getEncryptedBasicAuthData());
+        final HookEvent event = c.getEvents().get(0);
         // we've got custom json serializer that removes everything except name
         assertNull(event.getId());
         assertNull(event.getLastTriggerStatus());
@@ -74,19 +75,19 @@ public class DeleteWebHookTest extends TestCase {
     @Test
     public void testInvalidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
         Date now = new Date();
-        WebHook c = WebHookTest.createMockWebHook(now);
+        Hook c = HookTest.createMockHook(now);
 
         String json = JsonMapperFactory.getInstance().writeValueAsString(c).replace("{", "[");
         try {
 
-            DeleteWebHook cc = new DeleteWebHook(666);
+            HookInfo cc = new HookInfo(666);
             c = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
                     json,
                     ClientResponse.Status.OK.getStatusCode(),
                     new HashMap<String, String>()));
             assertTrue(false);
         } catch (XplentyAPIException e) {
-            assertEquals(Xplenty.Resource.DeleteWebHook.name + ": error parsing response object", e.getMessage());
+            assertEquals(Xplenty.Resource.Hook.name + ": error parsing response object", e.getMessage());
         }
 
     }

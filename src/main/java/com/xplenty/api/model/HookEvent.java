@@ -1,45 +1,94 @@
 package com.xplenty.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.xplenty.api.Xplenty;
+
+import java.io.IOException;
+import java.util.Date;
 
 /**
+ * Data Model for Xplenty Web Hook event
  * Author: Xardas
- * Date: 05.01.16
- * Time: 15:15
+ * Date: 04.01.16
+ * Time: 18:01
  */
-public class HookEvent extends XplentyObject<HookEvent> {
+@JsonSerialize(using = HookEvent.WebHookEventSerializer.class)
+public class HookEvent {
     @JsonProperty
-    private String id;
-    @JsonProperty("group_name")
-    private String groupName;
-    @JsonProperty("name")
-    private String description;
+    protected Long id;
+    @JsonProperty
+    protected String name;
+    @JsonProperty("last_response")
+    protected WebHookEventResponse lastResponse;
+    @JsonProperty("last_trigger_status")
+    protected String lastTriggerStatus;
+    @JsonProperty("last_trigger_time")
+    protected Date lastTriggerTime;
 
-    protected HookEvent() {
-        super(HookEvent.class);
+    public HookEvent() {}
+
+    public HookEvent(String name) {
+        this.name = name;
     }
 
     /**
      *
-     * @return id of the hook event. This id can be passed to web hook create/update requests to subscribe for that type of event
+     * @return id of the event
      */
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      *
-     * @return Group that this hook event belongs to
+     * @return name constant of the event
      */
-    public String getGroupName() {
-        return groupName;
+    public String getName() {
+        return name;
+    }
+
+    public Xplenty.HookEvent getEvent() {
+        try {
+            return Xplenty.HookEvent.fromString(name);
+        } catch (IllegalArgumentException ex) {
+            return null;
+        }
     }
 
     /**
      *
-     * @return description of the event
+     * @return last response
      */
-    public String getDescription() {
-        return description;
+    public WebHookEventResponse getLastResponse() {
+        return lastResponse;
+    }
+
+    /**
+     *
+     * @return last trigger status
+     */
+    public String getLastTriggerStatus() {
+        return lastTriggerStatus;
+    }
+
+    /**
+     *
+     * @return time web hook was last triggered
+     */
+    public Date getLastTriggerTime() {
+        return lastTriggerTime;
+    }
+
+    protected static class WebHookEventSerializer extends JsonSerializer<HookEvent> {
+
+        @Override
+        public void serialize(HookEvent hookEvent, JsonGenerator jGen, SerializerProvider sp) throws IOException, JsonProcessingException {
+            jGen.writeString(hookEvent.getName());
+        }
     }
 }

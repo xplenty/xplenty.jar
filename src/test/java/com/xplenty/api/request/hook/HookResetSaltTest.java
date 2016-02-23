@@ -1,4 +1,4 @@
-package com.xplenty.api.request.webhook;
+package com.xplenty.api.request.hook;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.jersey.api.client.ClientResponse;
@@ -7,8 +7,8 @@ import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.http.JsonMapperFactory;
 import com.xplenty.api.http.Response;
-import com.xplenty.api.model.WebHook;
-import com.xplenty.api.model.WebHookTest;
+import com.xplenty.api.model.Hook;
+import com.xplenty.api.model.HookTest;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +22,7 @@ import java.util.HashMap;
  * Date: 05.01.16
  * Time: 19:43
  */
-public class WebHookResetSaltTest extends TestCase {
+public class HookResetSaltTest extends TestCase {
     @Before
     public void setUp() {
 
@@ -31,9 +31,9 @@ public class WebHookResetSaltTest extends TestCase {
     @Test
     public void testIntegrity() {
 
-        WebHookResetSalt cc = new WebHookResetSalt(1L);
-        assertEquals(Xplenty.Resource.WebHookResetSalt.format("1"), cc.getEndpoint());
-        assertEquals(Xplenty.Resource.WebHookResetSalt.name, cc.getName());
+        HookResetSalt cc = new HookResetSalt(1L);
+        assertEquals(Xplenty.Resource.HookResetSalt.format("1"), cc.getEndpoint());
+        assertEquals(Xplenty.Resource.HookResetSalt.name, cc.getName());
         assertEquals(Http.Method.PUT, cc.getHttpMethod());
         assertEquals(Http.MediaType.JSON, cc.getResponseType());
         assertFalse(cc.hasBody());
@@ -43,11 +43,11 @@ public class WebHookResetSaltTest extends TestCase {
     @Test
     public void testValidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
         Date now = new Date();
-        WebHook c = WebHookTest.createMockWebHook(now);
+        Hook c = HookTest.createMockHook(now);
 
         String json = JsonMapperFactory.getInstance().writeValueAsString(c);
 
-        WebHookResetSalt cc = new WebHookResetSalt(666);
+        HookResetSalt cc = new HookResetSalt(666);
         String newSalt = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
                 "{ \"salt\" : \"deadabc\" }",
                 ClientResponse.Status.OK.getStatusCode(),
@@ -61,7 +61,7 @@ public class WebHookResetSaltTest extends TestCase {
 
         try {
 
-            WebHookResetSalt cc = new WebHookResetSalt(666);
+            HookResetSalt cc = new HookResetSalt(666);
             String newSalt = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
                     "[[ \"salt\" : \"deadabc\" }",
                     ClientResponse.Status.OK.getStatusCode(),
@@ -69,7 +69,7 @@ public class WebHookResetSaltTest extends TestCase {
 
             assertTrue(false);
         } catch (XplentyAPIException e) {
-            assertEquals(Xplenty.Resource.WebHookResetSalt.name + ": error parsing response object", e.getMessage());
+            assertEquals(Xplenty.Resource.HookResetSalt.name + ": error parsing response object", e.getMessage());
         }
 
     }

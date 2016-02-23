@@ -239,7 +239,7 @@ public class Xplenty {
         hour;
     }
     
-    public enum WebHookEvent {
+    public enum HookEvent {
         job_all("job"),
         job_submitted("job.submitted"),
         job_started("job.started"),
@@ -256,12 +256,12 @@ public class Xplenty {
         @SuppressWarnings("unused")
         private final String event;
 
-        WebHookEvent(String event) {
+        HookEvent(String event) {
             this.event = event;
         }
 
-        public static WebHookEvent fromString(String name) {
-            for (WebHookEvent event : WebHookEvent.values()) {
+        public static HookEvent fromString(String name) {
+            for (HookEvent event : HookEvent.values()) {
                 if (event.getEvent().equals(name)) {
                     return event;
                 }
@@ -306,6 +306,14 @@ public class Xplenty {
          * re-use any cluster with minimal size settings defined in task[nodes] attribute
          */
         any;
+    }
+
+    public enum HookType {
+        email,
+        hipchat,
+        pagerduty,
+        slack,
+        web;
     }
 
 
@@ -414,13 +422,13 @@ public class Xplenty {
         UserNotifications("user/notifications", "List user notifications"),
         MarkUserNotificationRead("user/notifications/mark", "Mark user notification as read"),
         HookEvents("hook_events", "List supported Hook Events"),
-        CreateWebHook("hooks/web", "Create new Web hook"),
-        UpdateWebHook("hooks/web/%s", "Update existing Web hook"),
-        DeleteWebHook("hooks/web/%s", "Delete Web hook"),
-        PingWebHook("hooks/web/%s/ping", "Ping(fire test notification) for Web hook"),
-        WebHookResetSalt("hooks/web/%s/reset_salt", "Reset Web hook's salt"),
-        WebHook("hooks/web/%s", "Get  Web hook information"),
-        WebHooks("hooks/web", "List Web hooks"),
+        CreateHook("hooks", "Create new hook"),
+        UpdateHook("hooks/%s", "Update existing hook"),
+        DeleteHook("hooks/%s", "Delete hook"),
+        PingHook("hooks/%s/ping", "Ping(fire test notification) for hook"),
+        HookResetSalt("hooks/%s/reset_salt", "Reset hook's salt"),
+        Hook("hooks/%s", "Get hook information"),
+        Hooks("hooks", "List hooks"),
         CreatePublicKey("user/keys", "Create Public Key"),
         PublicKey("user/keys/%s", "Get  Public Key information"),
         PublicKeys("user/keys", "List Public Keys"),

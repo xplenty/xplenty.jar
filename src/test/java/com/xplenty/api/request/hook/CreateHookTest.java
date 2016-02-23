@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.xplenty.api.request.webhook;
+package com.xplenty.api.request.hook;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.jersey.api.client.ClientResponse.Status;
@@ -10,10 +10,10 @@ import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.http.JsonMapperFactory;
 import com.xplenty.api.http.Response;
-import com.xplenty.api.model.WebHook;
-import com.xplenty.api.model.WebHookEvent;
+import com.xplenty.api.model.Hook;
+import com.xplenty.api.model.HookEvent;
 import com.xplenty.api.model.WebHookSettings;
-import com.xplenty.api.model.WebHookTest;
+import com.xplenty.api.model.HookTest;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +28,7 @@ import java.util.List;
  * @author xardas
  *
  */
-public class CreateWebHookTest extends TestCase {
+public class CreateHookTest extends TestCase {
 	
 	@Before
 	public void setUp() {
@@ -42,9 +42,9 @@ public class CreateWebHookTest extends TestCase {
         List<String> events = new ArrayList<>();
         events.add("job");
 
-        CreateWebHook cc = new CreateWebHook(whs, events);
-		assertEquals(Xplenty.Resource.CreateWebHook.value, cc.getEndpoint());
-		assertEquals(Xplenty.Resource.CreateWebHook.name, cc.getName());
+        CreateHook cc = new CreateHook("test", whs, events);
+		assertEquals(Xplenty.Resource.CreateHook.value, cc.getEndpoint());
+		assertEquals(Xplenty.Resource.CreateHook.name, cc.getName());
 		assertEquals(Http.Method.POST, cc.getHttpMethod());
 		assertEquals(Http.MediaType.JSON, cc.getResponseType());
 		assertTrue(cc.hasBody());
@@ -54,7 +54,7 @@ public class CreateWebHookTest extends TestCase {
 	@Test
 	public void testValidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
 		Date now = new Date(); 
-		WebHook c = WebHookTest.createMockWebHook(now);
+		Hook c = HookTest.createMockHook(now);
 		
 		String json = JsonMapperFactory.getInstance().writeValueAsString(c);
 
@@ -62,7 +62,7 @@ public class CreateWebHookTest extends TestCase {
         List<String> events = new ArrayList<>();
         events.add("job");
 
-        CreateWebHook cc = new CreateWebHook(whs, events);
+        CreateHook cc = new CreateHook("test", whs, events);
 		c = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
                 json,
                 Status.CREATED.getStatusCode(),
@@ -70,13 +70,14 @@ public class CreateWebHookTest extends TestCase {
 		
 		assertNotNull(c);
 		assertEquals(new Long(666), c.getId());
+        assertEquals("test", c.getName());
 		assertEquals(true, c.getActive().booleanValue());
 		assertEquals("000abcdead", c.getSalt());
-        final WebHookSettings settings = c.getSettings();
+        final WebHookSettings settings = (WebHookSettings) c.getSettings();
         assertEquals("http://localhost/test", settings.getUrl());
         assertEquals(false, settings.getBasicAuth().booleanValue());
         assertEquals(true, settings.getInsecureSSL().booleanValue());
-        final WebHookEvent event = c.getEvents().get(0);
+        final HookEvent event = c.getEvents().get(0);
         // we've got custom json serializer that removes everything except name
         assertNull(event.getId());
         assertNull(event.getLastTriggerStatus());
@@ -86,7 +87,7 @@ public class CreateWebHookTest extends TestCase {
 	@Test
 	public void testInvalidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
         Date now = new Date();
-        WebHook c = WebHookTest.createMockWebHook(now);
+        Hook c = HookTest.createMockHook(now);
 
         WebHookSettings whs = new WebHookSettings("http://localhost/test", true, false, "somedata");
         List<String> events = new ArrayList<>();
@@ -94,14 +95,14 @@ public class CreateWebHookTest extends TestCase {
 
         String json = JsonMapperFactory.getInstance().writeValueAsString(c).replace("{", "[");
 		try {
-            CreateWebHook cc = new CreateWebHook(whs, events);
+            CreateHook cc = new CreateHook("test", whs, events);
             c = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
                     json,
                     Status.CREATED.getStatusCode(),
                     new HashMap<String, String>()));
 			assertTrue(false);
 		} catch (XplentyAPIException e) {
-			assertEquals(Xplenty.Resource.CreateWebHook.name + ": error parsing response object", e.getMessage());
+			assertEquals(Xplenty.Resource.CreateHook.name + ": error parsing response object", e.getMessage());
 		}
 
 	}

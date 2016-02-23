@@ -1,7 +1,7 @@
-package com.xplenty.api.request.webhook;
+package com.xplenty.api.request.hook;
 
 import com.xplenty.api.Xplenty;
-import com.xplenty.api.model.WebHook;
+import com.xplenty.api.model.Hook;
 import com.xplenty.api.request.AbstractInfoRequest;
 
 /**
@@ -10,18 +10,18 @@ import com.xplenty.api.request.AbstractInfoRequest;
  * Date: 05.01.16
  * Time: 18:19
  */
-public class PingWebHook extends AbstractInfoRequest<WebHook> {
-    public PingWebHook(long entityId) {
+public class PingHook extends AbstractInfoRequest<Hook> {
+    public PingHook(long entityId) {
         super(entityId);
     }
 
     @Override
     protected String getEndpoint() {
-        return Xplenty.Resource.PingWebHook.format(String.valueOf(entityId));
+        return Xplenty.Resource.PingHook.format(String.valueOf(entityId));
     }
 
     @Override
     public String getName() {
-        return Xplenty.Resource.PingWebHook.name;
+        return Xplenty.Resource.PingHook.name;
     }
 }

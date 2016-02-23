@@ -12,39 +12,40 @@ import java.util.List;
  * Date: 05.01.16
  * Time: 19:02
  */
-public class WebHookTest extends TestCase {
+public class HookTest extends TestCase {
     @Test
     public void testBuilder() {
         final Date now = new Date();
-        WebHook webhook = createMockWebHook(now);
+        Hook webhook = createMockHook(now);
         assertNotNull(webhook);
         assertEquals(now.getTime(), webhook.getEvents().get(0).getLastTriggerTime().getTime());
 
     }
 
 
-    public static WebHook createMockWebHook(Date now) {
-        WebHook webHook = new WebHook();
-        webHook.id = 666L;
-        webHook.active = true;
-        webHook.salt = "000abcdead";
+    public static Hook createMockHook(Date now) {
+        Hook hook = new Hook();
+        hook.id = 666L;
+        hook.name = "test";
+        hook.active = true;
+        hook.salt = "000abcdead";
         WebHookSettings whs = new WebHookSettings("http://localhost/test", true, false, "somedata");
         whs.encryptedBasicAuthData = "wtjnIcvVp1fLC2fy9rAsSQ==\\n";
-        webHook.settings = whs;
-        List<WebHookEvent> events = new ArrayList<>();
-        WebHookEvent whe = new WebHookEvent();
+        hook.settings = whs;
+        List<HookEvent> events = new ArrayList<>();
+        HookEvent whe = new HookEvent();
         whe.id = 111L;
         whe.lastTriggerStatus = "omg!";
         whe.lastTriggerTime = now;
         whe.name = "job";
         events.add(whe);
-        whe = new WebHookEvent();
+        whe = new HookEvent();
         whe.id = 222L;
         whe.lastTriggerStatus = "omg2!";
         whe.lastTriggerTime = now;
         whe.name = "cluster";
         events.add(whe);
-        webHook.events = events;
-        return webHook;
+        hook.events = events;
+        return hook;
     }
 }

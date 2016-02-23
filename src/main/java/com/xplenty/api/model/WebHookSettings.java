@@ -1,6 +1,7 @@
 package com.xplenty.api.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xplenty.api.Xplenty;
 
 /**
  * Data model for Xplenty Web Hook settings
@@ -8,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Date: 04.01.16
  * Time: 17:52
  */
-public class WebHookSettings {
+public class WebHookSettings implements HookSettings {
     @JsonProperty
     private String url;
     @JsonProperty("insecure_ssl")
@@ -74,31 +75,40 @@ public class WebHookSettings {
      *
      * @param url URL of the target server
      */
-    public void setUrl(String url) {
+    public WebHookSettings withUrl(String url) {
         this.url = url;
+        return this;
     }
 
     /**
      *
      * @param insecureSSL indicates whether SSL certificate is verified
      */
-    public void setInsecureSSL(Boolean insecureSSL) {
+    public WebHookSettings withInsecureSSL(Boolean insecureSSL) {
         this.insecureSSL = insecureSSL;
+        return this;
     }
 
     /**
      *
      * @param basicAuth indicates whether the basic authentication is required
      */
-    public void setBasicAuth(Boolean basicAuth) {
+    public WebHookSettings withBasicAuth(Boolean basicAuth) {
         this.basicAuth = basicAuth;
+        return this;
     }
 
     /**
      *
      * @param basicAuthData data needed for basic authentication (user:password encoded with base64)
      */
-    public void setBasicAuthData(String basicAuthData) {
+    public WebHookSettings withBasicAuthData(String basicAuthData) {
         this.basicAuthData = basicAuthData;
+        return this;
+    }
+
+    @Override
+    public Xplenty.HookType getType() {
+        return Xplenty.HookType.web;
     }
 }

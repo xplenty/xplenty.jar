@@ -1,10 +1,10 @@
-package com.xplenty.api.request.webhook;
+package com.xplenty.api.request.hook;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.Response;
-import com.xplenty.api.model.WebHook;
+import com.xplenty.api.model.Hook;
 import com.xplenty.api.request.AbstractListRequest;
 
 import java.util.List;
@@ -16,27 +16,27 @@ import java.util.Properties;
  * Date: 05.01.16
  * Time: 17:38
  */
-public class ListWebHooks extends AbstractListRequest<List<WebHook>> {
+public class ListHooks extends AbstractListRequest<List<Hook>> {
 
 
-    public ListWebHooks(Properties parameters) {
+    public ListHooks(Properties parameters) {
         super(parameters, true);
     }
 
     @Override
     protected String getEndpointRoot() {
-        return Xplenty.Resource.WebHooks.value;
+        return Xplenty.Resource.Hooks.value;
     }
 
     @Override
     public String getName() {
-        return Xplenty.Resource.WebHooks.name;
+        return Xplenty.Resource.Hooks.name;
     }
 
     @Override
-    public List<WebHook> getResponse(Response response) {
+    public List<Hook> getResponse(Response response) {
         try {
-            return response.getContent(new TypeReference<List<WebHook>>() {});
+            return response.getContent(new TypeReference<List<Hook>>() {});
         } catch (Exception e) {
             throw new XplentyAPIException(getName() + ": error parsing response object", e);
         }

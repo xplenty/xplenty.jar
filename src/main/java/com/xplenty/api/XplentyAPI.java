@@ -35,7 +35,7 @@ import com.xplenty.api.request.watching.AddClusterWatcher;
 import com.xplenty.api.request.watching.AddJobWatcher;
 import com.xplenty.api.request.watching.ListWatchers;
 import com.xplenty.api.request.watching.WatchingStop;
-import com.xplenty.api.request.webhook.*;
+import com.xplenty.api.request.hook.*;
 import com.xplenty.api.request.xpackage.*;
 
 import java.util.List;
@@ -608,54 +608,56 @@ public class XplentyAPI {
      * Get all supported hook events to use when creating/updating web hooks
      * @return list of hook events
      */
-    public List<HookEvent> getHookEvents() {
+    public List<AvailableHookEvent> getHookEvents() {
         return client.execute(new ListHookEvents());
     }
 
     /**
-     * Create new Web hook to recieve notifications for events subscribed
+     * Create new hook to recieve notifications for events subscribed
+     * @param name name of the hook. Leave null for default
      * @param settings settings used to connect to your server
      * @param events list of events, retrieved using {@link #getHookEvents() getHookEvents}, you want to subscribe to
      * @return created web hook object
      */
-    public WebHook createWebHook(WebHookSettings settings, List<String> events) {
-        return client.execute(new CreateWebHook(settings, events));
+    public Hook createHook(String name, HookSettings settings, List<String> events) {
+        return client.execute(new CreateHook(name, settings, events));
     }
 
     /**
-     * Create new Web hook to recieve notifications for events subscribed
+     * Create new hook to recieve notifications for events subscribed
+     *  @param name name of the hook. Leave null for default
      * @param events list of predefined events you want to subscribe to
      * @param settings settings used to connect to your server
      * @return created web hook object
      */
-    public WebHook createWebHook(List<Xplenty.WebHookEvent> events, WebHookSettings settings) {
-        return client.execute(new CreateWebHook(events, settings));
+    public Hook createHook(String name, List<Xplenty.HookEvent> events, HookSettings settings) {
+        return client.execute(new CreateHook(name, events, settings));
     }
 
     /**
-     * Update web hook
-     * @param webHookId id of the web hook
+     * Update hook
+     * @param hookId id of the hook
+     * @param name name of the hook
      * @param settings settings used to connect to your server, pass null if no change required
-     * @param addEvents subscribe to these events. Leave null if no change required
-     * @param removeEvents unsubscribe from these events. Leave null if no change required.
+     * @param events subscribe to these events. All existing events will be replaced. Leave null if no change required
      * @return updated web hook object
      */
-    public WebHook updateWebHook(long webHookId, WebHookSettings settings, List<String> addEvents, List<String> removeEvents) {
-        checkId(webHookId);
-        return client.execute(new UpdateWebHook(webHookId, settings, addEvents, removeEvents));
+    public Hook updateHook(long hookId, String name, HookSettings settings, List<String> events) {
+        checkId(hookId);
+        return client.execute(new UpdateHook(hookId, name, settings, events));
     }
 
     /**
-     * Update web hook
-     * @param webHookId id of the web hook
-     * @param addEvents subscribe to these events. Leave null if no change required
-     * @param removeEvents unsubscribe from these events. Leave null if no change required.
+     * Update hook
+     * @param hookId id of the hook
+     * @param name name of the hook
+     * @param events subscribe to these events. All existing events will be replaced. Leave null if no change required
      * @param settings settings used to connect to your server, pass null if no change required
      * @return updated web hook object
      */
-    public WebHook updateWebHook(long webHookId, List<Xplenty.WebHookEvent> addEvents, List<Xplenty.WebHookEvent> removeEvents, WebHookSettings settings) {
-        checkId(webHookId);
-        return client.execute(new UpdateWebHook(webHookId, addEvents, removeEvents, settings));
+    public Hook updateHook(long hookId, String name, List<Xplenty.HookEvent> events, HookSettings settings) {
+        checkId(hookId);
+        return client.execute(new UpdateHook(hookId, name, events, settings));
     }
 
     /**
@@ -664,16 +666,16 @@ public class XplentyAPI {
      * @param active true to enable web hook, false otherwise
      * @return updated web hook object
      */
-    public WebHook toggleWebHook(long webHookId, boolean active) {
+    public Hook toggleWebHook(long webHookId, boolean active) {
         checkId(webHookId);
-        return client.execute(new ToggleWebHook(webHookId, active));
+        return client.execute(new ToggleHook(webHookId, active));
     }
 
     /**
      * List web hooks associated with the account
      * @return list of web hooks
      */
-    public List<WebHook> listWebHooks() {
+    public List<Hook> listWebHooks() {
         return listWebHooks(new Properties());
     }
 
@@ -683,7 +685,7 @@ public class XplentyAPI {
      * @param limit number of results
      * @return list of web hooks
      */
-    public List<WebHook> listWebHooks(int offset, int limit) {
+    public List<Hook> listWebHooks(int offset, int limit) {
         final Properties props = new Properties();
         props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
         props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
@@ -695,8 +697,8 @@ public class XplentyAPI {
      * @param params map of request parameters, see {@link Xplenty.Sort}, {@link Xplenty.SortDirection}.
      * @return list of web hooks
      */
-    public List<WebHook> listWebHooks(Properties params) {
-        return client.execute(new ListWebHooks(params));
+    public List<Hook> listWebHooks(Properties params) {
+        return client.execute(new ListHooks(params));
     }
 
     /**
@@ -704,9 +706,9 @@ public class XplentyAPI {
      * @param webHookId id of the webhook to delete
      * @return deleted web hook object
      */
-    public WebHook deleteWebHook(long webHookId) {
+    public Hook deleteWebHook(long webHookId) {
         checkId(webHookId);
-        return client.execute(new DeleteWebHook(webHookId));
+        return client.execute(new DeleteHook(webHookId));
     }
 
     /**
@@ -716,7 +718,7 @@ public class XplentyAPI {
      */
     public String webHookResetSalt(long webHookId) {
         checkId(webHookId);
-        return client.execute(new WebHookResetSalt(webHookId));
+        return client.execute(new HookResetSalt(webHookId));
     }
 
     /**
@@ -724,9 +726,9 @@ public class XplentyAPI {
      * @param webHookId id of the webhook to ping
      * @return web hook object
      */
-    public WebHook pingWebHook(long webHookId) {
+    public Hook pingWebHook(long webHookId) {
         checkId(webHookId);
-        return client.execute(new PingWebHook(webHookId));
+        return client.execute(new PingHook(webHookId));
     }
 
     /**
@@ -734,9 +736,9 @@ public class XplentyAPI {
      * @param webHookId id of the webhook to get info for
      * @return web hook object
      */
-    public WebHook getWebHookInfo(long webHookId) {
+    public Hook getWebHookInfo(long webHookId) {
         checkId(webHookId);
-        return client.execute(new WebHookInfo(webHookId));
+        return client.execute(new HookInfo(webHookId));
     }
 
     /**
