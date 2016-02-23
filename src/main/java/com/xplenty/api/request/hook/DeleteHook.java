@@ -5,7 +5,7 @@ import com.xplenty.api.model.Hook;
 import com.xplenty.api.request.AbstractDeleteRequest;
 
 /**
- * Delete web hook
+ * Delete hook
  * Author: Xardas
  * Date: 18.12.15
  * Time: 20:25

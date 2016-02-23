@@ -18,8 +18,6 @@ public class HookTest extends TestCase {
         final Date now = new Date();
         Hook webhook = createMockHook(now);
         assertNotNull(webhook);
-        assertEquals(now.getTime(), webhook.getEvents().get(0).getLastTriggerTime().getTime());
-
     }
 
 
@@ -32,20 +30,33 @@ public class HookTest extends TestCase {
         WebHookSettings whs = new WebHookSettings("http://localhost/test", true, false, "somedata");
         whs.encryptedBasicAuthData = "wtjnIcvVp1fLC2fy9rAsSQ==\\n";
         hook.settings = whs;
-        List<HookEvent> events = new ArrayList<>();
-        HookEvent whe = new HookEvent();
-        whe.id = 111L;
-        whe.lastTriggerStatus = "omg!";
-        whe.lastTriggerTime = now;
-        whe.name = "job";
-        events.add(whe);
-        whe = new HookEvent();
-        whe.id = 222L;
-        whe.lastTriggerStatus = "omg2!";
-        whe.lastTriggerTime = now;
-        whe.name = "cluster";
-        events.add(whe);
+        List<String> events = new ArrayList<>();
+        events.add("job");
+        events.add("cluster");
         hook.events = events;
         return hook;
+    }
+
+    public static AvailableHookType createMockHookType() {
+        AvailableHookType hookType = new AvailableHookType();
+        hookType.name = "Email";
+        hookType.type = "email";
+        hookType.description = "Our Email integration enables you to receive real-time email alerts about your account activity.";
+        hookType.iconUrl = "http://api.xplenty.com/assets/vendor/hooks/emailhook-9231bb4b71377e2722ceb6b581ecfaf4.png";
+        AvailableHookType.HookTypeGroup hookGroup = new AvailableHookType.HookTypeGroup();
+        hookGroup.groupName = "Email";
+        hookGroup.groupType = "email";
+        List<AvailableHookType.HookTypeGroup> hookGroups = new ArrayList<>();
+        hookGroups.add(hookGroup);
+        hookType.groups = hookGroups;
+        return hookType;
+    }
+
+    public static AvailableHookEvent createMockHookEvent() {
+        AvailableHookEvent hookEvent = new AvailableHookEvent();
+        hookEvent.id = "job";
+        hookEvent.groupName = "Job";
+        hookEvent.description = "All Job Notifications";
+        return hookEvent;
     }
 }

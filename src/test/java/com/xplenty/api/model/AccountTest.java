@@ -42,6 +42,7 @@ public class AccountTest extends TestCase {
         account.packagesCount = 123456;
         account.runningJobsCount = 1234567;
         account.schedulesCount = 12345678;
+        account.hooksCount = 123456789;
         account.publicKey = "ssh-rsa AAAAAAA....AAAAAA Xplenty/superunique";
         account.createdAt = now;
         account.updatedAt = now;

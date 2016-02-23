@@ -15,49 +15,51 @@ import java.util.Date;
  */
 public class Account extends XplentyObject<Account> {
     @JsonProperty
-    public Long id;
+    protected Long id;
     @JsonProperty("account_id")
-    public String accountId;
+    protected String accountId;
     @JsonProperty
-    public String name;
+    protected String name;
     @JsonProperty
-    public String uname;
+    protected String uname;
     @JsonProperty
-    public String region;
+    protected String region;
     @JsonProperty
-    public String location;
+    protected String location;
     @JsonProperty("billing_email")
-    public String billingEmail;
+    protected String billingEmail;
     @JsonProperty("gravatar_email")
-    public String gravatarEmail;
+    protected String gravatarEmail;
     @JsonProperty("avatar_url")
-    public String avatarUrl;
+    protected String avatarUrl;
     @JsonProperty("created_at")
-    public Date createdAt;
+    protected Date createdAt;
     @JsonProperty("updated_at")
-    public Date updatedAt;
+    protected Date updatedAt;
     @JsonProperty("schedules_count")
-    public Integer schedulesCount;
+    protected Integer schedulesCount;
     @JsonProperty("connections_count")
-    public Integer connectionsCount;
+    protected Integer connectionsCount;
     @JsonProperty
-    public Xplenty.AccountRole role;
+    protected Xplenty.AccountRole role;
     @JsonProperty("owner_id")
-    public Long ownerId;
+    protected Long ownerId;
     @JsonProperty("members_count")
-    public Integer membersCount;
+    protected Integer membersCount;
     @JsonProperty("packages_count")
-    public Integer packagesCount;
+    protected Integer packagesCount;
     @JsonProperty("jobs_count")
-    public Integer jobsCount;
+    protected Integer jobsCount;
     @JsonProperty("running_jobs_count")
-    public Integer runningJobsCount;
+    protected Integer runningJobsCount;
+    @JsonProperty("hooks_count")
+    protected Integer hooksCount;
     @JsonProperty
-    public String url;
+    protected String url;
     @JsonProperty("public_key")
-    public String publicKey;
+    protected String publicKey;
     @JsonIgnore
-    public String currentAccountId;
+    protected String currentAccountId;
 
 
     protected Account() {
@@ -226,6 +228,14 @@ public class Account extends XplentyObject<Account> {
      */
     public Integer getRunningJobsCount() {
         return runningJobsCount;
+    }
+
+    /**
+     *
+     * @return the number of service hooks for the account
+     */
+    public Integer getHooksCount() {
+        return hooksCount;
     }
 
     /**

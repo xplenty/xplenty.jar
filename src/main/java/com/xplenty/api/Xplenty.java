@@ -423,6 +423,7 @@ public class Xplenty {
         UserNotifications("user/notifications", "List user notifications"),
         MarkUserNotificationRead("user/notifications/mark", "Mark user notification as read"),
         HookEvents("hook_events", "List supported Hook Events"),
+        HookTypes("hooks/types", "List available hook types"),
         CreateHook("hooks", "Create new hook"),
         UpdateHook("hooks/%s", "Update existing hook"),
         DeleteHook("hooks/%s", "Delete hook"),

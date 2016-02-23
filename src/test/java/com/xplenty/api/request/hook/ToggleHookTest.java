@@ -8,9 +8,8 @@ import com.xplenty.api.http.Http;
 import com.xplenty.api.http.JsonMapperFactory;
 import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Hook;
-import com.xplenty.api.model.HookEvent;
-import com.xplenty.api.model.WebHookSettings;
 import com.xplenty.api.model.HookTest;
+import com.xplenty.api.model.WebHookSettings;
 import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,12 +62,10 @@ public class ToggleHookTest extends TestCase {
         assertEquals("http://localhost/test", settings.getUrl());
         assertEquals(false, settings.getBasicAuth().booleanValue());
         assertEquals(true, settings.getInsecureSSL().booleanValue());
-        final HookEvent event = c.getEvents().get(0);
+        final Xplenty.HookEvent event = c.getEvents().get(0);
         // we've got custom json serializer that removes everything except name
-        assertNull(event.getId());
-        assertNull(event.getLastTriggerStatus());
-        assertEquals("job", event.getName());
-        assertEquals("cluster", c.getEvents().get(1).getName());
+        assertEquals(Xplenty.HookEvent.job_all, event);
+        assertEquals("cluster", c.getRawEvents().get(1));
     }
 
     @Test

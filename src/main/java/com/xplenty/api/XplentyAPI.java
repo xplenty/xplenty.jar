@@ -614,19 +614,27 @@ public class XplentyAPI {
     }
 
     /**
-     * Get all supported hook events to use when creating/updating web hooks
+     * Get all supported hook events to use when creating/updating hooks
      * @return list of hook events
      */
-    public List<AvailableHookEvent> getHookEvents() {
+    public List<AvailableHookEvent> listHookEvents() {
         return client.execute(new ListHookEvents());
+    }
+
+    /**
+     * List all hook types that are available with related groups.
+     * @return list of hook types
+     */
+    public List<AvailableHookType> listHookTypes() {
+        return client.execute(new ListHookTypes());
     }
 
     /**
      * Create new hook to recieve notifications for events subscribed
      * @param name name of the hook. Leave null for default
      * @param settings settings used to connect to your server
-     * @param events list of events, retrieved using {@link #getHookEvents() getHookEvents}, you want to subscribe to
-     * @return created web hook object
+     * @param events list of events, retrieved using {@link #listHookEvents() listHookEvents}, you want to subscribe to
+     * @return created hook object
      */
     public Hook createHook(String name, HookSettings settings, List<String> events) {
         return client.execute(new CreateHook(name, settings, events));
@@ -637,7 +645,7 @@ public class XplentyAPI {
      *  @param name name of the hook. Leave null for default
      * @param events list of predefined events you want to subscribe to
      * @param settings settings used to connect to your server
-     * @return created web hook object
+     * @return created hook object
      */
     public Hook createHook(String name, List<Xplenty.HookEvent> events, HookSettings settings) {
         return client.execute(new CreateHook(name, events, settings));
@@ -649,7 +657,7 @@ public class XplentyAPI {
      * @param name name of the hook
      * @param settings settings used to connect to your server, pass null if no change required
      * @param events subscribe to these events. All existing events will be replaced. Leave null if no change required
-     * @return updated web hook object
+     * @return updated hook object
      */
     public Hook updateHook(long hookId, String name, HookSettings settings, List<String> events) {
         checkId(hookId);
@@ -662,7 +670,7 @@ public class XplentyAPI {
      * @param name name of the hook
      * @param events subscribe to these events. All existing events will be replaced. Leave null if no change required
      * @param settings settings used to connect to your server, pass null if no change required
-     * @return updated web hook object
+     * @return updated hook object
      */
     public Hook updateHook(long hookId, String name, List<Xplenty.HookEvent> events, HookSettings settings) {
         checkId(hookId);
@@ -670,84 +678,84 @@ public class XplentyAPI {
     }
 
     /**
-     * Enable/disable Web hook
-     * @param webHookId id of the web hook
-     * @param active true to enable web hook, false otherwise
-     * @return updated web hook object
+     * Enable/disable hook
+     * @param hookId id of the hook
+     * @param active true to enable hook, false otherwise
+     * @return updated hook object
      */
-    public Hook toggleWebHook(long webHookId, boolean active) {
-        checkId(webHookId);
-        return client.execute(new ToggleHook(webHookId, active));
+    public Hook toggleHook(long hookId, boolean active) {
+        checkId(hookId);
+        return client.execute(new ToggleHook(hookId, active));
     }
 
     /**
-     * List web hooks associated with the account
-     * @return list of web hooks
+     * List hooks associated with the account
+     * @return list of hooks
      */
-    public List<Hook> listWebHooks() {
-        return listWebHooks(new Properties());
+    public List<Hook> listHooks() {
+        return listHooks(new Properties());
     }
 
     /**
-     * List web hooks associated with the account
+     * List hooks associated with the account
      * @param offset number of record to  start results from
      * @param limit number of results
-     * @return list of web hooks
+     * @return list of hooks
      */
-    public List<Hook> listWebHooks(int offset, int limit) {
+    public List<Hook> listHooks(int offset, int limit) {
         final Properties props = new Properties();
         props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
         props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
-        return listWebHooks(props);
+        return listHooks(props);
     }
 
     /**
-     * List web hooks associated with the account
+     * List hooks associated with the account
      * @param params map of request parameters, see {@link Xplenty.Sort}, {@link Xplenty.SortDirection}.
-     * @return list of web hooks
+     * @return list of hooks
      */
-    public List<Hook> listWebHooks(Properties params) {
+    public List<Hook> listHooks(Properties params) {
         return client.execute(new ListHooks(params));
     }
 
     /**
-     * Delete webhook with specified id
-     * @param webHookId id of the webhook to delete
-     * @return deleted web hook object
+     * Delete hook with specified id
+     * @param hookId id of the hook to delete
+     * @return deleted hook object
      */
-    public Hook deleteWebHook(long webHookId) {
-        checkId(webHookId);
-        return client.execute(new DeleteHook(webHookId));
+    public Hook deleteHook(long hookId) {
+        checkId(hookId);
+        return client.execute(new DeleteHook(hookId));
     }
 
     /**
-     * Reset salt for webhook with specified id
-     * @param webHookId id of the webhook to reset salt for
+     * Reset salt for hook with specified id
+     * @param hookId id of the hook to reset salt for
      * @return newly generated salt
      */
-    public String webHookResetSalt(long webHookId) {
-        checkId(webHookId);
-        return client.execute(new HookResetSalt(webHookId));
+    public String hookResetSalt(long hookId) {
+        checkId(hookId);
+        return client.execute(new HookResetSalt(hookId));
     }
 
     /**
-     * Ping (fire test notification) to url configured in specified web hook
-     * @param webHookId id of the webhook to ping
-     * @return web hook object
+     * Ping (fire test notification) to url configured in specified hook
+     * @param hookId id of the hook to ping
+     * @return hook object
      */
-    public Hook pingWebHook(long webHookId) {
-        checkId(webHookId);
-        return client.execute(new PingHook(webHookId));
+    public Hook pingHook(long hookId) {
+        checkId(hookId);
+        return client.execute(new PingHook(hookId));
     }
 
     /**
-     * Get web hook information
-     * @param webHookId id of the webhook to get info for
-     * @return web hook object
+     * Get hook information
+     * @param hookId id of the hook to get info for
+     * @return hook object
      */
-    public Hook getWebHookInfo(long webHookId) {
-        checkId(webHookId);
-        return client.execute(new HookInfo(webHookId));
+    public Hook getHookInfo(long hookId) {
+        checkId(hookId);
+        return client.execute(new HookInfo(hookId));
     }
 
     /**

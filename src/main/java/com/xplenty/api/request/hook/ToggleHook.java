@@ -6,7 +6,7 @@ import com.xplenty.api.model.Hook;
 import com.xplenty.api.request.AbstractManipulationRequest;
 
 /**
- * Enable/Disable Web hook
+ * Enable/Disable hook
  * Author: Xardas
  * Date: 05.01.16
  * Time: 17:28

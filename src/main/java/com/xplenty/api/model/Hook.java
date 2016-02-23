@@ -1,5 +1,6 @@
 package com.xplenty.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -11,6 +12,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.xplenty.api.Xplenty;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,7 +44,7 @@ public class Hook extends XplentyObject<Hook> {
     @JsonProperty
     protected String salt;
     @JsonProperty
-    protected List<HookEvent> events;
+    protected List<String> events;
     @JsonProperty
     protected Xplenty.HookType type;
 
@@ -50,14 +52,14 @@ public class Hook extends XplentyObject<Hook> {
         super(Hook.class);
     }
 
-    public Hook(String name, HookSettings settings, List<HookEvent> events) {
+    public Hook(String name, HookSettings settings, List<String> events) {
         super(Hook.class);
         this.settings = settings;
         this.events = events;
         this.name = name;
     }
 
-    public Hook(Long id, String name, HookSettings settings, List<HookEvent> events) {
+    public Hook(Long id, String name, HookSettings settings, List<String> events) {
         super(Hook.class);
         this.id = id;
         this.settings = settings;
@@ -89,7 +91,7 @@ public class Hook extends XplentyObject<Hook> {
 
     /**
      *
-     * @return indicates whether the web hook is active
+     * @return indicates whether the hook is active
      */
     public Boolean getActive() {
         return active;
@@ -97,7 +99,7 @@ public class Hook extends XplentyObject<Hook> {
 
     /**
      *
-     * @return settings specific for the web hook. It contains the following attributes
+     * @return settings specific for the hook. It contains the following attributes
      */
     public HookSettings getSettings() {
         return settings;
@@ -107,8 +109,25 @@ public class Hook extends XplentyObject<Hook> {
      *
      * @return list of notification events.
      */
-    public List<HookEvent> getEvents() {
+    @JsonProperty("events")
+    public List<String> getRawEvents() {
         return events;
+    }
+
+    /**
+     *
+     * @return list of notification events.
+     */
+    @JsonIgnore
+    public List<Xplenty.HookEvent> getEvents() {
+        if (events == null) {
+            return null;
+        }
+        List<Xplenty.HookEvent> convEvents = new ArrayList<>(events.size());
+        for (String event : events) {
+            convEvents.add(Xplenty.HookEvent.fromString(event));
+        }
+        return convEvents;
     }
 
     /**
@@ -157,6 +176,7 @@ public class Hook extends XplentyObject<Hook> {
             JsonParser settingsParser = root.get("settings").traverse();
             // as it's created with empty codec, we need to explicitly set it (or objects won't be deserialized correctly
             settingsParser.setCodec(jp.getCodec());
+            hook.type = hookType;
             switch (hookType) {
                 case email:
                     settings = settingsParser.readValueAs(EmailHookSettings.class);
@@ -180,7 +200,7 @@ public class Hook extends XplentyObject<Hook> {
             if (root.has("events")) {
                 JsonParser eventParser = root.get("events").traverse();
                 eventParser.setCodec(jp.getCodec());
-                hook.events = eventParser.readValueAs(new TypeReference<List<HookEvent>>() {});
+                hook.events = eventParser.readValueAs(new TypeReference<List<String>>() {});
             }
 
             if (root.has("salt")) {

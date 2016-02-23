@@ -5,7 +5,7 @@ import com.xplenty.api.model.Hook;
 import com.xplenty.api.request.AbstractInfoRequest;
 
 /**
- * Get web hook information
+ * Get hook information
  * Author: Xardas
  * Date: 05.01.16
  * Time: 18:26

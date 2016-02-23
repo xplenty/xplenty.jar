@@ -72,6 +72,7 @@ public class DeleteAccountTest extends TestCase {
         assertEquals(123456, c.getPackagesCount().intValue());
         assertEquals(1234567, c.getRunningJobsCount().intValue());
         assertEquals(12345678, c.getSchedulesCount().intValue());
+        assertEquals(123456789, c.getHooksCount().intValue());
         assertEquals("ssh-rsa AAAAAAA....AAAAAA Xplenty/superunique", c.getPublicKey());
         assertEquals(111, c.getOwnerId().longValue());
         assertEquals("Private Drive", c.getLocation());

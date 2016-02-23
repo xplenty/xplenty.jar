@@ -8,7 +8,7 @@ import com.xplenty.api.model.Hook;
 import com.xplenty.api.request.AbstractRequest;
 
 /**
- * Reset salt for web hook
+ * Reset salt for hook
  * Author: Xardas
  * Date: 05.01.16
  * Time: 18:07

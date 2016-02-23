@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ITWebHookTestAgainstMockServer extends TestCase {
+public class ITHookTestAgainstMockServer extends TestCase {
     private final DateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
     private XplentyAPI api;
@@ -31,7 +31,7 @@ public class ITWebHookTestAgainstMockServer extends TestCase {
          api = new XplentyAPI(builder);
     }
 
-    public void testCreateWebHook() throws Exception {
+    public void testCreateHook() throws Exception {
         List<Xplenty.HookEvent> events = new ArrayList<>();
         events.add(Xplenty.HookEvent.cluster_available);
         events.add(Xplenty.HookEvent.cluster_error);
@@ -63,7 +63,7 @@ public class ITWebHookTestAgainstMockServer extends TestCase {
         checkEntity(c);
     }
 
-    public void testUpdateWebHook() throws Exception {
+    public void testUpdateHook() throws Exception {
         List<Xplenty.HookEvent> replaceevents = new ArrayList<>();
         replaceevents.add(Xplenty.HookEvent.job_completed);
         replaceevents.add(Xplenty.HookEvent.job_started);
@@ -76,23 +76,23 @@ public class ITWebHookTestAgainstMockServer extends TestCase {
     }
 
 
-    public void testDeleteWebHook() throws Exception {
-        Hook c = api.deleteWebHook(entityId);
+    public void testDeleteHook() throws Exception {
+        Hook c = api.deleteHook(entityId);
         checkEntity(c);
     }
 
-    public void testGetWebHookInfo() throws Exception {
-        Hook c = api.getWebHookInfo(entityId);
+    public void testGetHookInfo() throws Exception {
+        Hook c = api.getHookInfo(entityId);
         checkEntity(c);
     }
 
-    public void testPingWebHook() throws Exception {
-        Hook c = api.pingWebHook(entityId);
+    public void testPingHook() throws Exception {
+        Hook c = api.pingHook(entityId);
         checkEntity(c);
     }
 
-    public void testListWebHooks() throws Exception {
-        List<Hook> list = api.listWebHooks();
+    public void testListHooks() throws Exception {
+        List<Hook> list = api.listHooks();
         assertNotNull(list);
         assertTrue(list.size() > 0);
 
@@ -100,14 +100,32 @@ public class ITWebHookTestAgainstMockServer extends TestCase {
         checkEntity(c);
     }
 
-    public void testToggleWebHook() throws Exception {
-        Hook c = api.toggleWebHook(entityId, false);
+    public void testToggleHook() throws Exception {
+        Hook c = api.toggleHook(entityId, false);
         checkEntity(c);
     }
 
-    public void testWebHookResetSalt() throws Exception {
-        String newsalt = api.webHookResetSalt(entityId);
+    public void testHookResetSalt() throws Exception {
+        String newsalt = api.hookResetSalt(entityId);
         assertEquals("newsalt", newsalt);
+    }
+
+    public void testListHookEvents() throws Exception {
+        List<AvailableHookEvent> hookEvents = api.listHookEvents();
+
+        assertNotNull(hookEvents);
+        assertTrue(hookEvents.size() > 0);
+
+        checkHookEvent(hookEvents.get(0));
+    }
+
+    public void testListHookTypes() throws Exception {
+        List<AvailableHookType> hookTypes = api.listHookTypes();
+
+        assertNotNull(hookTypes);
+        assertTrue(hookTypes.size() > 0);
+
+        checkHookType(hookTypes.get(0));
     }
 
 
@@ -149,16 +167,27 @@ public class ITWebHookTestAgainstMockServer extends TestCase {
                 assertEquals(true, whSettings.getInsecureSSL().booleanValue());
         }
 
-        final HookEvent event = c.getEvents().get(0);
+        final Xplenty.HookEvent event = c.getEvents().get(0);
         // we've got custom json serializer that removes everything except name
-        assertEquals(333, event.getId().longValue());
-        assertEquals("success", event.getLastTriggerStatus());
-        assertNotNull(event.getLastResponse());
-        WebHookEventResponse wher = event.getLastResponse();
-        assertEquals("200", wher.getCode());
-        assertEquals("nice event", wher.getBody());
-        assertEquals(dFormat.parse("2016-01-18T11:19:20Z"), event.getLastTriggerTime());
-        assertEquals(Xplenty.HookEvent.job_all, event.getEvent());
-        assertEquals("job", event.getName());
+        assertEquals(Xplenty.HookEvent.job_all, event);
+        assertEquals("cluster", c.getRawEvents().get(1));
+    }
+
+    private void checkHookEvent(AvailableHookEvent hookEvent) {
+        assertNotNull(hookEvent);
+        assertEquals("job", hookEvent.getId());
+        assertEquals("Job", hookEvent.getGroupName());
+        assertEquals("All Job Notifications", hookEvent.getDescription());
+    }
+
+    private void checkHookType(AvailableHookType c) {
+        assertNotNull(c);
+        assertEquals("Email", c.getName());
+        assertEquals("email", c.getType());
+        assertEquals("Our Email integration enables you to receive real-time email alerts about your account activity.", c.getDescription());
+        assertEquals("http://api.xplenty.com/assets/vendor/hooks/emailhook-9231bb4b71377e2722ceb6b581ecfaf4.png", c.getIconUrl());
+        assertNotNull(c.getGroups());
+        assertEquals("Email", c.getGroups().get(0).getGroupName());
+        assertEquals("email", c.getGroups().get(0).getGroupType());
     }
 }

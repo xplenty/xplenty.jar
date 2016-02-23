@@ -9,11 +9,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AvailableHookEvent extends XplentyObject<AvailableHookEvent> {
     @JsonProperty
-    private String id;
+    protected String id;
     @JsonProperty("group_name")
-    private String groupName;
+    protected String groupName;
     @JsonProperty("name")
-    private String description;
+    protected String description;
 
     protected AvailableHookEvent() {
         super(AvailableHookEvent.class);
@@ -21,7 +21,7 @@ public class AvailableHookEvent extends XplentyObject<AvailableHookEvent> {
 
     /**
      *
-     * @return id of the hook event. This id can be passed to web hook create/update requests to subscribe for that type of event
+     * @return id of the hook event. This id can be passed to hook create/update requests to subscribe for that type of event
      */
     public String getId() {
         return id;
