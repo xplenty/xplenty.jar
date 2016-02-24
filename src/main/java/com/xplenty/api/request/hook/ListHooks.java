@@ -17,10 +17,21 @@ import java.util.Properties;
  * Time: 17:38
  */
 public class ListHooks extends AbstractListRequest<List<Hook>> {
+    public static final String PARAMETER_TYPE = "type";
 
 
     public ListHooks(Properties parameters) {
         super(parameters, true);
+        validateParameters(parameters);
+    }
+
+
+    private void validateParameters(Properties params) {
+        if (params.containsKey(PARAMETER_TYPE)
+            && !((params.get(PARAMETER_TYPE) instanceof Xplenty.HookType) || (params.get(PARAMETER_TYPE) instanceof List))) {
+            throw new XplentyAPIException(String.format("Invalid %s parameter, should be instance of" +
+                " Xplenty.HookType or List<Xplenty.HookType>", PARAMETER_TYPE));
+        }
     }
 
     @Override

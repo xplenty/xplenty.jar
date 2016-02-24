@@ -7,6 +7,7 @@ import com.xplenty.api.http.Http;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -81,11 +82,19 @@ public abstract class AbstractListRequest<T> extends AbstractRequest<T> {
             return getEndpointRoot();
         }
         StringBuilder params = new StringBuilder("?");
-        for (Object var: parameters.keySet()) {
+        for (Object var : parameters.keySet()) {
             params.append(var).append("=");
             final Object param = parameters.get(var);
             if (param instanceof Date) {
                 params.append(dateFormat.format(param));
+            } else if (param instanceof List) {
+                final List listParam = (List) param;
+                for (Object obj : listParam) {
+                    params.append(obj.toString()).append(",");
+                }
+                if (listParam.size() > 0) {
+                    params.setLength(params.length() - 1);
+                }
             } else {
                 params.append(param.toString());
             }

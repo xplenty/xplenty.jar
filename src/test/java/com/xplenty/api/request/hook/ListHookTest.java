@@ -41,12 +41,27 @@ public class ListHookTest extends TestCase {
         assertNull(cc.getBody());
 
 
-        final Properties props = new Properties();
+        Properties props = new Properties();
         props.put(AbstractListRequest.PARAMETER_SORT, Xplenty.Sort.created);
         props.put(AbstractListRequest.PARAMETER_DIRECTION, Xplenty.SortDirection.descending);
         cc = new ListHooks(props);
         assertEquals(Xplenty.Resource.Hooks.value + "?" + AbstractListRequest.PARAMETER_SORT + "=created&" +
                 AbstractListRequest.PARAMETER_DIRECTION + "=desc", cc.getEndpoint());
+        assertEquals(Xplenty.Resource.Hooks.name, cc.getName());
+        assertEquals(Http.Method.GET, cc.getHttpMethod());
+        assertEquals(Http.MediaType.JSON, cc.getResponseType());
+        assertFalse(cc.hasBody());
+        assertNull(cc.getBody());
+
+        props = new Properties();
+        List<Xplenty.HookType> typelist = new ArrayList<>();
+        typelist.add(Xplenty.HookType.slack);
+        typelist.add(Xplenty.HookType.email);
+        typelist.add(Xplenty.HookType.hipchat);
+        props.put(ListHooks.PARAMETER_TYPE, typelist);
+        cc = new ListHooks(props);
+
+        assertEquals(Xplenty.Resource.Hooks.value + "?" + ListHooks.PARAMETER_TYPE + "=slack,email,hipchat", cc.getEndpoint());
         assertEquals(Xplenty.Resource.Hooks.name, cc.getName());
         assertEquals(Http.Method.GET, cc.getHttpMethod());
         assertEquals(Http.MediaType.JSON, cc.getResponseType());
