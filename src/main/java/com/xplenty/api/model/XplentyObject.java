@@ -10,7 +10,7 @@ import com.xplenty.api.XplentyAPI;
  *
  */
 public abstract class XplentyObject<T extends XplentyObject<T>> {
-	protected static final long StatusRefreshInterval = 20*1000; //20 seconds
+	protected static final long StatusRefreshInterval = 20 * 1000; //20 seconds
 	private XplentyAPI parentApiInstance;
 	
 	protected XplentyObject(Class<T> implClazz) {

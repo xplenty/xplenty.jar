@@ -40,6 +40,10 @@
         <servlet-name>Schedule</servlet-name>
         <servlet-class>com.xplenty.api.router.ScheduleRouter</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Connection</servlet-name>
+        <servlet-class>com.xplenty.api.router.ConnectionRouter</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Watchers</servlet-name>
@@ -76,5 +80,9 @@
     <servlet-mapping>
         <servlet-name>Schedule</servlet-name>
         <url-pattern>/mock/schedule/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Connection</servlet-name>
+        <url-pattern>/mock/connection/*</url-pattern>
     </servlet-mapping>
 </web-app>

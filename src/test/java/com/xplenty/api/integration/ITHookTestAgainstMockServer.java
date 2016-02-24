@@ -39,8 +39,18 @@ public class ITHookTestAgainstMockServer extends TestCase {
         Hook c = api.createHook(null, events, settings);
         assertEquals(Xplenty.HookType.web, c.getType());
         checkEntity(c);
+        settings = new WebHookSettings().withBasicAuth(false).withBasicAuthData("somemd5credentials").
+            withInsecureSSL(false).withUrl("https://xplenty.com");
+        c = api.createHook(null, events, settings);
+        assertEquals(Xplenty.HookType.web, c.getType());
+        checkEntity(c);
 
         settings = new SlackHookSettings("http://localhost", "xplenty", "xplenty", "xardazz");
+        c = api.createHook(null, events, settings);
+        assertEquals(Xplenty.HookType.slack, c.getType());
+        checkEntity(c);
+        settings = new SlackHookSettings().withChannel("xplentych").withTeam("xplenty").withUrl("https://slack.com").
+            withUsername("xardazz");
         c = api.createHook(null, events, settings);
         assertEquals(Xplenty.HookType.slack, c.getType());
         checkEntity(c);
@@ -56,8 +66,17 @@ public class ITHookTestAgainstMockServer extends TestCase {
         c = api.createHook(null, events, settings);
         assertEquals(Xplenty.HookType.pagerduty, c.getType());
         checkEntity(c);
+        settings = new PagerDutyHookSettings().withPdAccount("xplenty").withServiceKey("xplentysc").
+            withServiceName("xplenty-service");
+        c = api.createHook(null, events, settings);
+        assertEquals(Xplenty.HookType.pagerduty, c.getType());
+        checkEntity(c);
 
         settings = new HipChatHookSettings("xplenty", "aaaaa");
+        c = api.createHook(null, events, settings);
+        assertEquals(Xplenty.HookType.hipchat, c.getType());
+        checkEntity(c);
+        settings = new HipChatHookSettings().withAuthToken("cccccc").withRoom("xplenty");
         c = api.createHook(null, events, settings);
         assertEquals(Xplenty.HookType.hipchat, c.getType());
         checkEntity(c);

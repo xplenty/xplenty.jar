@@ -2,6 +2,7 @@ package com.xplenty.api.integration;
 
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.XplentyAPI;
+import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.model.Cluster;
@@ -13,6 +14,7 @@ import junit.framework.TestCase;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ITClusterTestAgainstMockServer extends TestCase {
@@ -34,12 +36,18 @@ public class ITClusterTestAgainstMockServer extends TestCase {
     }
 
     public void testCreateCluster() throws Exception {
+        List<ClusterBootstrapAction> actions = new ArrayList<>();
+        List<String> scriptParams = new ArrayList<>();
+        scriptParams.add("--ride-the-horse");
+        actions.add(new ClusterBootstrapAction("/dev/null", scriptParams));
         Cluster c = new Cluster().ofType(Xplenty.ClusterType.production).withAllowFallback(true).withDescription("somedesc").
                 withMasterInstanceType("mastertype").withMasterSpotPercentage(0.7).withMasterSpotPrice(1.3).withNodes(7).
                 withRegion("Hogwarts").withSlaveInstanceType("slavetype").withSlaveSpotPercentage(0.3).withSlaveSpotPrice(1.1).
-                withStack("pinky-everest").withTerminateOnIdle(true).withTimeToIdle(2000L).withZone("GB").named("clustername");
+                withStack("pinky-everest").withTerminateOnIdle(true).withTimeToIdle(2000L).withZone("GB").named("clustername").
+                withBootstrapActions(actions);
         c = api.createCluster(c);
         checkEntity(c);
+
     }
 
     public void testUpdateCluster() throws Exception {
@@ -56,6 +64,17 @@ public class ITClusterTestAgainstMockServer extends TestCase {
     public void testGetClusterInfo() throws Exception {
         Cluster c = api.clusterInformation(entityId);
         checkEntity(c);
+    }
+
+    public void testWaitForStatus() throws Exception {
+        Cluster c = api.clusterInformation(entityId);
+        checkEntity(c);
+        c.waitForStatus(Xplenty.ClusterStatus.terminated);
+        try {
+            c.waitForStatus(1L, Xplenty.ClusterStatus.available);
+        } catch (XplentyAPIException ex) {
+            assertEquals("Timeout occurred while waiting for required cluster status", ex.getMessage());
+        }
     }
 
     public void testListClusters() throws Exception {

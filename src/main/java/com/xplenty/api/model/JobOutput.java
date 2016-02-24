@@ -71,37 +71,4 @@ public class JobOutput extends XplentyObject<JobOutput> {
         return url;
     }
 
-    @SuppressWarnings("unused")
-	private void setId(Long id) {
-		this.id = id;
-	}
-	@SuppressWarnings("unused")
-	private void setName(String name) {
-		this.name = name;
-	}
-	@SuppressWarnings("unused")
-	private void setRecordsCount(Long recordsCount) {
-		this.recordsCount = recordsCount;
-	}
-	@SuppressWarnings("unused")
-	private void setProgress(Double progress) {
-		this.progress = progress;
-	}
-	@SuppressWarnings("unused")
-	private void setComponentName(String componentName) {
-		this.componentName = componentName;
-	}
-	@SuppressWarnings("unused")
-	private void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-	@SuppressWarnings("unused")
-	private void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-	@SuppressWarnings("unused")
-	private void setPreviewUrl(String previewUrl) {
-		this.previewUrl = previewUrl;
-	}
-
 }

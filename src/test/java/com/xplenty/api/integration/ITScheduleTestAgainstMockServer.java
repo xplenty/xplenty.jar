@@ -46,6 +46,7 @@ public class ITScheduleTestAgainstMockServer extends TestCase {
         packages.add(pack);
         task.withPackages(packages);
         c.withTask(task);
+        c.withReuseClusterStrategy(Xplenty.ReuseClusterStrategy.self).withOverlap(true);
         c = api.createSchedule(c);
         checkEntity(c);
     }
