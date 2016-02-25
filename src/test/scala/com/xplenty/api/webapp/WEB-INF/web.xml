@@ -44,6 +44,10 @@
         <servlet-name>Connection</servlet-name>
         <servlet-class>com.xplenty.api.router.ConnectionRouter</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Misc</servlet-name>
+        <servlet-class>com.xplenty.api.router.MiscRouter</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Watchers</servlet-name>
@@ -84,5 +88,9 @@
     <servlet-mapping>
         <servlet-name>Connection</servlet-name>
         <url-pattern>/mock/connection/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Misc</servlet-name>
+        <url-pattern>/mock/misc/*</url-pattern>
     </servlet-mapping>
 </web-app>
