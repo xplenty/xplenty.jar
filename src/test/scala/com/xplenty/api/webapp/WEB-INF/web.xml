@@ -48,6 +48,10 @@
         <servlet-name>Misc</servlet-name>
         <servlet-class>com.xplenty.api.router.MiscRouter</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Subscription</servlet-name>
+        <servlet-class>com.xplenty.api.router.SubscriptionRouter</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>Watchers</servlet-name>
@@ -92,5 +96,9 @@
     <servlet-mapping>
         <servlet-name>Misc</servlet-name>
         <url-pattern>/mock/misc/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Subscription</servlet-name>
+        <url-pattern>/mock/subscription/*</url-pattern>
     </servlet-mapping>
 </web-app>
