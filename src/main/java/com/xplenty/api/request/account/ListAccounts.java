@@ -30,7 +30,7 @@ public class ListAccounts extends AbstractListRequest<List<Account>> {
     private void validateParameters(Properties params) {
         if (params.containsKey(PARAMETER_ROLE)
                 && !(params.get(PARAMETER_ROLE) instanceof Xplenty.AccountRole)) {
-            throw new XplentyAPIException(String.format("Invalid %s parameter", PARAMETER_ROLE));
+            throw new XplentyAPIException(String.format("Invalid %s parameter, should be one of AccountRole values", PARAMETER_ROLE));
         }
     }
 

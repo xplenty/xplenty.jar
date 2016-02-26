@@ -41,7 +41,7 @@ public abstract class AbstractListRequest<T> extends AbstractRequest<T> {
         if (validateSort) {
             if (params.containsKey(PARAMETER_SORT)
                     && !(params.get(PARAMETER_SORT) instanceof Xplenty.Sort)) {
-                throw new XplentyAPIException(String.format("Invalid '%s' parameter, should be Sort", PARAMETER_SORT));
+                throw new XplentyAPIException(String.format("Invalid '%s' parameter, should be one of Sort values", PARAMETER_SORT));
             }
 
             if (!params.containsKey(PARAMETER_SORT)
@@ -51,7 +51,7 @@ public abstract class AbstractListRequest<T> extends AbstractRequest<T> {
 
             if (params.containsKey(PARAMETER_DIRECTION)
                     && !(params.get(PARAMETER_DIRECTION) instanceof Xplenty.SortDirection)) {
-                throw new XplentyAPIException(String.format("Invalid '%s' parameter, should be SortDirection", PARAMETER_DIRECTION));
+                throw new XplentyAPIException(String.format("Invalid '%s' parameter, should be one of SortDirection values", PARAMETER_DIRECTION));
             }
         }
 

@@ -6,12 +6,14 @@ import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.model.Connection;
 import com.xplenty.api.model.ConnectionType;
+import com.xplenty.api.request.connection.ListConnections;
 import junit.framework.TestCase;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Properties;
 
 public class ITConnectionTestAgainstMockServer extends TestCase {
     private final DateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -43,11 +45,23 @@ public class ITConnectionTestAgainstMockServer extends TestCase {
 
     public void testListConnections() throws Exception {
         List<Connection> list = api.listConnections();
-
         assertNotNull(list);
         assertTrue(list.size() > 0);
-
         Connection c = list.get(0);
+        checkEntity(c);
+
+        list = api.listConnections(3, 5);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+        c = list.get(0);
+        checkEntity(c);
+
+        Properties props = new Properties();
+        props.put(ListConnections.PARAMETER_TYPE, Xplenty.ConnectionType.hdfs);
+        list = api.listConnections(props);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+        c = list.get(0);
         checkEntity(c);
     }
 

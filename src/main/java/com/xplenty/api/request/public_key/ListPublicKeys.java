@@ -24,7 +24,7 @@ public class ListPublicKeys extends AbstractListRequest<List<PublicKey>> {
 
     @Override
     public String getEndpoint(String apiHost, String accountName) {
-        return String.format("%s/%s", apiHost, getEndpointRoot());
+        return String.format("%s/%s", apiHost, getEndpoint());
     }
 
     @Override

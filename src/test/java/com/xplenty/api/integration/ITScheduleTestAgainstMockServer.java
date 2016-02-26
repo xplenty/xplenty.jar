@@ -7,6 +7,7 @@ import com.xplenty.api.http.Http;
 import com.xplenty.api.model.Schedule;
 import com.xplenty.api.model.ScheduleTask;
 import com.xplenty.api.model.ScheduleTaskPackage;
+import com.xplenty.api.request.schedule.ListSchedules;
 import junit.framework.TestCase;
 
 import java.text.DateFormat;
@@ -90,6 +91,22 @@ public class ITScheduleTestAgainstMockServer extends TestCase {
         assertTrue(list.size() > 0);
 
         Schedule c = list.get(0);
+        checkEntity(c);
+
+        list = api.listSchedules(3, 33);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+
+        c = list.get(0);
+        checkEntity(c);
+
+        Properties props = new Properties();
+        props.put(ListSchedules.PARAMETER_STATUS, Xplenty.ScheduleStatus.disabled);
+        list = api.listSchedules(props);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+
+        c = list.get(0);
         checkEntity(c);
     }
 

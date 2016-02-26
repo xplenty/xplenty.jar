@@ -24,11 +24,12 @@ public class ListPackageValidations extends AbstractListRequest<List<PackageVali
     public ListPackageValidations(long packageId, Properties parameters) {
         super(parameters, true);
         this.packageId = packageId;
+        validateParameters(parameters);
     }
 
     private void validateParameters(Properties params) {
         if (params.containsKey(PARAMETER_STATUS)
-                && !(params.get(PARAMETER_STATUS) instanceof Xplenty.PackageFlowType)) {
+                && !(params.get(PARAMETER_STATUS) instanceof Xplenty.PackageValidationStatus)) {
             throw new XplentyAPIException(String.format("Invalid %s parameter, should be one of PackageValidationStatus values", PARAMETER_STATUS));
         }
     }

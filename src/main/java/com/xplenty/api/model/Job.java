@@ -88,10 +88,16 @@ public class Job extends XplentyObject<Job> {
 		if (getParentApiInstance() == null)
 			throw new XplentyAPIException("The parent API instance is not set");
 		long start = System.currentTimeMillis();
+        long waitTime;
+        if (timeout != null) {
+            waitTime = Math.min(XplentyObject.StatusRefreshInterval, timeout * 1000L);
+        } else {
+            waitTime = XplentyObject.StatusRefreshInterval;
+        }
 		statusWait:
 		while (true) {
 			try {
-				Thread.sleep(XplentyObject.StatusRefreshInterval);
+				Thread.sleep(waitTime);
 			} catch (InterruptedException e) {
 				throw new XplentyAPIException("Error sleeping", e);
 			}
@@ -316,73 +322,4 @@ public class Job extends XplentyObject<Job> {
     public Creator getCreator() {
         return creator;
     }
-
-    @SuppressWarnings("unused")
-	private void setId(long id) {
-		this.id = id;
-	}
-	@SuppressWarnings("unused")
-	private void setOwnerId(long ownerId) {
-		this.ownerId = ownerId;
-	}
-	@SuppressWarnings("unused")
-	private void setStatus(JobStatus status) {
-		this.status = status;
-	}
-	@SuppressWarnings("unused")
-	private void setVariables(Map<String, String> variables) {
-		this.variables = variables;
-	}
-	@SuppressWarnings("unused")
-	private void setProgress(double progress) {
-		this.progress = progress;
-	}
-	@SuppressWarnings("unused")
-	private void setOutputsCount(int outputsCount) {
-		this.outputsCount = outputsCount;
-	}
-	@SuppressWarnings("unused")
-	private void setOutputs(List<JobOutput> outputs) {
-		this.outputs = outputs;
-	}
-	@SuppressWarnings("unused")
-	private void setStartedAt(Date startedAt) {
-		this.startedAt = startedAt;
-	}
-	@SuppressWarnings("unused")
-	private void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-    @SuppressWarnings("unused")
-    private void setFailedAt(Date failedAt) {
-        this.failedAt = failedAt;
-    }
-    @SuppressWarnings("unused")
-    private void setCompletedAt(Date completedAt) {
-        this.completedAt = completedAt;
-    }
-	@SuppressWarnings("unused")
-	private void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-	@SuppressWarnings("unused")
-	private void setClusterId(long clusterId) {
-		this.clusterId = clusterId;
-	}
-	@SuppressWarnings("unused")
-	private void setPackageId(long packageId) {
-		this.packageId = packageId;
-	}
-	@SuppressWarnings("unused")
-	private void setErrors(String errors) {
-		this.errors = errors;
-	}
-	@SuppressWarnings("unused")
-	private void setUrl(String url) {
-		this.url = url;
-	}
-	@SuppressWarnings("unused")
-	private void setRuntimeInSeconds(long runtimeInSeconds) {
-		this.runtimeInSeconds = runtimeInSeconds;
-	}
 }

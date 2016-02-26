@@ -27,10 +27,9 @@ public class ListClusters extends AbstractListRequest<List<Cluster>> {
 
 	private void validateParameters(Properties params) {
 		if (	params.containsKey(PARAMETER_STATUS)
-				&& !(params.get(PARAMETER_STATUS) instanceof ClusterStatus) 
-				&& !(params.get(PARAMETER_STATUS) instanceof String && "all".equals(params.get(PARAMETER_STATUS)))
+				&& !(params.get(PARAMETER_STATUS) instanceof ClusterStatus)
 			)
-			throw new XplentyAPIException("Invalid 'status' parameter");
+			throw new XplentyAPIException(String.format("Invalid %s parameter, should be one of ClusterStatus values", PARAMETER_STATUS));
 	}
 
     @Override

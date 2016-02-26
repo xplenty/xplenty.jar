@@ -35,11 +35,17 @@ public class ListPackages extends AbstractListRequest<List<Package>> {
                 && !(params.get(PARAMETER_FLOW_TYPE) instanceof Xplenty.PackageFlowType)) {
             throw new XplentyAPIException(String.format("Invalid %s parameter, should be one of PackageFlowType values", PARAMETER_FLOW_TYPE));
         }
+        final Object includeDataFlow = params.get(PARAMETER_INCLUDE_DATA_FLOW);
         if (params.containsKey(PARAMETER_INCLUDE_DATA_FLOW)
-                && !(params.get(PARAMETER_INCLUDE_DATA_FLOW) instanceof Boolean)) {
+                && !(includeDataFlow instanceof Boolean)) {
             throw new XplentyAPIException(String.format("Invalid %s parameter, should be Boolean", PARAMETER_INCLUDE_DATA_FLOW));
         } else if (params.containsKey(PARAMETER_INCLUDE_DATA_FLOW)) {
-            params.put(PARAMETER_INCLUDE_DATA_FLOW, ACTUAL_INCLUDE_VALUE);
+            Boolean bIncludeDataFlow = (Boolean) includeDataFlow;
+            if (bIncludeDataFlow) {
+                params.put(PARAMETER_INCLUDE_DATA_FLOW, ACTUAL_INCLUDE_VALUE);
+            } else {
+                params.remove(PARAMETER_INCLUDE_DATA_FLOW);
+            }
         }
     }
 

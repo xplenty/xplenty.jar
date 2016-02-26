@@ -6,6 +6,8 @@ import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.model.*;
 import com.xplenty.api.model.Package;
+import com.xplenty.api.request.xpackage.ListPackageValidations;
+import com.xplenty.api.request.xpackage.ListPackages;
 import junit.framework.TestCase;
 
 import java.text.DateFormat;
@@ -14,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 public class ITPackageTestAgainstMockServer extends TestCase {
     private final DateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -73,6 +76,21 @@ public class ITPackageTestAgainstMockServer extends TestCase {
         assertTrue(list.size() > 0);
         Package c = list.get(0);
         checkPackage(c);
+
+        list = api.listPackages(10, 100);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+        c = list.get(0);
+        checkPackage(c);
+
+        Properties props = new Properties();
+        props.put(ListPackages.PARAMETER_FLOW_TYPE, Xplenty.PackageFlowType.dataflow);
+        props.put(ListPackages.PARAMETER_INCLUDE_DATA_FLOW, true);
+        list = api.listPackages(props);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+        c = list.get(0);
+        checkPackage(c);
     }
 
     public void testListPackageTemplates() throws Exception {
@@ -88,6 +106,20 @@ public class ITPackageTestAgainstMockServer extends TestCase {
         assertNotNull(list);
         assertTrue(list.size() > 0);
         PackageValidation c = list.get(0);
+        checkPackageValidation(c);
+
+        list = api.listPackageValidations(packageId, 2, 22);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+        c = list.get(0);
+        checkPackageValidation(c);
+
+        Properties props = new Properties();
+        props.put(ListPackageValidations.PARAMETER_STATUS, Xplenty.PackageValidationStatus.completed);
+        list = api.listPackageValidations(packageId, props);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+        c = list.get(0);
         checkPackageValidation(c);
     }
 

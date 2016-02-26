@@ -29,7 +29,7 @@ public class ListConnections extends AbstractListRequest<List<Connection>> {
     private void validateParameters(Properties params) {
         if (params.containsKey(PARAMETER_TYPE)
                 && !(params.get(PARAMETER_TYPE) instanceof Xplenty.ConnectionType)) {
-            throw new XplentyAPIException(String.format("Invalid %s parameter", PARAMETER_TYPE));
+            throw new XplentyAPIException(String.format("Invalid %s parameter, should be one of ConnectionType values", PARAMETER_TYPE));
         }
     }
 

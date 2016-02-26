@@ -6,12 +6,14 @@ import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.model.Account;
 import com.xplenty.api.model.Region;
+import com.xplenty.api.request.account.ListAccounts;
 import junit.framework.TestCase;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Properties;
 
 public class ITAccountTestAgainstMockServer extends TestCase {
     private final DateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -58,6 +60,20 @@ public class ITAccountTestAgainstMockServer extends TestCase {
         assertNotNull(list);
         assertTrue(list.size() > 0);
         Account c = list.get(0);
+        checkEntity(c);
+
+        list = api.listAccounts(2, 8);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+        c = list.get(0);
+        checkEntity(c);
+
+        Properties props = new Properties();
+        props.put(ListAccounts.PARAMETER_ROLE, Xplenty.AccountRole.owner);
+        list = api.listAccounts(props);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+        c = list.get(0);
         checkEntity(c);
     }
 

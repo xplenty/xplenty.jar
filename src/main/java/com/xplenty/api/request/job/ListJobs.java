@@ -29,12 +29,12 @@ public class ListJobs extends AbstractListRequest<List<Job>> {
 		if (params.containsKey(PARAMETER_STATUS)
 				&& !(params.get(PARAMETER_STATUS) instanceof Xplenty.JobStatus)
 			) {
-            throw new XplentyAPIException(String.format("Invalid %s parameter, should be JobStatus", PARAMETER_STATUS));
+            throw new XplentyAPIException(String.format("Invalid %s parameter, should be one of JobStatus values", PARAMETER_STATUS));
         }
         if (params.containsKey(PARAMETER_INCLUDE)
                 && !(params.get(PARAMETER_INCLUDE) instanceof Xplenty.ListJobInclude)
                 ) {
-            throw new XplentyAPIException(String.format("Invalid %s parameter, should be ListJobInclude", PARAMETER_INCLUDE));
+            throw new XplentyAPIException(String.format("Invalid %s parameter, should be one of ListJobInclude values", PARAMETER_INCLUDE));
         }
 	}
 

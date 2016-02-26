@@ -5,12 +5,14 @@ import com.xplenty.api.XplentyAPI;
 import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.model.PublicKey;
+import com.xplenty.api.request.public_key.ListPublicKeys;
 import junit.framework.TestCase;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Properties;
 
 public class ITPublicKeyTestAgainstMockServer extends TestCase {
     private final DateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -45,6 +47,21 @@ public class ITPublicKeyTestAgainstMockServer extends TestCase {
         assertNotNull(list);
         assertTrue(list.size() > 0);
         PublicKey c = list.get(0);
+        checkEntity(c);
+
+        list = api.listPublicKeys(45, 45);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+        c = list.get(0);
+        checkEntity(c);
+
+        Properties props = new Properties();
+        props.put(ListPublicKeys.PARAMETER_SORT, Xplenty.Sort.name);
+        props.put(ListPublicKeys.PARAMETER_DIRECTION, Xplenty.SortDirection.ascending);
+        list = api.listPublicKeys(props);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+        c = list.get(0);
         checkEntity(c);
     }
 

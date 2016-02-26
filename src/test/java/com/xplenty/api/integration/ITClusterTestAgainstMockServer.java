@@ -9,6 +9,7 @@ import com.xplenty.api.model.Cluster;
 import com.xplenty.api.model.ClusterBootstrapAction;
 import com.xplenty.api.model.ClusterInstance;
 import com.xplenty.api.model.Creator;
+import com.xplenty.api.request.cluster.ListClusters;
 import junit.framework.TestCase;
 
 import java.text.DateFormat;
@@ -16,6 +17,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class ITClusterTestAgainstMockServer extends TestCase {
     private final DateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -82,6 +84,20 @@ public class ITClusterTestAgainstMockServer extends TestCase {
         assertNotNull(list);
         assertTrue(list.size() > 0);
         Cluster c = list.get(0);
+        checkEntity(c);
+
+        list = api.listClusters(7, 77);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+        c = list.get(0);
+        checkEntity(c);
+
+        Properties props = new Properties();
+        props.put(ListClusters.PARAMETER_STATUS, Xplenty.ClusterStatus.creating);
+        list = api.listClusters(props);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+        c = list.get(0);
         checkEntity(c);
     }
 

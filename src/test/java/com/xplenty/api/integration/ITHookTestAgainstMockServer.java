@@ -5,6 +5,7 @@ import com.xplenty.api.XplentyAPI;
 import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.model.*;
+import com.xplenty.api.request.hook.ListHooks;
 import junit.framework.TestCase;
 
 import java.text.DateFormat;
@@ -12,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class ITHookTestAgainstMockServer extends TestCase {
     private final DateFormat dFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -80,6 +82,12 @@ public class ITHookTestAgainstMockServer extends TestCase {
         c = api.createHook(null, events, settings);
         assertEquals(Xplenty.HookType.hipchat, c.getType());
         checkEntity(c);
+
+        List<String> strEvents = new ArrayList<>();
+        strEvents.add("cluster");
+        c = api.createHook(null, settings, strEvents);
+        assertEquals(Xplenty.HookType.hipchat, c.getType());
+        checkEntity(c);
     }
 
     public void testUpdateHook() throws Exception {
@@ -91,6 +99,12 @@ public class ITHookTestAgainstMockServer extends TestCase {
         assertEquals(Xplenty.HookType.web, c.getType());
         checkEntity(c);
         c = api.updateHook(entityId, null, replaceevents, null);
+        checkEntity(c);
+
+        List<String> strEvents = new ArrayList<>();
+        strEvents.add("cluster");
+        c = api.updateHook(entityId, "kitty", settings, strEvents);
+        assertEquals(Xplenty.HookType.web, c.getType());
         checkEntity(c);
     }
 
@@ -116,6 +130,34 @@ public class ITHookTestAgainstMockServer extends TestCase {
         assertTrue(list.size() > 0);
 
         Hook c = list.get(0);
+        checkEntity(c);
+
+        list = api.listHooks(5, 55);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+
+        c = list.get(0);
+        checkEntity(c);
+
+        Properties props = new Properties();
+        props.put(ListHooks.PARAMETER_TYPE, Xplenty.HookType.slack);
+        list = api.listHooks(props);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+
+        c = list.get(0);
+        checkEntity(c);
+
+        props = new Properties();
+        List<Xplenty.HookType> hookTypes = new ArrayList<>();
+        hookTypes.add(Xplenty.HookType.email);
+        hookTypes.add(Xplenty.HookType.slack);
+        props.put(ListHooks.PARAMETER_TYPE, hookTypes);
+        list = api.listHooks(props);
+        assertNotNull(list);
+        assertTrue(list.size() > 0);
+
+        c = list.get(0);
         checkEntity(c);
     }
 

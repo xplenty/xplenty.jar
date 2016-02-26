@@ -32,7 +32,7 @@ public class ListSchedules extends AbstractListRequest<List<Schedule>> {
 	private void validateParameters(Properties params) {
         if (params.containsKey(PARAMETER_STATUS)
                 && !(params.get(PARAMETER_STATUS) instanceof Xplenty.ScheduleStatus)) {
-            throw new XplentyAPIException("Invalid 'status' parameter");
+            throw new XplentyAPIException(String.format("Invalid %s parameter, should be one of ScheduleStatus values", PARAMETER_STATUS));
         }
 	}
 

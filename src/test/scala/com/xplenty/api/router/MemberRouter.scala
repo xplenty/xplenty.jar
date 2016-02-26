@@ -10,7 +10,7 @@ class MemberRouter extends ScalatraServlet {
 
     post("/:accountId/api/members") {
       val accId = params("accountId")
-      s"""{"id":387,"name":"member1","email":"test@xplenty.com","gravatar_email":"test@xplenty.com","created_at":"2016-01-13T16:44:20Z","updated_at":"2016-01-13T16:44:20Z","confirmed_at":null,"location":null,"avatar_url":"https://secure.gravatar.com/","role":"admin","owner":false,"url":"https://localhost/$accId/api/members/387","html_url":"https://localhost/$accId/settings/members/387","confirmed":false}"""
+      s"""{"id":666,"name":"member1","email":"test@xplenty.com","gravatar_email":"test@xplenty.com","created_at":"2016-01-13T16:44:20Z","updated_at":"2016-01-13T16:44:20Z","confirmed_at":"2016-01-13T16:44:20Z","location":"Moscow","avatar_url":"https://secure.gravatar.com/","role":"admin","owner":false,"url":"https://localhost/$accId/api/members/666","html_url":"https://localhost/$accId/settings/members/666","confirmed":true}"""
     }
 
   put("/:accountId/api/members/:memberId") {
