@@ -6,6 +6,7 @@ package com.xplenty.api.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xplenty.api.Xplenty.JobStatus;
+import com.xplenty.api.XplentyAPI;
 import com.xplenty.api.exceptions.XplentyAPIException;
 
 import java.util.Date;
@@ -87,12 +88,13 @@ public class Job extends XplentyObject<Job> {
 	public void waitForStatus(Long timeout, JobStatus... statuses) {
 		if (getParentApiInstance() == null)
 			throw new XplentyAPIException("The parent API instance is not set");
-		long start = System.currentTimeMillis();
+        long alreadyWaiting = 0;
         long waitTime;
         if (timeout != null) {
             waitTime = Math.min(XplentyObject.StatusRefreshInterval, timeout * 1000L);
         } else {
             waitTime = XplentyObject.StatusRefreshInterval;
+            timeout = 0L;
         }
 		statusWait:
 		while (true) {
@@ -101,15 +103,28 @@ public class Job extends XplentyObject<Job> {
 			} catch (InterruptedException e) {
 				throw new XplentyAPIException("Error sleeping", e);
 			}
+            alreadyWaiting += waitTime;
 			Job c = getParentApiInstance().jobInformation(id);
 			for (JobStatus status: statuses) {
 				if (c.getStatus() == status)
 					break statusWait;
 			}
-			if (System.currentTimeMillis() - timeout * 1000 > start)
+			if (timeout > 0 && (alreadyWaiting >= timeout * 1000))
 				throw new XplentyAPIException("Timeout occurred while waiting for required job status");
 		}
 	}
+
+    @Override
+    public Job withParentApiInstance(XplentyAPI instance) {
+        super.withParentApiInstance(instance);
+        if (this.outputs != null) {
+            for (JobOutput jo : this.outputs) {
+                jo.withParentApiInstance(instance);
+                jo.setJobId(this.id);
+            }
+        }
+        return this;
+    }
 
     /**
      * Download job output log

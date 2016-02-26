@@ -12,6 +12,7 @@ import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.Http;
 import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Job;
+import com.xplenty.api.model.JobOutput;
 import com.xplenty.api.model.JobTest;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -70,10 +71,26 @@ public class JobInfoTest extends TestCase {
 		assertEquals("https://www.xplenty.com/api/" + Xplenty.Resource.Job.format(Long.toString(7)), j.getUrl());
 		assertNotNull(j.getVariables());
 		assertTrue(Math.abs(now.getTime() - j.getCreatedAt().getTime()) < 1000); //fractions of second are not serialized
-		assertTrue(Math.abs(now.getTime() - j.getUpdatedAt().getTime()) < 1000);
+		assertTrue(Math.abs(now.getTime() - j.getCreatedAt().getTime()) < 1000);
 		assertTrue(Math.abs(now.getTime() - j.getStartedAt().getTime()) < 1000);
 		assertTrue(Math.abs(now.getTime() - j.getCompletedAt().getTime()) < 1000);
 		assertTrue(Math.abs(now.getTime() - j.getFailedAt().getTime()) < 1000);
+
+        assertNotNull(j.getOutputs());
+        JobOutput jo = j.getOutputs().get(0);
+        assertEquals(1, jo.getId().longValue());
+        assertEquals(2, jo.getRecordsCount().longValue());
+        assertTrue(Math.abs(now.getTime() - jo.getCreatedAt().getTime()) < 1000);
+        assertTrue(Math.abs(now.getTime() - jo.getCreatedAt().getTime()) < 1000);
+        assertEquals("mock job output", jo.getName());
+        assertEquals("json", jo.getPreviewType());
+        assertEquals("https://xplenty.com/api/jobs/7/outputs/777/preview", jo.getPreviewUrl());
+        assertNotNull(jo.getComponent());
+        assertEquals("dest1", jo.getComponent().getName());
+        assertEquals("cloud_storage", jo.getComponent().getType());
+        assertNotNull(jo.getComponent().getFields());
+        assertEquals("ddd", jo.getComponent().getFields().get(0));
+        assertEquals("bbb", jo.getComponent().getFields().get(1));
 	}
 	
 	@Test

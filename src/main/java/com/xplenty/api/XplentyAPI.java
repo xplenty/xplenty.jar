@@ -18,6 +18,7 @@ import com.xplenty.api.request.connection.ConnectionInfo;
 import com.xplenty.api.request.connection.DeleteConnection;
 import com.xplenty.api.request.connection.ListConnectionTypes;
 import com.xplenty.api.request.connection.ListConnections;
+import com.xplenty.api.request.hook.*;
 import com.xplenty.api.request.job.*;
 import com.xplenty.api.request.member.*;
 import com.xplenty.api.request.misc.*;
@@ -35,7 +36,6 @@ import com.xplenty.api.request.watching.AddClusterWatcher;
 import com.xplenty.api.request.watching.AddJobWatcher;
 import com.xplenty.api.request.watching.ListWatchers;
 import com.xplenty.api.request.watching.WatchingStop;
-import com.xplenty.api.request.hook.*;
 import com.xplenty.api.request.xpackage.*;
 
 import java.util.List;
@@ -411,7 +411,11 @@ public class XplentyAPI {
 	 * @return list of jobs
 	 */
 	public List<Job> listJobs(Properties params) {
-		return client.execute(new ListJobs(params));
+        final List<Job> jobList = client.execute(new ListJobs(params));
+        for (Job job : jobList) {
+            job.withParentApiInstance(this);
+        }
+        return jobList;
 	}
 
     /**

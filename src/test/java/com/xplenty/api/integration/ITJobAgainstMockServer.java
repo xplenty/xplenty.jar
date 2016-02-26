@@ -5,9 +5,7 @@ import com.xplenty.api.XplentyAPI;
 import com.xplenty.api.exceptions.XplentyAPIException;
 import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.http.Http;
-import com.xplenty.api.model.Creator;
-import com.xplenty.api.model.Job;
-import com.xplenty.api.model.JobLog;
+import com.xplenty.api.model.*;
 import com.xplenty.api.request.job.ListJobs;
 import junit.framework.TestCase;
 
@@ -54,6 +52,9 @@ public class ITJobAgainstMockServer extends TestCase {
 
         JobLog jobLog = c.getJobLog();
         checkJobLog(jobLog);
+
+        JobOutputPreview jop = c.getOutputs().get(0).getPreview();
+        checkJobOutputPreview(jop);
     }
 
     public void testWaitForStatus() throws Exception {
@@ -102,17 +103,15 @@ public class ITJobAgainstMockServer extends TestCase {
         assertNotNull(list);
         assertTrue(list.size() > 0);
         checkEntity(list.get(0));
+
+        JobOutputPreview jop = list.get(0).getOutputs().get(0).getPreview();
+        checkJobOutputPreview(jop);
     }
 
     public void testGetJobOutputPreview() throws Exception {
-        //JobOutputPreview c = api.previewJobOutput(entityId, 1);
-        // TODO check job output
+        JobOutputPreview c = api.previewJobOutput(entityId, 222);
+        checkJobOutputPreview(c);
     }
-
-    public void testGetJobOutput() throws Exception {
-        // todo
-    }
-
 
     private void checkEntity(Job c) throws ParseException {
         assertNotNull(c);
@@ -135,8 +134,6 @@ public class ITJobAgainstMockServer extends TestCase {
         assertEquals(dFormat.parse("2016-02-26T14:22:59Z"), c.getStartedAt());
         assertEquals(dFormat.parse("2016-02-26T14:24:35Z"), c.getCompletedAt());
         assertEquals(dFormat.parse("2016-02-26T14:24:35Z"), c.getFailedAt());
-        assertNotNull(c.getOutputs());
-        assertTrue(c.getOutputs().size() == 0);
         Creator creator = c.getCreator();
         assertNotNull(creator);
         assertEquals(1, creator.getId().longValue());
@@ -144,6 +141,24 @@ public class ITJobAgainstMockServer extends TestCase {
         assertEquals("User", creator.getType());
         assertEquals(String.format("https://xplenty.com/%s/api/members/1", accountID), creator.getUrl());
         assertEquals(String.format("https://xplenty.com/%s/settings/members/1", accountID), creator.getHtmlUrl());
+        assertNotNull(c.getOutputs());
+        if (c.getOutputs().size() > 0) {
+            JobOutput jo = c.getOutputs().get(0);
+            assertEquals(222, jo.getId().longValue());
+            assertEquals(2, jo.getRecordsCount().longValue());
+            assertEquals(dFormat.parse("2016-02-26T19:09:05Z"), jo.getCreatedAt());
+            assertEquals(dFormat.parse("2016-02-26T19:09:05Z"), jo.getUpdatedAt());
+            assertEquals("2.json", jo.getName());
+            assertEquals("json", jo.getPreviewType());
+            assertEquals(String.format("https://xplenty.com/%s/api/jobs/%s/outputs/222/preview", accountID, entityId), jo.getPreviewUrl());
+            assertEquals(String.format("https://xplenty.com/%s/api/jobs/%s/outputs/222", accountID, entityId), jo.getUrl());
+            assertNotNull(jo.getComponent());
+            assertEquals("destination7", jo.getComponent().getName());
+            assertEquals("cloud_storage_destination_component", jo.getComponent().getType());
+            assertNotNull(jo.getComponent().getFields());
+            assertEquals("ddd", jo.getComponent().getFields().get(0));
+            assertEquals("yu", jo.getComponent().getFields().get(1));
+        }
     }
 
     private void checkJobLog(JobLog c) {
@@ -156,5 +171,11 @@ public class ITJobAgainstMockServer extends TestCase {
         assertNotNull(c);
         assertEquals("test", c.get("a"));
         assertEquals("42", c.get("b"));
+    }
+
+    private void checkJobOutputPreview(JobOutputPreview c) {
+        assertNotNull(c);
+        assertEquals("{\"ddd\":0.9542425094393249,\"yu\":\"28b901e3041d5eddb024f7a581b78f76\"}", c.getPreview());
+        assertEquals(String.format("https://xplenty.com/%s/api/jobs/%s/outputs/%s/preview", accountID, entityId, 222), c.getUrl());
     }
 }

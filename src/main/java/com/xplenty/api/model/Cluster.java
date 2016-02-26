@@ -194,12 +194,13 @@ public class Cluster extends XplentyObject<Cluster>{
 	public void waitForStatus(Long timeout, ClusterStatus... statuses) {
 		if (getParentApiInstance() == null)
 			throw new XplentyAPIException("The parent API instance is not set");
-		long start = System.currentTimeMillis();
+        long alreadyWaiting = 0;
         long waitTime;
         if (timeout != null) {
             waitTime = Math.min(XplentyObject.StatusRefreshInterval, timeout * 1000L);
         } else {
             waitTime = XplentyObject.StatusRefreshInterval;
+            timeout = 0L;
         }
         statusWait:
 		while (true) {
@@ -208,13 +209,14 @@ public class Cluster extends XplentyObject<Cluster>{
 			} catch (InterruptedException e) {
 				throw new XplentyAPIException("Error sleeping", e);
 			}
+            alreadyWaiting += waitTime;
 			Cluster c = getParentApiInstance().clusterInformation(id);
 			for (ClusterStatus status : statuses) {
 				if (c.getStatus() == status)
 					break statusWait;
 			}
-			if (timeout != null && System.currentTimeMillis() - timeout * 1000 > start)
-				throw new XplentyAPIException("Timeout occurred while waiting for required cluster status");
+            if (timeout > 0 && (alreadyWaiting >= timeout * 1000))
+                throw new XplentyAPIException("Timeout occurred while waiting for required cluster status");
 		}
 	}
 

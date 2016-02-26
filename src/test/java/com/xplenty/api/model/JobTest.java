@@ -8,10 +8,7 @@ import com.xplenty.api.Xplenty.JobStatus;
 import junit.framework.TestCase;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Yuriy Kovalek
@@ -61,8 +58,16 @@ public class JobTest extends TestCase {
 		jo.recordsCount = 2L;
 		jo.createdAt = now;
 		jo.updatedAt = now;
-		jo.componentName = "mock component name";
-		jo.previewUrl = "http://example.com/mockuoutput.txt";
+        JobOutput.Component co = new JobOutput.Component();
+        co.name = "dest1";
+        co.type = "cloud_storage";
+        List<String> fld = new ArrayList<>();
+        fld.add("ddd");
+        fld.add("bbb");
+        co.fields = fld;
+		jo.component = co;
+		jo.previewUrl = "https://xplenty.com/api/jobs/7/outputs/777/preview";
+        jo.previewType = "json";
 		
 		return jo;
 	}
