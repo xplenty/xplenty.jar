@@ -53,6 +53,7 @@ public class JobOutput extends XplentyObject<JobOutput> {
      *
      * @return Preview (up to 100 rows) of this job output
      */
+    @JsonIgnore
     public JobOutputPreview getPreview() {
         if (this.getParentApiInstance() == null) {
             throw new XplentyAPIException("The parent API instance is not set");

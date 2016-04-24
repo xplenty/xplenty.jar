@@ -22,10 +22,7 @@ import com.xplenty.api.request.hook.*;
 import com.xplenty.api.request.job.*;
 import com.xplenty.api.request.member.*;
 import com.xplenty.api.request.misc.*;
-import com.xplenty.api.request.public_key.CreatePublicKey;
-import com.xplenty.api.request.public_key.DeletePublicKey;
-import com.xplenty.api.request.public_key.ListPublicKeys;
-import com.xplenty.api.request.public_key.PublicKeyInfo;
+import com.xplenty.api.request.public_key.*;
 import com.xplenty.api.request.schedule.*;
 import com.xplenty.api.request.subscription.ListPlans;
 import com.xplenty.api.request.subscription.PaymentMehodInfo;
@@ -140,6 +137,16 @@ public class XplentyAPI {
         props.put(AbstractListRequest.PARAMETER_LIMIT, limit);
         props.put(AbstractListRequest.PARAMETER_OFFSET, offset);
         return listPackages(props);
+    }
+
+    /**
+     * Search packages based on the specified query
+     * @param searchQuery search query
+     * @return list of matching packages
+     */
+    public List<Package> searchPackages(SearchQuery searchQuery) {
+        checkSearchQuery(searchQuery);
+        return client.execute(new SearchPackages(searchQuery.toProperties()));
     }
 
     /**
@@ -273,6 +280,16 @@ public class XplentyAPI {
         return client.execute(new ListSchedules(props));
     }
 
+    /**
+     * Search schedules based on the specified query
+     * @param searchQuery search query
+     * @return list of matching schedules
+     */
+    public List<Schedule> searchSchedules(SearchQuery searchQuery) {
+        checkSearchQuery(searchQuery);
+        return client.execute(new SearchSchedules(searchQuery.toProperties()));
+    }
+
 	/**
 	 * List of clusters associated with the account
 	 * @return list of clusters
@@ -315,7 +332,23 @@ public class XplentyAPI {
         return client.execute(new ListClusterInstances(clusterId));
     }
 
-	/**
+    /**
+     * Search clusters based on the specified query
+     * @param searchQuery search query
+     * @return list of matching clusters
+     */
+    public List<Cluster> searchClusters(SearchQuery searchQuery) {
+        checkSearchQuery(searchQuery);
+        return client.execute(new SearchClusters(searchQuery.toProperties()));
+    }
+
+    private void checkSearchQuery(SearchQuery searchQuery) {
+        if (searchQuery == null || searchQuery.isEmpty()) {
+            throw new XplentyAPIException("No search query specified!");
+        }
+    }
+
+    /**
 	 * Information about a particular cluster
 	 * @param clusterId id of the cluster, see {@link #listClusters()} to get a list of clusters with id's
 	 * @return
@@ -417,6 +450,17 @@ public class XplentyAPI {
         }
         return jobList;
 	}
+
+    /**
+     * Search jobs based on the specified query
+     * @param searchQuery search query
+     * @return list of matching jobs
+     */
+    public List<Job> searchJobs(SearchQuery searchQuery) {
+        checkSearchQuery(searchQuery);
+        return client.execute(new SearchJobs(searchQuery.toProperties()));
+    }
+
 
     /**
      * List all job variables that were used during job runtime.
@@ -723,6 +767,16 @@ public class XplentyAPI {
     }
 
     /**
+     * Search hooks based on the specified query
+     * @param searchQuery search query
+     * @return list of matching hooks
+     */
+    public List<Hook> searchHooks(SearchQuery searchQuery) {
+        checkSearchQuery(searchQuery);
+        return client.execute(new SearchHooks(searchQuery.toProperties()));
+    }
+
+    /**
      * Delete hook with specified id
      * @param hookId id of the hook to delete
      * @return deleted hook object
@@ -800,6 +854,16 @@ public class XplentyAPI {
      */
     public List<PublicKey> listPublicKeys(Properties params) {
         return client.execute(new ListPublicKeys(params));
+    }
+
+    /**
+     * Search public keys based on the specified query
+     * @param searchQuery search query
+     * @return list of matching public keys
+     */
+    public List<PublicKey> searchPublicKeys(SearchQuery searchQuery) {
+        checkSearchQuery(searchQuery);
+        return client.execute(new SearchPublicKeys(searchQuery.toProperties()));
     }
 
     /**

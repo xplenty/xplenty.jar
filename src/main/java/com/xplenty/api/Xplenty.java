@@ -49,6 +49,49 @@ public class Xplenty {
 		}
 	}
 
+    public static enum SearchSort {
+        created("created"),
+        updated("modified"),
+        relevant("relevance");
+
+        public final String value;
+
+        SearchSort(String value) {
+            this.value = value;
+        }
+
+        public String toString() {
+            return value;
+        }
+    }
+
+    public static enum SearchOperation {
+        /**
+         * Equal for numbers and dates, contains for strings
+         */
+        equal(":"),
+        /**
+         * >=
+         * Supported only for dates and numbers
+         */
+        greater_or_equal(":>"),
+        /**
+         * <=
+         * Supported only for dates and numbers
+         */
+        lesser_or_equal(":<");
+
+        public final String value;
+
+        SearchOperation(String value) {
+            this.value = value;
+        }
+
+        public String toString() {
+            return value;
+        }
+    }
+
 	
 	public enum SortDirection {
 		ascending("asc"),
@@ -390,6 +433,7 @@ public class Xplenty {
 	public static enum Resource {
         Package("packages/%s", "Get package info"),
         Packages("packages", "List packages"),
+        SearchPackages("packages/search", "Search packages"),
         CreatePackage("packages", "Create new package"),
         UpdatePackage("packages/%s", "Update package"),
         DeletePackage("packages/%s", "Delete package"),
@@ -402,18 +446,21 @@ public class Xplenty {
         ClusterInstances("clusters/%s/instances", "List cluster instances"),
 		Cluster("clusters/%s", "Get cluster information"),
 		CreateCluster("clusters", "Create cluster"),
+		SearchClusters("clusters/search", "Search clusters"),
 		UpdateCluster("clusters/%s", "Update cluster"),
 		TerminateCluster("clusters/%s", "Terminate cluster"),
 		Jobs("jobs", "List jobs"),
 		Job("jobs/%s", "Get job info"),
 		RunJob("jobs", "Run job"),
 		StopJob("jobs/%s", "Stop job"),
+		SearchJobs("jobs/search", "Search job"),
 		JobExecVars("jobs/%s/variables", "List job execution variables"),
 		JobLog("jobs/%s/log", "Get job output log"),
         JobPreviewOutput("jobs/%s/outputs/%s/preview", "Preview job output"),
         ClusterWatcher("clusters/%s/watchers", "Adding/removing a cluster watchers"),
         JobWatcher("jobs/%s/watchers", "Adding/removing a job watchers"),
         Schedules("schedules", "List schedules"),
+        SearchSchedules("schedules/search", "Search schedules"),
         CreateSchedule("schedules", "Create schedule"),
         CloneSchedule("schedules/%s/clone", "Clone schedule"),
         UpdateSchedule("schedules/%s", "Update schedule"),
@@ -427,6 +474,7 @@ public class Xplenty {
         HookEvents("hook_events", "List supported Hook Events"),
         HookTypes("hooks/types", "List available hook types"),
         CreateHook("hooks", "Create new hook"),
+        SearchHooks("hooks/search", "Search hooks"),
         UpdateHook("hooks/%s", "Update existing hook"),
         DeleteHook("hooks/%s", "Delete hook"),
         PingHook("hooks/%s/ping", "Ping(fire test notification) for hook"),
@@ -436,6 +484,7 @@ public class Xplenty {
         CreatePublicKey("user/keys", "Create Public Key"),
         PublicKey("user/keys/%s", "Get  Public Key information"),
         PublicKeys("user/keys", "List Public Keys"),
+        SearchPublicKeys("user/keys/search", "Search Public Keys"),
         DeletePublicKey("user/keys/%s", "Delete Public Key"),
         CreateMember("members", "Create new Member"),
         DeleteMember("members/%s", "Delete member"),

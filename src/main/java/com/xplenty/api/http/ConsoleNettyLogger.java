@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat;
  */
 public class ConsoleNettyLogger implements ChannelUpstreamHandler, ChannelDownstreamHandler {
 
-    private ThreadLocal<DateFormat> df = new ThreadLocal<>();
+    private static ThreadLocal<DateFormat> df = new ThreadLocal<>();
     private final boolean logHttpBodyOnly;
 
     public ConsoleNettyLogger(boolean logHttpBodyOnly) {

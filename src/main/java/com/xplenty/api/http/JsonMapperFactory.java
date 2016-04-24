@@ -19,6 +19,7 @@ public class JsonMapperFactory {
         mapper.disable(SerializationFeature.INDENT_OUTPUT); // for pretty print
         mapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+        mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"));
     }
 

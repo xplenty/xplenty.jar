@@ -40,7 +40,7 @@ public abstract class AbstractListRequest<T> extends AbstractRequest<T> {
 
         if (validateSort) {
             if (params.containsKey(PARAMETER_SORT)
-                    && !(params.get(PARAMETER_SORT) instanceof Xplenty.Sort)) {
+                    && !(params.get(PARAMETER_SORT) instanceof Xplenty.Sort || params.get(PARAMETER_SORT) instanceof Xplenty.SearchSort)) {
                 throw new XplentyAPIException(String.format("Invalid '%s' parameter, should be one of Sort values", PARAMETER_SORT));
             }
 
