@@ -6,9 +6,10 @@
 *.iws
 .idea/
 target/
+target2/
 /bin
 .classpath
 .project
 .settings/
-testpackage/*
+*/testpackage
 XplentyApiTest.java
