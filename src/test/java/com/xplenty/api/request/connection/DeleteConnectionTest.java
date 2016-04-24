@@ -58,6 +58,7 @@ public class DeleteConnectionTest extends TestCase {
 		
 		assertNotNull(c);
 		assertEquals(new Long(666), c.getId());
+        assertEquals("MYSQL_CONNECTION_666", c.getUniqueId());
 		assertEquals(Xplenty.ConnectionType.mysql, c.getType());
         assertEquals("test", c.getName());
         assertEquals("https://testapi.xplenty.com/api/connections/mysql/666", c.getUrl());

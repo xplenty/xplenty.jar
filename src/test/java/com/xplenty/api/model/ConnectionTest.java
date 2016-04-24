@@ -25,6 +25,7 @@ public class ConnectionTest extends TestCase {
         Connection connection = new Connection();
         connection.id = 666L;
         connection.name = "test";
+        connection.uniqueId = "MYSQL_CONNECTION_666";
         connection.type = Xplenty.ConnectionType.mysql;
         connection.createdAt = now;
         connection.updatedAt = now;

@@ -18,6 +18,8 @@ public class Connection extends XplentyObject<Connection> {
     protected Long id;
     @JsonProperty
     protected String name;
+    @JsonProperty("unique_id")
+    protected String uniqueId;
     @JsonProperty("created_at")
     protected Date createdAt;
     @JsonProperty("updated_at")
@@ -43,6 +45,14 @@ public class Connection extends XplentyObject<Connection> {
      */
     public String getName() {
         return name;
+    }
+
+    /**
+     *
+     * @return the unique connection's identifier
+     */
+    public String getUniqueId() {
+        return uniqueId;
     }
 
     /**
