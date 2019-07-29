@@ -5,24 +5,18 @@ package com.xplenty.api.request;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
-import com.sun.jersey.core.header.InBoundHeaders;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
+import com.xplenty.api.http.Http;
+import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Schedule;
 import com.xplenty.api.model.ScheduleTest;
-import com.xplenty.api.util.Http;
 import junit.framework.TestCase;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 /**
  *  Author: Xardas
@@ -41,17 +35,35 @@ public class ListSchedulesTest extends TestCase {
 	}
 	
 	@Test
-	public void testInvalidResponseHandling() throws JsonProcessingException, UnsupportedEncodingException {
+	public void testValidResponceHandling() throws JsonProcessingException, UnsupportedEncodingException {
+        ListSchedules ls = new ListSchedules(new Properties());
+		List<Schedule> list = new ArrayList<Schedule>();
+        final Schedule mockSchedule = ScheduleTest.createMockSchedule(new Date());
+        mockSchedule.getTask().getPackages().clear();
+        list.add(mockSchedule);
+		
+		String json = new ObjectMapper().writeValueAsString(list);
+        json = json.replace("\"packages\":{}", "\"packages\":[]"); // sent and recieved json for schedules slightly differ.
+		list = ls.getResponse(Response.forContentType(Http.MediaType.JSON,
+                json,
+                Status.OK.getStatusCode(),
+                new HashMap<String, String>()));
+		assertNotNull(list);
+		assertFalse(list.isEmpty());
+	}
+	
+	@Test
+	public void testInvalidResponceHandling() throws JsonProcessingException, UnsupportedEncodingException {
         ListSchedules ls = new ListSchedules(new Properties());
         List<Schedule> list = new ArrayList<Schedule>();
         list.add(ScheduleTest.createMockSchedule(new Date()));
 		
 		String json = new ObjectMapper().writeValueAsString(list).replace("{", "");
 		try {
-			list = ls.getResponse(new ClientResponse(Status.OK.getStatusCode(),
-									new InBoundHeaders(), 
-									new ByteArrayInputStream(json.getBytes("UTF-8")),
-									Client.create().getMessageBodyWorkers()));
+			list = ls.getResponse(Response.forContentType(Http.MediaType.JSON,
+                    json,
+                    Status.OK.getStatusCode(),
+                    new HashMap<String, String>()));
 			assertTrue(false);
 		} catch (XplentyAPIException e) {
 			assertEquals(Xplenty.Resource.Schedules.name + ": error parsing response object", e.getMessage());
@@ -61,8 +73,8 @@ public class ListSchedulesTest extends TestCase {
     @Test
     public void testPaging() throws Exception {
         final Properties params = new Properties();
-        params.put(AbstractParametrizedRequest.PARAMETER_LIMIT, 1);
-        params.put(AbstractParametrizedRequest.PARAMETER_OFFSET, 2);
+        params.put(AbstractListRequest.PARAMETER_LIMIT, 1);
+        params.put(AbstractListRequest.PARAMETER_OFFSET, 2);
 
         ListSchedules ls = new ListSchedules(params);
         assertEquals(ls.getEndpoint(), String.format("%s?limit=1&offset=2", ls.getEndpointRoot()));
@@ -73,8 +85,8 @@ public class ListSchedulesTest extends TestCase {
     @Test
     public void testInvalidPaging() throws Exception {
         final Properties params = new Properties();
-        params.put(AbstractParametrizedRequest.PARAMETER_LIMIT, -1);
-        params.put(AbstractParametrizedRequest.PARAMETER_OFFSET, -2);
+        params.put(AbstractListRequest.PARAMETER_LIMIT, -1);
+        params.put(AbstractListRequest.PARAMETER_OFFSET, -2);
 
         try {
             ListSchedules ls = new ListSchedules(params);
@@ -83,14 +95,14 @@ public class ListSchedulesTest extends TestCase {
         }
 
         try {
-            params.put(AbstractParametrizedRequest.PARAMETER_LIMIT, 101);
+            params.put(AbstractListRequest.PARAMETER_LIMIT, 101);
             ListSchedules ls = new ListSchedules(params);
         } catch (XplentyAPIException ex) {
             assertEquals(String.format("'limit' parameter should be less or equal to %s and greater than 0", Xplenty.MAX_LIMIT), ex.getMessage());
         }
 
         try {
-            params.put(AbstractParametrizedRequest.PARAMETER_LIMIT, 1);
+            params.put(AbstractListRequest.PARAMETER_LIMIT, 1);
             ListSchedules ls = new ListSchedules(params);
         } catch (XplentyAPIException ex) {
             assertEquals("'offset' parameter should be greater than 0", ex.getMessage());

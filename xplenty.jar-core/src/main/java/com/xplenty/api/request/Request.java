@@ -3,15 +3,15 @@
  */
 package com.xplenty.api.request;
 
-import com.sun.jersey.api.client.ClientResponse;
-import com.xplenty.api.util.Http;
+import com.xplenty.api.http.Http;
+import com.xplenty.api.http.Response;
 
 /**
  * @author Yuriy Kovalek
  *
  */
 public interface Request<T> {
-	
+
 	String getName();
 	
 	/**
@@ -25,12 +25,12 @@ public interface Request<T> {
      * @return The path and query parameters as a String.
      */
 	Http.MediaType getResponseType();
-	
-	String getEndpoint();
-	
+
+	String getEndpoint(String apiHost, String accountName);
+
 	boolean hasBody();
-	
+
 	Object getBody();
-	
-	T getResponse(ClientResponse response);
+
+	T getResponse(Response response);
 }
