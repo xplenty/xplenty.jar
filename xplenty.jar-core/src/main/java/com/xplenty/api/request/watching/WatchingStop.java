@@ -1,15 +1,16 @@
 package com.xplenty.api.request.watching;
 
-import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.RequestFailedException;
-import com.xplenty.api.request.Request;
-import com.xplenty.api.util.Http;
+import com.xplenty.api.http.Http;
+import com.xplenty.api.http.Response;
+import com.xplenty.api.request.AbstractRequest;
 
-import static com.xplenty.api.util.Http.Method.DELETE;
-import static com.xplenty.api.Xplenty.*;
+import static com.xplenty.api.Xplenty.Resource;
+import static com.xplenty.api.Xplenty.SubjectType;
+import static com.xplenty.api.http.Http.Method.DELETE;
 
-public class WatchingStop implements Request<Boolean> {
+public class WatchingStop extends AbstractRequest<Boolean> {
     private Long _subjectId;
     private SubjectType _kind;
 
@@ -45,11 +46,11 @@ public class WatchingStop implements Request<Boolean> {
     public Object getBody() {  return null;    }
 
     @Override
-    public Boolean getResponse(ClientResponse response) {
-        int code = response.getStatus();
-        if (code==204)
+    public Boolean getResponse(Response response) {
+        int code = response.getStatus().getCode();
+        if (code == 204)
             return true;
         else
-            throw new RequestFailedException("204 expected, but something went wrong", code, "");
+            throw new RequestFailedException("204 expected, but something went wrong", response.getStatus(), "");
     }
 }

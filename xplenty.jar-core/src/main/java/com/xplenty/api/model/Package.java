@@ -1,8 +1,7 @@
 package com.xplenty.api.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.xplenty.api.Xplenty;
 
 import java.util.Date;
 import java.util.Map;
@@ -13,10 +12,7 @@ import java.util.Map;
  * Date: 16.12.15
  * Time: 18:08
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Package extends XplentyObject<Package> {
-
     @JsonProperty
     protected Long id;
     @JsonProperty
@@ -33,9 +29,104 @@ public class Package extends XplentyObject<Package> {
     protected Date updatedAt;
     @JsonProperty
     protected String url;
+    @JsonProperty("html_url")
+    protected String htmlUrl;
+    @JsonProperty
+    protected Xplenty.PackageStatus status;
+    @JsonProperty("source_package_id")
+    protected Long sourcePackageId;
+    @JsonProperty("package_template_id")
+    protected Long packageTemplateId;
+    @JsonProperty("data_flow_json")
+    protected String dataFlowJson;
+    @JsonProperty("flow_type")
+    protected Xplenty.PackageFlowType flowType;
 
-    protected Package() {
+    public Package() {
         super(Package.class);
+    }
+
+    /**
+     * Set package id. Used for updates.
+     * @param id id of the package
+     * @return this instance
+     */
+    public Package withId(Long id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * If it is provided, the new package will be a copy of package with this ID
+     * @param sourcePackageId source package id
+     * @return this instance
+     */
+    public Package withSourcePackageId(Long sourcePackageId) {
+        this.sourcePackageId = sourcePackageId;
+        return this;
+    }
+
+
+    /**
+     * If it is provided, the new package will be created based on the template that is associated with this ID
+     * @param packageTemplateId template id
+     * @return this instance
+     */
+    public Package fromTemplate(Long packageTemplateId) {
+        this.packageTemplateId = packageTemplateId;
+        return this;
+    }
+
+
+    /**
+     * Data flow prepared in JSON format
+     * @param dataFlowJson json string with data flow
+     * @return this instance
+     */
+    public Package withDataFlow(String dataFlowJson) {
+        this.dataFlowJson = dataFlowJson;
+        return this;
+    }
+
+    /**
+     * Set package name
+     * @param name package name
+     * @return this instance
+     */
+    public Package withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Set package description
+     * @param description package description
+     * @return this instance
+     */
+    public Package withDescription(String description) {
+        this.description = description;
+        return this;
+    }
+
+
+    /**
+     * Set package variables
+     * @param variables variables for this package
+     * @return this instance
+     */
+    public Package withVariables(Map<String, String> variables) {
+        this.variables = variables;
+        return this;
+    }
+
+    /**
+     * Set flow type of the package
+     * @param flowType flow type of this package
+     * @return this instance
+     */
+    public Package withFlowType(Xplenty.PackageFlowType flowType) {
+        this.flowType = flowType;
+        return this;
     }
 
 
@@ -97,49 +188,32 @@ public class Package extends XplentyObject<Package> {
 
     /**
      *
-     * @return the package resource URL
+     * @return the package resource URL (API)
      */
     public String getUrl() {
         return url;
     }
 
-    @SuppressWarnings("unused")
-    private void setId(Long id) {
-        this.id = id;
+    /**
+     *
+     * @return the package resource URL (Web UI)
+     */
+    public String getHtmlUrl() {
+        return htmlUrl;
     }
 
-    @SuppressWarnings("unused")
-    private void setName(String name) {
-        this.name = name;
+    /**
+     *
+     * @return the package status.
+     */
+    public Xplenty.PackageStatus getStatus() {
+        return status;
     }
 
-    @SuppressWarnings("unused")
-    private void setDescription(String description) {
-        this.description = description;
-    }
-
-    @SuppressWarnings("unused")
-    private void setVariables(Map<String, String> variables) {
-        this.variables = variables;
-    }
-
-    @SuppressWarnings("unused")
-    private void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
-    }
-
-    @SuppressWarnings("unused")
-    private void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    @SuppressWarnings("unused")
-    private void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    @SuppressWarnings("unused")
-    private void setUrl(String url) {
-        this.url = url;
+    /**
+     * Flow type of the package.
+     */
+    public Xplenty.PackageFlowType getFlowType() {
+        return flowType;
     }
 }
