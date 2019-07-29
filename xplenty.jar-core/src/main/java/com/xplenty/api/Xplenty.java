@@ -108,6 +108,98 @@ public class Xplenty {
 
 	}
 
+    public enum AccountRole {
+        admin("admin"),
+        member("member");
+
+        @SuppressWarnings("unused")
+        private final String role;
+
+        AccountRole(String role) {
+            this.role = role;
+        }
+    }
+
+    public enum ClusterInstanceStatus {
+        available("available"),
+        terminated("terminated");
+
+        @SuppressWarnings("unused")
+        private final String status;
+
+        ClusterInstanceStatus(String status) {
+            this.status = status;
+        }
+    }
+    
+    public enum ConnectionType {
+        s3("s3"),
+        swift("swift"),
+        gs("gs"),
+        rackspace("rackspace"),
+        softlayer("softlayer"),
+        hdfs("hdfs"),
+        adwords("adwords"),
+        postgres("postgres"),
+        redshift("redshift"),
+        mongo("mongo"),
+        mysql("mysql"),
+        hana("hana"),
+        sqlserver("sqlserver"),
+        herokupostgres("herokupostgres"),
+        googlecloudsql("googlecloudsql"),
+        bigquery("bigquery"),
+        segment("segment");
+
+        @SuppressWarnings("unused")
+        private final String type;
+
+        ConnectionType(String type) {
+            this.type = type;
+        }
+    }
+
+    public enum PackageValidationStatus {
+        running,
+        completed,
+        failed;
+    }
+
+    public enum PriceUnit {
+        year,
+        month,
+        day,
+        hour;
+    }
+    
+    public enum WebHookEvent {
+        job_all("job"),
+        job_submitted("job.submitted"),
+        job_started("job.started"),
+        job_stopped("job.stopped"),
+        job_completed("job.completed"),
+        job_failed("job.failed"),
+        cluster("cluster"),
+        cluster_requested("cluster.requested"),
+        cluster_available("cluster.available"),
+        cluster_terminated("cluster.terminated"),
+        cluster_idled("cluster.idled"),
+        cluster_error("cluster.error");
+
+        @SuppressWarnings("unused")
+        private final String event;
+
+        WebHookEvent(String event) {
+            this.event = event;
+        }
+
+        @Override
+        public String toString() {
+            return event;
+        }
+    }
+
+
 	@JsonFormat(shape= JsonFormat.Shape.SCALAR)
 	public static enum ClusterStatus {
 		pending("pending"),
@@ -167,7 +259,7 @@ public class Xplenty {
 	}
 	
 	public static enum Version {
-		V1(1);
+		V1(1), V2(2);
 		
 		private final int value;
 		

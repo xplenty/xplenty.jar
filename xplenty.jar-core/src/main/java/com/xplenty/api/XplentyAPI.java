@@ -3,45 +3,25 @@
  */
 package com.xplenty.api;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.Xplenty.Version;
 import com.xplenty.api.exceptions.XplentyAPIException;
-import com.xplenty.api.model.Cluster;
-import com.xplenty.api.model.ClusterWatchingLogEntry;
-import com.xplenty.api.model.Job;
-import com.xplenty.api.model.JobWatchingLogEntry;
+import com.xplenty.api.http.HttpClient;
+import com.xplenty.api.http.ClientBuilder;
+import com.xplenty.api.model.*;
 import com.xplenty.api.model.Package;
-import com.xplenty.api.model.Schedule;
-import com.xplenty.api.model.Watcher;
-import com.xplenty.api.request.AbstractParametrizedRequest;
-import com.xplenty.api.request.CloneSchedule;
-import com.xplenty.api.request.ClusterInfo;
-import com.xplenty.api.request.CreateCluster;
-import com.xplenty.api.request.CreateSchedule;
-import com.xplenty.api.request.DeleteSchedule;
-import com.xplenty.api.request.JobInfo;
-import com.xplenty.api.request.ListClusters;
-import com.xplenty.api.request.ListJobs;
-import com.xplenty.api.request.ListPackages;
-import com.xplenty.api.request.ListSchedules;
-import com.xplenty.api.request.PackageInfo;
-import com.xplenty.api.request.RunJob;
-import com.xplenty.api.request.ScheduleInfo;
-import com.xplenty.api.request.StopJob;
-import com.xplenty.api.request.TerminateCluster;
-import com.xplenty.api.request.UpdateCluster;
-import com.xplenty.api.request.UpdateSchedule;
+import com.xplenty.api.request.*;
 import com.xplenty.api.request.watching.AddClusterWatcher;
 import com.xplenty.api.request.watching.AddJobWatcher;
 import com.xplenty.api.request.watching.ListWatchers;
 import com.xplenty.api.request.watching.WatchingStop;
-import com.xplenty.api.util.Http;
+import com.xplenty.api.http.Http;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 /**
- * A convenience class for making HTTP requests to the Xplenty API for a given user. An underlying {@link XplentyWebConnectivity} is created
+ * A convenience class for making HTTP requests to the Xplenty API for a given user. An underlying {@link com.xplenty.api.http.HttpClient} is created
  * for each instance of XplentyAPI.
  * <p/>
  * Example usage:
@@ -53,18 +33,19 @@ import com.xplenty.api.util.Http;
  * 
  * {@link RuntimeException} will be thrown for any request failures.
  * 
- * @author Yuriy Kovalek
+ * @author Yuriy Kovalek and Xardas
  */
-public class XplentyAPI extends XplentyWebConnectivity {
-	
+public class XplentyAPI {
+    private final HttpClient client;
+		
 	/**
-     * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
+     * Constructs a XplentyAPI with a {@link com.xplenty.api.http.HttpClient} based on API key, account name,
      * and internal configuration.
      * @param accountName account name used for Xplenty sign-up
      * @param apiKey User's API key found at https://www.xplenty.com/settings/edit
      */
 	public XplentyAPI(String accountName, String apiKey) {
-		super(accountName, apiKey);
+        client = new ClientBuilder().withAccount(accountName).withApiKey(apiKey).build();
 	}
 
     /**
@@ -74,51 +55,21 @@ public class XplentyAPI extends XplentyWebConnectivity {
      * @param apiKey User's API key found at https://www.xplenty.com/settings/edit
      * @param logHttpCommunication enables logging of requests and responses
      */
-    public XplentyAPI(String accountName, String apiKey, boolean logHttpCommunication) {
-        super(accountName, apiKey, logHttpCommunication);
+    /**
+     * Constructs a XplentyAPI with a {@link com.xplenty.api.http.HttpClient} based on the given http client  builder
+     * @param clientBuilder configured Http client builder. At least account name and API Key must be set!
+     */
+    public XplentyAPI(ClientBuilder clientBuilder) {
+        client = clientBuilder.build();
     }
 
     /**
-     * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
-     * and manual configuration.
-     * @param accountName account name used for Xplenty sign-up
-     * @param apiKey  User's API key found at https://www.xplenty.com/settings/edit
-     * @param host Base API host
-     * @param proto API protocol (plain or encrypted)
+     * Constructs a XplentyAPI with the {@link com.xplenty.api.http.HttpClient} given
+     * @param client Configured http client
      */
-    public XplentyAPI(String accountName, String apiKey, String host, Http.Protocol proto){
-        this(accountName, apiKey, host, proto, false);
+    public XplentyAPI(HttpClient client){
+        this.client = client;
     }
-
-    /**
-     * Constructs a XplentyAPI with a {@link XplentyWebConnectivity} based on API key, account name,
-     * and manual configuration.
-     * @param accountName account name used for Xplenty sign-up
-     * @param apiKey  User's API key found at https://www.xplenty.com/settings/edit
-     * @param host Base API host
-     * @param proto API protocol (plain or encrypted)
-     * @param logHttpCommunication enables logging of requests and responses
-     */
-    public XplentyAPI(String accountName, String apiKey, String host, Http.Protocol proto, boolean logHttpCommunication){
-        this(accountName, apiKey, logHttpCommunication);
-        this.setHost(host);
-        this.setProtocol(proto);
-    }
-	
-	public XplentyAPI withVersion(Version ver) {
-		this.setVersion(ver);
-		return this;
-	}
-	
-	public XplentyAPI withHost(String host) {
-		this.setHost(host);
-		return this;
-	}
-	
-	public XplentyAPI withProtocol(Http.Protocol proto) {
-		this.setProtocol(proto);
-		return this;
-	}
 
     /**
      * Get package information
@@ -126,7 +77,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
      * @return package object
      */
     public Package getPackageInfo(long packageId) {
-        return this.execute(new PackageInfo(packageId));
+        return client.execute(new PackageInfo(packageId));
     }
 
     /**
@@ -135,7 +86,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
      * @return list of packages
      */
     public List<Package> listPackages(Properties props) {
-        return this.execute(new ListPackages(props));
+        return client.execute(new ListPackages(props));
     }
 
     /**
@@ -178,7 +129,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
      * @return list of schedules
      */
     public List<Schedule> listSchedules(Properties props) {
-        return this.execute(new ListSchedules(props));
+        return client.execute(new ListSchedules(props));
     }
 
 	/**
@@ -209,7 +160,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	 * @return list of clusters
 	 */
 	public List<Cluster> listClusters(Properties props) {
-		return this.execute(new ListClusters(props));
+		return client.execute(new ListClusters(props));
 	}
 	/**
 	 * Information about a particular cluster
@@ -217,7 +168,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	 * @return
 	 */
 	public Cluster clusterInformation(long clusterId) {
-		return this.execute(new ClusterInfo(clusterId)).withParentApiInstance(this);
+		return client.execute(new ClusterInfo(clusterId)).withParentApiInstance(this);
 	}
 	
 	/**
@@ -231,14 +182,14 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	 * @return
 	 */
 	public Cluster createCluster(int nodes, ClusterType type, String name, String description, Boolean terminateOnIdle, Long timeToIdle) {
-		return this.execute(new CreateCluster(
-				new Cluster().withNodes(nodes)
-					.ofType(type)
-					.named(name)
-					.withDescription(description)
-					.withTerminateOnIdle(terminateOnIdle)
-					.withTimeToIdle(timeToIdle)
-				)).withParentApiInstance(this);
+		return client.execute(new CreateCluster(
+                new Cluster().withNodes(nodes)
+                        .ofType(type)
+                        .named(name)
+                        .withDescription(description)
+                        .withTerminateOnIdle(terminateOnIdle)
+                        .withTimeToIdle(timeToIdle)
+        )).withParentApiInstance(this);
 	}
 	
 	/**
@@ -252,10 +203,10 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	 * @return
 	 */
 	public Cluster updateCluster(long id, Integer nodes, String name, String description, Boolean terminateOnIdle, Long timeToIdle) {
-		return this.execute(new UpdateCluster(
-				new Cluster().withId(id).withNodes(nodes).named(name).withDescription(description)
-				.withTerminateOnIdle(terminateOnIdle).withTimeToIdle(timeToIdle)
-				)).withParentApiInstance(this);
+		return client.execute(new UpdateCluster(
+                new Cluster().withId(id).withNodes(nodes).named(name).withDescription(description)
+                        .withTerminateOnIdle(terminateOnIdle).withTimeToIdle(timeToIdle)
+        )).withParentApiInstance(this);
 	}
 	
 	/**
@@ -264,7 +215,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	 * @return
 	 */
 	public Cluster terminateCluster(long clusterId) {
-		return this.execute(new TerminateCluster(clusterId)).withParentApiInstance(this);
+		return client.execute(new TerminateCluster(clusterId)).withParentApiInstance(this);
 	}
 	
 	/**
@@ -294,7 +245,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	 * @return list of jobs
 	 */
 	public List<Job> listJobs(Properties params) {
-		return this.execute(new ListJobs(params));
+		return client.execute(new ListJobs(params));
 	}
 	
 	/**
@@ -303,14 +254,14 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	 * @return
 	 */
 	public Job jobInformation(long jobId) {
-		return this.execute(new JobInfo(jobId)).withParentApiInstance(this);
+		return client.execute(new JobInfo(jobId)).withParentApiInstance(this);
 	}
 	
 	/**
 	 * Execute a job on a cluster
 	 * @param clusterId cluster to execute on, see {@link #listClusters()} to get a list of available clusters
 	 * @param packageId package id, obtained from account web page
-	 * @param variables map of static variables to be passed to the job
+	 * @param variables map of variables to be passed to the job
 	 * @return
 	 */
 	public Job runJob(long clusterId, long packageId, Map<String, String> variables) {
@@ -331,7 +282,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
 			job = job.withDynamicVariables(variables);
 		else
 			job = job.withVariables(variables);
-		return this.execute(new RunJob(job)).withParentApiInstance(this);
+		return client.execute(new RunJob(job)).withParentApiInstance(this);
 	}
 
 	/**
@@ -340,32 +291,32 @@ public class XplentyAPI extends XplentyWebConnectivity {
 	 * @return
 	 */
 	public Job stopJob(long jobId) {
-		return this.execute(new StopJob(jobId)).withParentApiInstance(this);
+		return client.execute(new StopJob(jobId)).withParentApiInstance(this);
 	}
 
     public List<Watcher> listClusterWatchers(long clusterId) {
-        return this.execute(new ListWatchers(Xplenty.SubjectType.CLUSTER, clusterId));
+        return client.execute(new ListWatchers(Xplenty.SubjectType.CLUSTER, clusterId));
     }
 
     public List<Watcher> listJobWatchers(long clusterId) {
-        return this.execute(new ListWatchers(Xplenty.SubjectType.JOB, clusterId));
+        return client.execute(new ListWatchers(Xplenty.SubjectType.JOB, clusterId));
     }
 
     public ClusterWatchingLogEntry addClusterWatchers(long clusterId) {
-        return this.execute(new AddClusterWatcher(clusterId)).withParentApiInstance(this);
+        return client.execute(new AddClusterWatcher(clusterId)).withParentApiInstance(this);
     }
 
     public JobWatchingLogEntry addJobWatchers(long jobId) {
-        return this.execute(new AddJobWatcher(jobId)).withParentApiInstance(this);
+        return client.execute(new AddJobWatcher(jobId)).withParentApiInstance(this);
     }
 
 
     public Boolean removeClusterWatchers(long clusterId) {
-        return this.execute(new WatchingStop(Xplenty.SubjectType.CLUSTER, clusterId));
+        return client.execute(new WatchingStop(Xplenty.SubjectType.CLUSTER, clusterId));
     }
 
     public Boolean removeJobWatchers(long jobId) {
-        return this.execute(new WatchingStop(Xplenty.SubjectType.JOB, jobId));
+        return client.execute(new WatchingStop(Xplenty.SubjectType.JOB, jobId));
     }
 
     /**
@@ -377,7 +328,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
         if (schedule.getId() != null) {
             schedule.setId(null);
         }
-        return this.execute(new CreateSchedule(schedule));
+        return client.execute(new CreateSchedule(schedule));
     }
 
     /**
@@ -389,7 +340,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
         if (schedule.getId() == null) {
             throw new XplentyAPIException("No id specified!");
         }
-        return this.execute(new UpdateSchedule(schedule));
+        return client.execute(new UpdateSchedule(schedule));
     }
 
     /**
@@ -401,7 +352,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
         if (scheduleId == 0) {
             throw new XplentyAPIException("No id specified!");
         }
-        return this.execute(new DeleteSchedule(scheduleId));
+        return client.execute(new DeleteSchedule(scheduleId));
     }
 
     /**
@@ -413,7 +364,7 @@ public class XplentyAPI extends XplentyWebConnectivity {
         if (scheduleId == 0) {
             throw new XplentyAPIException("No id specified!");
         }
-        return this.execute(new CloneSchedule(scheduleId));
+        return client.execute(new CloneSchedule(scheduleId));
     }
 
     /**
@@ -425,46 +376,50 @@ public class XplentyAPI extends XplentyWebConnectivity {
         if (scheduleId == 0) {
             throw new XplentyAPIException("No id specified!");
         }
-        return this.execute(new ScheduleInfo(scheduleId));
+        return client.execute(new ScheduleInfo(scheduleId));
     }
 
     /**
 	 * Account name this XplentyAPI instance is associated with
-	 * @return
+	 * @return Account name
 	 */
 	public String getAccountName() {
-		return super.getAccountName();
+		return client.getAccountName();
 	}
 
 	/**
 	 * API key used by this XplentyAPI instance
-	 * @return
+	 * @return API Key
 	 */
 	public String getApiKey() {
-		return super.getApiKey();
+		return client.getApiKey();
 	}
 
 	/**
 	 * API host this instance uses
-	 * @return
+	 * @return API host
 	 */
 	public String getHost() {
-		return super.getHost();
+		return client.getHost();
 	}
 
 	/**
 	 * Protocol this API instance uses
-	 * @return
+	 * @return protocol
 	 */
 	public Http.Protocol getProtocol() {
-		return super.getProtocol();
+		return client.getProtocol();
 	}
 
 	/**
 	 * API version
-	 * @return
+	 * @return version
 	 */
 	public Version getVersion() {
-		return super.getVersion();
+		return client.getVersion();
 	}
+
+    public int getTimeout() {
+        return client.getTimeout();
+    }
 }

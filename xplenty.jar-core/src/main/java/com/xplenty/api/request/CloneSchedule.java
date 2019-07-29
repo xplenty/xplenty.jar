@@ -1,11 +1,10 @@
 package com.xplenty.api.request;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
+import com.xplenty.api.http.Http;
+import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Schedule;
-import com.xplenty.api.util.Http;
 
 /**
  * Author: Xardas
@@ -21,10 +20,9 @@ public class CloneSchedule implements Request<Schedule> {
     }
 
     @Override
-    public Schedule getResponse(ClientResponse response) {
-        String json = response.getEntity(String.class);
+    public Schedule getResponse(Response response) {
         try {
-            final Schedule value = new ObjectMapper().readValue(json, Schedule.class);
+            final Schedule value = response.getContent(Schedule.class);
             return value;
         } catch (Exception e) {
             throw new XplentyAPIException(getName() + ": error parsing response object", e);

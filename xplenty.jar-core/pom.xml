@@ -24,18 +24,21 @@
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-client</artifactId>
 			<version>1.9.1</version>
+            <optional>true</optional>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-core</artifactId>
 			<version>1.9.1</version>
+            <optional>true</optional>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.sun.jersey</groupId>
 			<artifactId>jersey-json</artifactId>
 			<version>1.9.1</version>
+            <optional>true</optional>
 		</dependency>
 		
 		<dependency>
@@ -55,6 +58,13 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.8.11</version>
 		</dependency>
+
+      <dependency>
+          <groupId>io.netty</groupId>
+          <artifactId>netty</artifactId>
+          <version>3.10.5.Final</version>
+          <optional>true</optional>
+      </dependency>
 		
         <dependency>
           <groupId>junit</groupId>
