@@ -3,18 +3,12 @@
  */
 package com.xplenty.api.model;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.xplenty.api.Xplenty.JobStatus;
-import com.xplenty.api.exceptions.XplentyAPIException;
+
+import java.util.Date;
 
 /**
  * Data model for Xplenty job
@@ -22,18 +16,17 @@ import com.xplenty.api.exceptions.XplentyAPIException;
  * @author Yuriy Kovalek
  *
  */
-@XmlRootElement
 @JsonInclude(Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JobOutput extends XplentyObject<JobOutput> {
-	
-	public JobOutput() {
-		super(JobOutput.class);
-	}
+
+    @JsonProperty
 	protected Long id;
+    @JsonProperty
 	protected String name;
 	@JsonProperty("records_count")
 	protected Long recordsCount;
+    @JsonProperty
 	protected Double progress;
 	@JsonProperty("component_name")
 	protected String componentName;
@@ -43,6 +36,12 @@ public class JobOutput extends XplentyObject<JobOutput> {
 	protected Date updatedAt;
 	@JsonProperty("preview_url")
 	protected String previewUrl;
+    @JsonProperty
+    protected String url;
+
+    public JobOutput() {
+        super(JobOutput.class);
+    }
 	
 	public Long getId() {
 		return id;
@@ -68,8 +67,11 @@ public class JobOutput extends XplentyObject<JobOutput> {
 	public String getPreviewUrl() {
 		return previewUrl;
 	}
-	
-	@SuppressWarnings("unused")
+    public String getUrl() {
+        return url;
+    }
+
+    @SuppressWarnings("unused")
 	private void setId(Long id) {
 		this.id = id;
 	}
