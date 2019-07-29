@@ -3,29 +3,24 @@
  */
 package com.xplenty.api.request;
 
-import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.ClientResponse.Status;
-import com.sun.jersey.core.header.InBoundHeaders;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.Xplenty.ClusterStatus;
 import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.exceptions.XplentyAPIException;
+import com.xplenty.api.http.Http;
+import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Cluster;
 import com.xplenty.api.model.ClusterTest;
-import com.xplenty.api.request.CreateCluster;
-import com.xplenty.api.util.Http;
-
 import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.HashMap;
 
 /**
  * @author Yuriy Kovalek
@@ -61,10 +56,10 @@ public class CreateClusterTest extends TestCase {
 		
 		String json = new ObjectMapper().writeValueAsString(c);
 		CreateCluster cc = new CreateCluster(c);
-		c = cc.getResponse(new ClientResponse(Status.CREATED.getStatusCode(),
-												new InBoundHeaders(), 
-												new ByteArrayInputStream(json.getBytes("UTF-8")),
-												Client.create().getMessageBodyWorkers()));
+		c = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
+                json,
+                Status.CREATED.getStatusCode(),
+                new HashMap<String, String>()));
 		
 		assertNotNull(c);
 		assertEquals(new Long(3), c.getId());
@@ -90,10 +85,10 @@ public class CreateClusterTest extends TestCase {
 		String json = new ObjectMapper().writeValueAsString(c).replace("1", "one");
 		CreateCluster cc = new CreateCluster(c);
 		try {
-			c = cc.getResponse(new ClientResponse(Status.CREATED.getStatusCode(),
-													new InBoundHeaders(), 
-													new ByteArrayInputStream(json.getBytes("UTF-8")),
-													Client.create().getMessageBodyWorkers()));
+			c = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
+                    json,
+                    Status.CREATED.getStatusCode(),
+                    new HashMap<String, String>()));
 			assertTrue(false);
 		} catch (XplentyAPIException e) {
 			assertEquals(Xplenty.Resource.CreateCluster.name + ": error parsing response object", e.getMessage());
@@ -104,10 +99,10 @@ public class CreateClusterTest extends TestCase {
 		json = new ObjectMapper().writeValueAsString(c).replace("available", "ready");
 		cc = new CreateCluster(c);
 		try {
-			c = cc.getResponse(new ClientResponse(Status.CREATED.getStatusCode(),
-													new InBoundHeaders(), 
-													new ByteArrayInputStream(json.getBytes("UTF-8")),
-													Client.create().getMessageBodyWorkers()));
+			c = cc.getResponse(Response.forContentType(Http.MediaType.JSON,
+                    json,
+                    Status.CREATED.getStatusCode(),
+                    new HashMap<String, String>()));
 			fail();
 		} catch (XplentyAPIException e) {
 			assertEquals(Xplenty.Resource.CreateCluster.name + ": error parsing response object", e.getMessage());

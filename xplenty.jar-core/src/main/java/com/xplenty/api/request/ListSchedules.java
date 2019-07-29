@@ -4,14 +4,13 @@
 package com.xplenty.api.request;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
+import com.xplenty.api.http.Http.MediaType;
+import com.xplenty.api.http.Http.Method;
+import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Cluster;
 import com.xplenty.api.model.Schedule;
-import com.xplenty.api.util.Http.MediaType;
-import com.xplenty.api.util.Http.Method;
 
 import java.util.List;
 import java.util.Properties;
@@ -52,13 +51,12 @@ public class ListSchedules extends AbstractParametrizedRequest<List<Schedule>> {
 
 
 	@Override
-	public List<Schedule> getResponse(ClientResponse response) {
-		String json = response.getEntity(String.class);
-		try {
-			return new ObjectMapper().readValue(json, new TypeReference<List<Schedule>>() {});
-		} catch (Exception e) {
-			throw new XplentyAPIException(getName() + ": error parsing response object", e);
-		}
+	public List<Schedule> getResponse(Response response) {
+        try {
+            return response.getContent(new TypeReference<List<Schedule>>() {});
+        } catch (Exception e) {
+            throw new XplentyAPIException(getName() + ": error parsing response object", e);
+        }
 	}
 
 	@Override

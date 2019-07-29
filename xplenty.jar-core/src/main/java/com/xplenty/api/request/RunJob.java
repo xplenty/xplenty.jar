@@ -5,8 +5,8 @@ package com.xplenty.api.request;
 
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.model.Job;
-import com.xplenty.api.util.Http;
-import com.xplenty.api.util.Http.Method;
+import com.xplenty.api.http.Http;
+import com.xplenty.api.http.Http.Method;
 
 /**
  * @author Yuriy Kovalek

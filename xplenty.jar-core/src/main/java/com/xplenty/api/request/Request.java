@@ -3,8 +3,8 @@
  */
 package com.xplenty.api.request;
 
-import com.sun.jersey.api.client.ClientResponse;
-import com.xplenty.api.util.Http;
+import com.xplenty.api.http.Http;
+import com.xplenty.api.http.Response;
 
 /**
  * @author Yuriy Kovalek
@@ -32,5 +32,5 @@ public interface Request<T> {
 	
 	Object getBody();
 	
-	T getResponse(ClientResponse response);
+	T getResponse(Response response);
 }

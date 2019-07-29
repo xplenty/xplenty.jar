@@ -167,7 +167,7 @@ public class Xplenty {
 	}
 	
 	public static enum Version {
-		V1(1);
+		V1(1), V2(2);
 		
 		private final int value;
 		

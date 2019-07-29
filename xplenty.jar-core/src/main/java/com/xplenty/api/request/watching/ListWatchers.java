@@ -1,19 +1,18 @@
 package com.xplenty.api.request.watching;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.exceptions.XplentyAPIException;
+import com.xplenty.api.http.Http;
+import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Watcher;
 import com.xplenty.api.request.Request;
-import com.xplenty.api.util.Http;
 
 import java.util.List;
 
 import static com.xplenty.api.Xplenty.Resource;
 import static com.xplenty.api.Xplenty.SubjectType;
-import static com.xplenty.api.util.Http.Method.GET;
+import static com.xplenty.api.http.Http.Method.GET;
 
 public class ListWatchers implements Request<List<Watcher>> {
     private SubjectType _kind = null;
@@ -55,10 +54,9 @@ public class ListWatchers implements Request<List<Watcher>> {
     public Object getBody() { return null; }
 
     @Override
-    public List<Watcher> getResponse(ClientResponse response) {
-        String json = response.getEntity(String.class);
+    public List<Watcher> getResponse(Response response) {
         try {
-            return new ObjectMapper().readValue(json, new TypeReference<List<Watcher>>() {});
+            return response.getContent(new TypeReference<List<Watcher>>() {});
         } catch (Exception e) {
             throw new XplentyAPIException(getName() + ": error parsing response object", e);
         }
