@@ -1,9 +1,8 @@
 package com.xplenty.api.request;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.exceptions.XplentyAPIException;
-import com.xplenty.api.util.Http;
+import com.xplenty.api.http.Http;
+import com.xplenty.api.http.Response;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -15,8 +14,8 @@ import java.util.Map;
  * Date: 18.12.15
  * Time: 18:49
  */
-public abstract class AbstractManipulationRequest<T> implements  Request<T> {
-    protected final T entity;
+public abstract class AbstractManipulationRequest<T> extends AbstractRequest<T> {
+    protected T entity;
     private final Class<T> clazz;
 
     @SuppressWarnings("unchecked")
@@ -29,11 +28,14 @@ public abstract class AbstractManipulationRequest<T> implements  Request<T> {
         this.clazz = (Class<T>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
     }
 
+    protected void setEntity(T entity) {
+        this.entity = entity;
+    }
+
     @Override
-    public T getResponse(ClientResponse response) {
-        String json = response.getEntity(String.class);
+    public T getResponse(Response response) {
         try {
-            final T value = new ObjectMapper().readValue(json, this.clazz);
+            final T value = response.getContent(this.clazz);
             return value;
         } catch (Exception e) {
             throw new XplentyAPIException(getName() + ": error parsing response object", e);
@@ -53,9 +55,13 @@ public abstract class AbstractManipulationRequest<T> implements  Request<T> {
 
     @Override
     public Object getBody() {
-        Map<String, Object> packedEntity = new HashMap<String, Object>();
-        packedEntity.put(getPackKey(), entity);
-        return packedEntity;
+        final String packKey = getPackKey();
+        if (packKey != null) {
+            Map<String, Object> packedEntity = new HashMap<String, Object>();
+            packedEntity.put(packKey, entity);
+            return packedEntity;
+        }
+        return entity;
     }
 
     protected abstract String getPackKey();
