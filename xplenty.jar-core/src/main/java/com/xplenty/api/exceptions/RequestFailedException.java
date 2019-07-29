@@ -3,6 +3,8 @@
  */
 package com.xplenty.api.exceptions;
 
+import com.xplenty.api.http.Http;
+
 /**
  * @author Yuriy Kovalek
  *
@@ -10,13 +12,15 @@ package com.xplenty.api.exceptions;
 public class RequestFailedException extends XplentyAPIException {
 	private static final long serialVersionUID = -456749863406425145L;
 	
-	private int status;
-	private String response;
+	private final int status;
+	private final String response;
+    private final String statusDescription;
 	
-	public RequestFailedException(String msg, int status, String response) {
-		super(msg + " HTTP status code: " + status + ", server response: " + response);
-		this.status = status;
+	public RequestFailedException(String msg, Http.ResponseStatus responseStatus, String response) {
+		super(String.format("%s, HTTP status code: %s[%s], server response: [%s]" , msg, responseStatus.getCode(), responseStatus.getDescription(), response));
+		this.status = responseStatus.getCode();
 		this.response = response;
+        this.statusDescription = responseStatus.getDescription();
 	}
 	
 	public int getStatus() {
@@ -26,4 +30,8 @@ public class RequestFailedException extends XplentyAPIException {
 	public String getResponse() {
 		return response;
 	}
+
+    public String getStatusDescription() {
+        return statusDescription;
+    }
 }

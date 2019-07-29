@@ -3,18 +3,14 @@
  */
 package com.xplenty.api.model;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xplenty.api.Xplenty.JobStatus;
 import com.xplenty.api.exceptions.XplentyAPIException;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Data model for Xplenty job
@@ -22,24 +18,23 @@ import com.xplenty.api.exceptions.XplentyAPIException;
  * @author Yuriy Kovalek
  *
  */
-@XmlRootElement
-@JsonInclude(Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Job extends XplentyObject<Job> {
-	
-	public Job() {
-		super(Job.class);
-	}
+
+    @JsonProperty
 	protected Long id;
+    @JsonProperty
 	protected JobStatus status;
+    @JsonProperty
 	protected Map<String, String> variables;	//for backwords compatibility
 	@JsonProperty("dynamic_variables")
 	protected Map<String, String> dynamicVariables;
 	@JsonProperty("owner_id")
 	protected Long ownerId;
+    @JsonProperty
 	protected Double progress;
 	@JsonProperty("outputs_count")
 	protected Integer outputsCount;
+    @JsonProperty
 	protected List<JobOutput> outputs;
 	@JsonProperty("started_at")
 	protected Date startedAt;
@@ -53,17 +48,30 @@ public class Job extends XplentyObject<Job> {
 	protected Date updatedAt;
 	@JsonProperty("cluster_id")
 	protected Long clusterId;
+    @JsonProperty
+    protected Cluster cluster;
 	@JsonProperty("package_id")
 	protected Long packageId;
+    @JsonProperty("package")
+    protected Package xpackage;
+    @JsonProperty
 	protected String errors;
+    @JsonProperty
 	protected String url;
 	@JsonProperty("runtime_in_seconds")
 	protected Long runtimeInSeconds;
+    @JsonProperty("html_url")
+    protected String htmlUrl;
+    @JsonProperty("log_url")
+    protected String logUrl;
+    @JsonProperty
+    protected Creator creator;
 
+    public Job() {
+        super(Job.class);
+    }
 
-
-
-	/**
+    /**
 	 * Shorthand method for {@code waitForStatus(null, JobStatus...)} Will wait forever until the required status is received.
 	 * @param statuses see {@link #waitForStatus(Long, JobStatus...)}
 	 */
@@ -92,10 +100,20 @@ public class Job extends XplentyObject<Job> {
 				if (c.getStatus() == status)
 					break statusWait;
 			}
-			if (System.currentTimeMillis() - timeout*1000 > start)
+			if (System.currentTimeMillis() - timeout * 1000 > start)
 				throw new XplentyAPIException("Timeout occurred while waiting for required job status");
 		}
 	}
+
+    /**
+     * Download job output log
+     * Be aware that this method doesn't store call result anywhere.
+     * @return log contents
+     */
+    @JsonIgnore
+    public JobLog getJobLog() {
+        return getParentApiInstance().getJobLog(id);
+    }
 	
 	public Job withId(long id) {
 		this.id = id;
@@ -121,60 +139,185 @@ public class Job extends XplentyObject<Job> {
 		this.dynamicVariables = dynVars;
 		return this;
 	}
-	
+
+
+    /**
+     *
+     * @return the numeric job ID
+     */
 	public Long getId() {
 		return id;
 	}
+
+    /**
+     *
+     * @return the job status.
+     */
 	public JobStatus getStatus() {
 		return status;
 	}
+
+    /**
+     *
+     * @return  a list of the variables supplied to the "run" request
+     */
 	public Map<String, String> getVariables() {
 		return variables;
 	}
-	
+
+    /**
+     *
+     * @return the numeric user ID
+     */
 	public Long getOwnerId() {
 		return ownerId;
 	}
+
+    /**
+     *
+     * @return the job progress in percentages (a value between 0.0 and 1.0)
+     */
 	public Double getProgress() {
 		return progress;
 	}
+
+    /**
+     *
+     * @return  the number of output targets defined in the job's package
+     */
 	public Integer getOutputsCount() {
 		return outputsCount;
 	}
+
+    /**
+     *
+     * @return list of the output targets defined in the job's package
+     */
 	public List<JobOutput> getOutputs() {
 		return outputs;
 	}
+
+    /**
+     *
+     * @return the date and time the job started running
+     */
 	public Date getStartedAt() {
 		return startedAt;
 	}
+
+    /**
+     *
+     * @return the date and time the "run" request was made
+     */
 	public Date getCreatedAt() {
 		return createdAt;
 	}
+
+    /**
+     *
+     * @return the date and time the job failed (if it failed)
+     */
     public Date getFailedAt() {
         return failedAt;
     }
+
+    /**
+     *
+     * @return the date and time at which the job completed (stopped, failed or completed)
+     */
     public Date getCompletedAt() {
         return completedAt;
     }
+
+    /**
+     *
+     * @return the date and time the job was last updated (occurs when package tasks are completed)
+     */
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
+
+    /**
+     *
+     * @return the ID of the cluster in which the job was run
+     */
 	public Long getClusterId() {
 		return clusterId;
 	}
+
+    /**
+     *
+     * @return the ID of the package that the job ran (or is running)
+     */
 	public Long getPackageId() {
 		return packageId;
 	}
+
+    /**
+     *
+     * @return a textual message describing errors encountered while the job was run
+     */
 	public String getErrors() {
 		return errors;
 	}
+
+    /**
+     *
+     * @return the job resource URL (API)
+     */
 	public String getUrl() {
 		return url;
 	}
+
+    /**
+     *
+     * @return the time in seconds that the job has run up to the current time
+     */
 	public Long getRuntimeInSeconds() {
 		return runtimeInSeconds;
 	}
-	@SuppressWarnings("unused")
+
+    /**
+     *
+     * @return the cluster in which the job was run. Includes all attributes.
+     */
+    public Cluster getCluster() {
+        return cluster;
+    }
+
+    /**
+     *
+     * @return the package that the job ran (or is running). Includes all attributes.
+     */
+    public Package getPackage() {
+        return xpackage;
+    }
+
+    /**
+     *
+     * @return the job resource URL (Web UI)
+     */
+    public String getHtmlUrl() {
+        return htmlUrl;
+    }
+
+    /**
+     *
+     * @return the URL to log summary
+     */
+    public String getLogUrl() {
+        return logUrl;
+    }
+
+    /**
+     *
+     * @return information about resource which created the job
+     */
+    public Creator getCreator() {
+        return creator;
+    }
+
+    @SuppressWarnings("unused")
 	private void setId(long id) {
 		this.id = id;
 	}
