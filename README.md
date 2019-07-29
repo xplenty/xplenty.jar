@@ -15,7 +15,7 @@ String api_key = "V4eyfgNqYcSasXGhzNxS";
 XplentyAPI xplentyAPI = new XplentyAPI(account_id , api_key);
 ```
 
-If you want to supply custom values for the version, protocol or host that the XplentyAPI object will use,
+If you want to supply custom values for the version, protocol, host, timeout, logging or client implementation that the XplentyAPI object will use,
 you can use XplentyAPI builder methods to customize these properties.
 
 ```java
@@ -24,10 +24,9 @@ String api_key = "V4eyfgNqYcSasXGhzNxS";
 Xplenty.Version version = Xplenty.Version.V1;
 String host = 'myHost';
 Http.Protocol proto = Http.Protocol.Https;
-XplentyAPI xplentyAPI = new XplentyAPI(account_id , api_key)
-    							    	   .withVersion(version)
-    							    	   .withHost(host)
-    							    	   .withProtocol(proto); 
+HttpClientBuilder builder = new HttpClientBuilder().withAccount(account_id).withApiKey(api_key).
+                withHost(host).withLogHttpCommunication(true).withClientImpl(Http.HttpClientImpl.SyncNetty);
+XplentyAPI xplentyAPI = new XplentyAPI(builder); 
 ```
 ### List the Cluster Plans
 
