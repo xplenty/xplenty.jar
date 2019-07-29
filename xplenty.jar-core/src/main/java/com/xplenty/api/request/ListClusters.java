@@ -4,15 +4,11 @@
 package com.xplenty.api.request;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.Xplenty.ClusterStatus;
 import com.xplenty.api.exceptions.XplentyAPIException;
+import com.xplenty.api.http.Response;
 import com.xplenty.api.model.Cluster;
-import com.xplenty.api.util.Http;
-import com.xplenty.api.util.Http.MediaType;
-import com.xplenty.api.util.Http.Method;
 
 import java.util.List;
 import java.util.Properties;
@@ -21,7 +17,7 @@ import java.util.Properties;
  * @author Yuriy Kovalek
  *
  */
-public class ListClusters extends AbstractParametrizedRequest<List<Cluster>> {
+public class ListClusters extends AbstractListRequest<List<Cluster>> {
 	
 	public ListClusters(Properties params) {
         super(params, true);
@@ -36,26 +32,15 @@ public class ListClusters extends AbstractParametrizedRequest<List<Cluster>> {
 			throw new XplentyAPIException("Invalid 'status' parameter");
 	}
 
-	@Override
-	public Method getHttpMethod() {
-		return Http.Method.GET;
-	}
-	
-	@Override
-	public MediaType getResponseType() {
-		return Http.MediaType.JSON;
-	}
-
     @Override
     protected String getEndpointRoot() {
         return Xplenty.Resource.Clusters.value;
     }
 
     @Override
-	public List<Cluster> getResponse(ClientResponse response) {
-		String json = response.getEntity(String.class);
+	public List<Cluster> getResponse(Response response) {
 		try {
-			return new ObjectMapper().readValue(json, new TypeReference<List<Cluster>>() {});
+			return response.getContent(new TypeReference<List<Cluster>>() {});
 		} catch (Exception e) {
 			throw new XplentyAPIException(getName() + ": error parsing response object", e);
 		}
@@ -64,16 +49,6 @@ public class ListClusters extends AbstractParametrizedRequest<List<Cluster>> {
 	@Override
 	public String getName() {
 		return Xplenty.Resource.Clusters.name;
-	}
-
-	@Override
-	public boolean hasBody() {
-		return false;
-	}
-
-	@Override
-	public List<Cluster> getBody() {
-		return null;
 	}
 
 }
