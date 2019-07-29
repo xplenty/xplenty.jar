@@ -2,7 +2,7 @@ package com.xplenty.api.request;
 
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.model.Schedule;
-import com.xplenty.api.util.Http;
+import com.xplenty.api.http.Http;
 
 /**
  * Author: Xardas

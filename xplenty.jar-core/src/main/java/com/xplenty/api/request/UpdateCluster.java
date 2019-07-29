@@ -2,8 +2,8 @@ package com.xplenty.api.request;
 
 import com.xplenty.api.Xplenty;
 import com.xplenty.api.model.Cluster;
-import com.xplenty.api.util.Http;
-import com.xplenty.api.util.Http.Method;
+import com.xplenty.api.http.Http;
+import com.xplenty.api.http.Http.Method;
 
 public class UpdateCluster extends AbstractManipulationRequest<Cluster> {
 

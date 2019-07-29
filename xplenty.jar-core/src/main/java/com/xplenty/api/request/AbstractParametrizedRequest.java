@@ -10,7 +10,7 @@ import java.util.Properties;
  * Date: 17.12.15
  * Time: 20:46
  */
-public abstract class AbstractParametrizedRequest<T> implements Request<T> {
+public abstract class AbstractParametrizedRequest<T> extends AbstractRequest<T> {
     public static final String PARAMETER_STATUS = "status";
     public static final String PARAMETER_SORT = "sort";
     public static final String PARAMETER_DIRECTION = "direction";
