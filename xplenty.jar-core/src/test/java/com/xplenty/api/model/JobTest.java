@@ -3,16 +3,15 @@
  */
 package com.xplenty.api.model;
 
+import com.xplenty.api.Xplenty;
+import com.xplenty.api.Xplenty.JobStatus;
+import junit.framework.TestCase;
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-
-import org.junit.Test;
-
-import com.xplenty.api.Xplenty;
-import com.xplenty.api.Xplenty.JobStatus;
-
-import junit.framework.TestCase;
+import java.util.Map;
 
 /**
  * @author Yuriy Kovalek
@@ -67,4 +66,25 @@ public class JobTest extends TestCase {
 		
 		return jo;
 	}
+
+    public static JobLog createMockJobLog() {
+        JobLog jl = new JobLog();
+        jl.log = "Invalid output path: couldn't fetch";
+        jl.url = "https://testapi.xplenty.com/api/jobs/666/log";
+        return jl;
+    }
+
+    public static Map<String, String> createMockJobExecutionVariables() {
+        Map<String, String> vars = new HashMap<>();
+        vars.put("_ACCOUNT_ID", "666");
+        vars.put("_ACCOUNT_ID2", "777");
+        return vars;
+    }
+
+    public static JobOutputPreview createMockJobOutputPreview() {
+        JobOutputPreview jop = new JobOutputPreview();
+        jop.preview = "out1\tout2\tout3";
+        jop.url = "https://testapi.xplenty.com/api/jobs/1/outputs/1/preview";
+        return jop;
+    }
 }

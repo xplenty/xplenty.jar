@@ -1,9 +1,8 @@
 package com.xplenty.api.request;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.jersey.api.client.ClientResponse;
 import com.xplenty.api.exceptions.XplentyAPIException;
-import com.xplenty.api.util.Http;
+import com.xplenty.api.http.Http;
+import com.xplenty.api.http.Response;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -13,12 +12,12 @@ import java.lang.reflect.Type;
  * Date: 18.12.15
  * Time: 20:20
  */
-public abstract class AbstractDeleteRequest<T> implements Request<T> {
+public abstract class AbstractDeleteRequest<T> extends AbstractRequest<T> {
     protected final long entityId;
     private final Class<T> clazz;
 
     @SuppressWarnings("unchecked")
-    protected AbstractDeleteRequest(Long entityId) {
+    protected AbstractDeleteRequest(long entityId) {
         this.entityId = entityId;
         final Type superclass = this.getClass().getGenericSuperclass();
         if (superclass instanceof Class) {
@@ -28,10 +27,9 @@ public abstract class AbstractDeleteRequest<T> implements Request<T> {
     }
 
     @Override
-    public T getResponse(ClientResponse response) {
-        String json = response.getEntity(String.class);
+    public T getResponse(Response response) {
         try {
-            final T value = new ObjectMapper().readValue(json, this.clazz);
+            final T value = response.getContent(this.clazz);
             return value;
         } catch (Exception e) {
             throw new XplentyAPIException(getName() + ": error parsing response object", e);
