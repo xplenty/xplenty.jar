@@ -3,17 +3,13 @@
  */
 package com.xplenty.api.model;
 
-import java.util.Date;
-
-import javax.xml.bind.annotation.XmlRootElement;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.xplenty.api.Xplenty.ClusterStatus;
 import com.xplenty.api.Xplenty.ClusterType;
 import com.xplenty.api.exceptions.XplentyAPIException;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Data model for Xplenty cluster
@@ -21,17 +17,21 @@ import com.xplenty.api.exceptions.XplentyAPIException;
  * @author Yuriy Kovalek
  *
  */
-@XmlRootElement
-@JsonInclude(Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Cluster extends XplentyObject<Cluster>{
+
+    @JsonProperty
 	protected Long id;
+    @JsonProperty
 	protected String name;
+    @JsonProperty
 	protected String description;
+    @JsonProperty
 	protected ClusterStatus status;
 	@JsonProperty("owner_id")
 	protected Long ownerId;
+    @JsonProperty
 	protected Integer nodes;
+    @JsonProperty
 	protected ClusterType type;
 	@JsonProperty("created_at")
 	protected Date createdAt;
@@ -43,6 +43,7 @@ public class Cluster extends XplentyObject<Cluster>{
 	protected Date terminatedAt;
 	@JsonProperty("running_jobs_count")
 	protected Long runningJobsCount;
+    @JsonProperty
 	protected String url;
 	@JsonProperty("terminate_on_idle")
 	protected Boolean terminateOnIdle;
@@ -50,6 +51,36 @@ public class Cluster extends XplentyObject<Cluster>{
 	protected Long timeToIdle;
 	@JsonProperty("terminated_on_idle")
 	protected Boolean terminatedOnIdle;
+    @JsonProperty("plan_id")
+    protected String planId;
+    @JsonProperty("idle_since")
+    protected Date idleSince;
+    @JsonProperty
+    protected String region;
+    @JsonProperty("master_instance_type")
+    protected String masterInstanceType;
+    @JsonProperty("slave_instance_type")
+    protected String slaveInstanceType;
+    @JsonProperty("master_spot_price")
+    protected Double masterSpotPrice;
+    @JsonProperty("slave_spot_price")
+    protected Double slaveSpotPrice;
+    @JsonProperty("master_spot_percentage")
+    protected Double masterSpotPercentage;
+    @JsonProperty("slave_spot_percentage")
+    protected Double slaveSpotPercentage;
+    @JsonProperty("allow_fallback")
+    protected Boolean allowFallback;
+    @JsonProperty("html_url")
+    protected String htmlUrl;
+    @JsonProperty
+    protected Creator creator;
+    @JsonProperty
+    protected String stack;
+    @JsonProperty("bootstrap_actions")
+    protected List<ClusterBootstrapAction> bootstrapActions;
+    @JsonProperty
+    protected String zone;
 
 	public Cluster() {
 		super(Cluster.class);
@@ -89,7 +120,62 @@ public class Cluster extends XplentyObject<Cluster>{
 		this.timeToIdle = timeToIdle;
 		return this;
 	}
-	
+
+    public Cluster withRegion(String region) {
+        this.region = region;
+        return this;
+    }
+
+    public Cluster withZone(String zone) {
+        this.zone = zone;
+        return this;
+    }
+
+    public Cluster withMasterInstanceType(String masterInstanceType) {
+        this.masterInstanceType = masterInstanceType;
+        return this;
+    }
+
+    public Cluster withSlaveInstanceType(String slaveInstanceType) {
+        this.slaveInstanceType = slaveInstanceType;
+        return this;
+    }
+
+    public Cluster withMasterSpotPrice(Double masterSpotPrice) {
+        this.masterSpotPrice = masterSpotPrice;
+        return this;
+    }
+
+    public Cluster withSlaveSpotPrice(Double slaveSpotPrice) {
+        this.slaveSpotPrice = slaveSpotPrice;
+        return this;
+    }
+
+    public Cluster withMasterSpotPercentage(Double masterSpotPercentage) {
+        this.masterSpotPercentage = masterSpotPercentage;
+        return this;
+    }
+
+    public Cluster withSlaveSpotPercentage(Double slaveSpotPercentage) {
+        this.slaveSpotPercentage = slaveSpotPercentage;
+        return this;
+    }
+
+    public Cluster withAllowFallback(Boolean allowFallback) {
+        this.allowFallback = allowFallback;
+        return this;
+    }
+
+    public Cluster withStack(String stack) {
+        this.stack = stack;
+        return this;
+    }
+
+    public Cluster withBootstrapActions(List<ClusterBootstrapAction> bootstrapActions) {
+        this.bootstrapActions = bootstrapActions;
+        return this;
+    }
+
 	/**
 	 * Shorthand method for {@code waitForStatus(null, ClusterStatus...)} Will wait forever until the required status is received.
 	 * @param statuses see {@link #waitForStatus(Long, ClusterStatus...)}
@@ -123,118 +209,252 @@ public class Cluster extends XplentyObject<Cluster>{
 				throw new XplentyAPIException("Timeout occurred while waiting for required cluster status");
 		}
 	}
-	
+
+    /**
+     *
+     * @return the cluster's numeric identifier
+     */
 	public Long getId() {
 		return id;
 	}
+
+    /**
+     *
+     * @return the name given to the cluster upon creation
+     */
 	public String getName() {
 		return name;
 	}
+
+    /**
+     *
+     * @return the description given to the cluster upon creation
+     */
 	public String getDescription() {
 		return description;
 	}
+
+    /**
+     *
+     * @return the cluster's status
+     */
 	public ClusterStatus getStatus() {
 		return status;
 	}
+
+    /**
+     *
+     * @return the numeric user ID of the cluster's owner
+     */
 	public Long getOwnerId() {
 		return ownerId;
 	}
+
+    /**
+     *
+     * @return the number of compute nodes for the cluster
+     */
 	public Integer getNodes() {
 		return nodes;
 	}
+
+    /**
+     *
+     * @return the type of the cluster
+     */
 	public ClusterType getType() {
 		return type;
 	}
+
+    /**
+     *
+     * @return the date and time the cluster was created
+     */
 	public Date getCreatedAt() {
 		return createdAt;
 	}
+
+    /**
+     *
+     * @return the date and time the cluster was last updated
+     */
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
+
+    /**
+     *
+     * @return the date and time the cluster became available
+     */
     public Date getAvailableSince() {
         return availableSince;
     }
+
+    /**
+     *
+     * @return the date and time the cluster was terminated
+     */
     public Date getTerminatedAt() {
         return terminatedAt;
     }
+
+    /**
+     *
+     * @return the number of jobs currently running on the cluster
+     */
 	public Long getRunningJobsCount() {
 		return runningJobsCount;
 	}
+
+    /**
+     *
+     * @return the cluster resource URL (API)
+     */
 	public String getUrl() {
 		return url;
 	}
+
+    /**
+     *
+     * @return indicates whether the cluster will be terminated after it becomes idle
+     */
 	public Boolean getTerminateOnIdle() {
 		return terminateOnIdle;
 	}
+
+    /**
+     *
+     * @return the time interval (in seconds) in which the cluster will become idle
+     */
 	public Long getTimeToIdle() {
 		return timeToIdle;
 	}
+
+    /**
+     *
+     * @return indicates whether the cluster terminated because it became idle
+     */
 	public Boolean getTerminatedOnIdle() {
 		return terminatedOnIdle;
 	}
 
-	@SuppressWarnings("unused")
-	private void setId(long id) {
-		this.id = id;
-	}
-	@SuppressWarnings("unused")
-	private void setName(String name) {
-		this.name = name;
-	}
-	@SuppressWarnings("unused")
-	private void setDescription(String description) {
-		this.description = description;
-	}
-	@SuppressWarnings("unused")
-	private void setStatus(ClusterStatus status) {
-		this.status = status;
-	}
-	@SuppressWarnings("unused")
-	private void setOwnerId(long ownerId) {
-		this.ownerId = ownerId;
-	}
-    @SuppressWarnings("unused")
-    private void setNodes(Integer nodes) {
-        this.nodes = nodes;
+    /**
+     *
+     * @return the ID of the cluster's plan
+     */
+    public String getPlanId() {
+        return planId;
     }
-    @SuppressWarnings("unused")
-    private void setType(ClusterType type) {
-        this.type = type;
+
+    /**
+     *
+     * @return the time since cluster changed status to idle
+     */
+    public Date getIdleSince() {
+        return idleSince;
     }
-	@SuppressWarnings("unused")
-	private void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-	@SuppressWarnings("unused")
-	private void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-    @SuppressWarnings("unused")
-    private void setAvailableSince(Date as) {
-        this.availableSince = as;
+
+    /**
+     *
+     * @return the region in which the cluster was created
+     */
+    public String getRegion() {
+        return region;
     }
-    @SuppressWarnings("unused")
-    private void setTerminatedAt(Date terminatedAt) {
-        this.terminatedAt  = terminatedAt;
+
+    /**
+     *
+     * @return the type of the master instance
+     */
+    public String getMasterInstanceType() {
+        return masterInstanceType;
     }
-	@SuppressWarnings("unused")
-	private void setRunningJobsCount(long runningJobsCount) {
-		this.runningJobsCount = runningJobsCount;
-	}
-	@SuppressWarnings("unused")
-	private void setUrl(String url) {
-		this.url = url;
-	}
-	@SuppressWarnings("unused")
-	private void setTerminateOnIdle(Boolean terminateOnIdle) {
-		this.terminateOnIdle = terminateOnIdle;
-	}
-	@SuppressWarnings("unused")
-	private void setTimeToIdle(Long timeToIdle) {
-		this.timeToIdle= timeToIdle ;
-	}
-	@SuppressWarnings("unused")
-	private void setTerminatedOnIdle(Boolean terminatedOnIdle) {
-		this.terminatedOnIdle = terminatedOnIdle;
-	}
+
+    /**
+     *
+     * @return the type of the slave instance
+     */
+    public String getSlaveInstanceType() {
+        return slaveInstanceType;
+    }
+
+    /**
+     *
+     * @return the maximum bid price (in USD) requested for master spot instance
+     */
+    public Double getMasterSpotPrice() {
+        return masterSpotPrice;
+    }
+
+    /**
+     *
+     * @return the maximum bid price (in USD) requested for slave spot instance
+     */
+    public Double getSlaveSpotPrice() {
+        return slaveSpotPrice;
+    }
+
+    /**
+     *
+     * @return the percentage of master instances requested as spot (value between 0 and 1)
+     */
+    public Double getMasterSpotPercentage() {
+        return masterSpotPercentage;
+    }
+
+    /**
+     *
+     * @return the percentage of slave instances requested as spot (value between 0 and 1)
+     */
+    public Double getSlaveSpotPercentage() {
+        return slaveSpotPercentage;
+    }
+
+    /**
+     *
+     * @return indicates whether instances will be created as on-demand instances if spot requests are not fulfilled
+     */
+    public Boolean getAllowFallback() {
+        return allowFallback;
+    }
+
+    /**
+     *
+     * @return the cluster resource URL (Web UI)
+     */
+    public String getHtmlUrl() {
+        return htmlUrl;
+    }
+
+    /**
+     *
+     * @return information about resource which created the job.
+     */
+    public Creator getCreator() {
+        return creator;
+    }
+
+    /**
+     *
+     * @return the stack of the cluster.
+     */
+    public String getStack() {
+        return stack;
+    }
+
+    /**
+     *
+     * @return the array of the custom bootstrap actions.
+     */
+    public List<ClusterBootstrapAction> getBootstrapActions() {
+        return bootstrapActions;
+    }
+
+    /**
+     *
+     * @return The zone in which the cluster was created (for availability zone supported regions)
+     */
+    public String getZone() {
+        return zone;
+    }
 }

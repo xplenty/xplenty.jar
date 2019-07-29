@@ -1,12 +1,13 @@
 package com.xplenty.api;
 
+import com.xplenty.api.http.ClientBuilder;
 import com.xplenty.api.model.ClusterWatchingLogEntry;
 import com.xplenty.api.model.JobWatchingLogEntry;
 import com.xplenty.api.model.Watcher;
 import junit.framework.Assert;
 import org.joda.time.DateTime;
 import org.junit.Ignore;
-import com.xplenty.api.util.Http;
+import com.xplenty.api.http.Http;
 import junit.framework.TestCase;
 
 @Ignore
@@ -20,7 +21,9 @@ public class WatchersTestAgainstMockServer extends TestCase {
 
     @Override
     public void setUp(){
-        api = new XplentyAPI(accountID, apiKey, host, Http.Protocol.Http);
+        ClientBuilder builder = new ClientBuilder().withAccount(accountID).withApiKey(apiKey).withHost(host).
+                withProtocol(Http.Protocol.Http);
+        api = new XplentyAPI(builder);
     }
 
     public void testListClusterWatchers() {
